@@ -1,0 +1,2580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SustainToken — Environmental Impact Infrastructure</title>
+<meta name="description" content="Environmental Impact Infrastructure for Verifiable Sustainability. On-chain MRV, IPFS evidence anchoring, and SES-ready reporting." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   CSS CUSTOM PROPERTIES — SustainToken Design System
+   ============================================================ */
+:root {
+  /* Brand palette (client-specified) */
+  --brand-700: #1EC0D8;
+  --brand-500: #29DDF5;
+  --brand-300: #97ECF9;
+  --brand-100: #E6FBFE;
+
+  --ink-900: #1B365F;
+  --ink-700: #2A4A7A;
+  --ink-500: #3E5E92;
+  --ink-300: #6F88AE;
+
+  --soft-300: #E8BEE0;
+  --soft-200: #F2D4EF;
+  --soft-100: #FAEFF8;
+
+  --bg-0:   #05080F;
+  --bg-50:  #090D18;
+  --bg-100: #0D1422;
+  --bg-200: #111A2B;
+  --line-200: #1D2940;
+  --line-300: #243250;
+
+  --green-600: #1E9E72;
+  --red-600:   #D64545;
+  --amber-600: #B8860B;
+
+  --chip-bg:  #0D1422;
+  --chip-brd: #1D2940;
+  --chip-txt: #97ECF9;
+
+  /* Typography */
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* Spacing (8pt system) */
+  --sp-1: 8px;
+  --sp-2: 16px;
+  --sp-3: 24px;
+  --sp-4: 32px;
+  --sp-5: 40px;
+  --sp-6: 48px;
+  --sp-8: 64px;
+  --sp-10: 80px;
+  --sp-12: 96px;
+
+  /* Radii */
+  --r-sm: 6px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--bg-0);
+  color: #C8D8F0;
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--brand-500); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--brand-700); }
+img { max-width: 100%; display: block; }
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.container {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 var(--sp-3);
+}
+.container--wide {
+  max-width: 1340px;
+  margin: 0 auto;
+  padding: 0 var(--sp-3);
+}
+section { padding: var(--sp-12) 0; }
+
+/* ============================================================
+   BACKGROUND GRID TEXTURE
+   ============================================================ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(41,221,245,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(41,221,245,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(5,8,15,0.85);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line-200);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 var(--sp-3);
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+.nav-logo-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--brand-500);
+  box-shadow: 0 0 8px var(--brand-500);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.5; transform:scale(0.7); }
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  list-style: none;
+}
+.nav-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-300);
+  letter-spacing: 0.3px;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: #fff; }
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.lang-switch {
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--ink-300);
+  border: 1px solid var(--line-300);
+  padding: 4px 10px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.2s;
+}
+.lang-switch:hover {
+  border-color: var(--brand-500);
+  color: var(--brand-500);
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: var(--r-md);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  text-decoration: none;
+}
+.btn--primary {
+  background: var(--brand-500);
+  color: #03151A;
+}
+.btn--primary:hover {
+  background: var(--brand-700);
+  color: #03151A;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(41,221,245,0.25);
+}
+.btn--ghost {
+  background: transparent;
+  color: var(--brand-500);
+  border: 1px solid var(--brand-500);
+}
+.btn--ghost:hover {
+  background: rgba(41,221,245,0.07);
+  color: var(--brand-500);
+}
+.btn--large {
+  padding: 14px 28px;
+  font-size: 15px;
+}
+
+/* ============================================================
+   SECTION LABELS
+   ============================================================ */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--brand-500);
+  margin-bottom: var(--sp-3);
+}
+.section-label::before {
+  content: '';
+  display: block;
+  width: 20px; height: 1px;
+  background: var(--brand-500);
+}
+
+/* ============================================================
+   HEADINGS
+   ============================================================ */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+}
+h1 { font-size: clamp(28px, 3.8vw, 52px); font-weight: 700; }
+h2 { font-size: clamp(26px, 3.2vw, 40px); font-weight: 700; }
+h3 { font-size: 22px; font-weight: 700; }
+h4 { font-size: 16px; font-weight: 700; }
+
+/* ============================================================
+   1. HERO
+   ============================================================ */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 64px;
+  overflow: hidden;
+}
+.hero-glow {
+  position: absolute;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse at center, rgba(41,221,245,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(41,221,245,0.08);
+  border: 1px solid rgba(41,221,245,0.2);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--brand-300);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: var(--sp-4);
+}
+.hero-badge-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green-600);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+#hero h1 {
+  color: #fff;
+  max-width: 720px;
+  margin-bottom: var(--sp-3);
+  line-height: 1.2;
+}
+#hero h1 .h1-muted {
+  display: block;
+  font-size: 0.72em;
+  font-weight: 400;
+  color: var(--ink-300);
+  letter-spacing: 0.2px;
+  margin-bottom: 4px;
+}
+#hero h1 .h1-main {
+  display: block;
+  font-weight: 800;
+  color: #fff;
+}
+#hero h1 .h1-accent {
+  display: block;
+  font-weight: 800;
+  color: var(--brand-500);
+}
+.hero-sub {
+  font-size: 18px;
+  color: var(--ink-300);
+  max-width: 560px;
+  margin-bottom: var(--sp-5);
+  line-height: 1.7;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-6);
+}
+.hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-6);
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-300);
+  letter-spacing: 0.5px;
+}
+.trust-icon {
+  width: 16px; height: 16px;
+  color: var(--green-600);
+}
+.trust-sep {
+  width: 1px; height: 14px;
+  background: var(--line-300);
+}
+/* Hero Counters */
+.hero-counters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-5);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--line-200);
+}
+.kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.kpi-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-300);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+.kpi-value {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, #fff 60%, var(--brand-300));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.kpi-sub {
+  font-size: 11px;
+  color: var(--green-600);
+  font-family: var(--font-mono);
+}
+
+/* ============================================================
+   DIVIDER
+   ============================================================ */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-300), transparent);
+  margin: 0;
+}
+
+/* ============================================================
+   2. PROTOCOL
+   ============================================================ */
+#protocol {
+  background: var(--bg-50);
+}
+.protocol-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-8);
+  align-items: center;
+}
+.protocol-text h2 { color: #fff; margin-bottom: var(--sp-3); }
+.protocol-text p { color: var(--ink-300); line-height: 1.8; margin-bottom: var(--sp-3); }
+.protocol-visual {
+  background: var(--bg-100);
+  border: 1px solid var(--line-200);
+  border-radius: var(--r-xl);
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.stack-layer {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 14px 18px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line-300);
+  transition: border-color 0.2s;
+  cursor: default;
+}
+.stack-layer:hover { border-color: var(--brand-500); }
+.stack-layer--l1 { background: rgba(41,221,245,0.06); }
+.stack-layer--l2 { background: rgba(27,54,95,0.4); }
+.stack-layer--l3 { background: rgba(27,54,95,0.25); }
+.stack-layer--l4 { background: rgba(27,54,95,0.15); }
+.stack-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--brand-300);
+  min-width: 22px;
+}
+.stack-info { flex: 1; }
+.stack-name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+}
+.stack-desc {
+  font-size: 12px;
+  color: var(--ink-300);
+}
+.stack-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 100px;
+  border: 1px solid var(--line-300);
+  color: var(--ink-300);
+  white-space: nowrap;
+}
+.tag--brand {
+  border-color: rgba(41,221,245,0.3);
+  color: var(--brand-300);
+  background: rgba(41,221,245,0.05);
+}
+
+/* ============================================================
+   3. HOW IT WORKS
+   ============================================================ */
+#how-it-works {
+  background: var(--bg-0);
+}
+.steps-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--sp-8);
+}
+.steps-header h2 { color: #fff; margin-bottom: var(--sp-2); }
+.steps-header p { color: var(--ink-300); }
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+  position: relative;
+}
+.steps-grid::before {
+  content: '';
+  position: absolute;
+  top: 28px; left: calc(100% / 14); right: calc(100% / 14);
+  height: 1px;
+  background: linear-gradient(90deg, var(--brand-500), var(--brand-300), var(--soft-300));
+  z-index: 0;
+}
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 8px;
+  position: relative;
+  z-index: 1;
+}
+.step-node {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--bg-100);
+  border: 2px solid var(--line-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--sp-3);
+  transition: all 0.3s;
+  cursor: default;
+  position: relative;
+}
+.step:hover .step-node {
+  border-color: var(--brand-500);
+  background: rgba(41,221,245,0.08);
+  box-shadow: 0 0 20px rgba(41,221,245,0.15);
+}
+.step-num {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--brand-300);
+}
+.step-title {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+  letter-spacing: 0.2px;
+}
+.step-desc {
+  font-size: 11px;
+  color: var(--ink-300);
+  line-height: 1.5;
+}
+.step-arrow {
+  position: absolute;
+  top: 22px; right: -10px;
+  color: var(--brand-300);
+  font-size: 14px;
+  z-index: 2;
+}
+
+/* ============================================================
+   4. ARCHITECTURE
+   ============================================================ */
+#architecture {
+  background: var(--bg-50);
+}
+.arch-header {
+  max-width: 640px;
+  margin-bottom: var(--sp-8);
+}
+.arch-header h2 { color: #fff; margin-bottom: var(--sp-2); }
+.arch-header p { color: var(--ink-300); }
+.arch-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 860px;
+}
+.arch-layer {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 0;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  border: 1px solid var(--line-200);
+}
+.arch-layer-num {
+  background: var(--bg-200);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-3);
+  border-right: 1px solid var(--line-200);
+  gap: 4px;
+}
+.arch-layer-num span:first-child {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.arch-layer-num span:last-child {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--brand-500);
+}
+.arch-layer-body {
+  background: var(--bg-100);
+  padding: var(--sp-3) var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.arch-layer-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+.arch-layer-desc {
+  font-size: 13px;
+  color: var(--ink-300);
+}
+.arch-layer-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ============================================================
+   5. INSTITUTIONAL PILOTS
+   ============================================================ */
+#pilots {
+  background: var(--bg-0);
+}
+.pilots-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto var(--sp-8);
+}
+.pilots-header h2 { color: #fff; margin-bottom: var(--sp-2); }
+.pilots-header p { color: var(--ink-300); }
+.pilots-cta-band {
+  background: linear-gradient(135deg, rgba(41,221,245,0.06), rgba(27,54,95,0.3));
+  border: 1px solid rgba(41,221,245,0.2);
+  border-radius: var(--r-xl);
+  padding: var(--sp-6) var(--sp-8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-8);
+}
+.pilots-cta-text h3 {
+  color: #fff;
+  font-size: 26px;
+  margin-bottom: 8px;
+}
+.pilots-cta-text p { color: var(--ink-300); font-size: 15px; }
+.pilots-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-3);
+}
+.pilot-card {
+  background: var(--bg-100);
+  border: 1px solid var(--line-200);
+  border-radius: var(--r-lg);
+  padding: var(--sp-4);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.pilot-card:hover {
+  border-color: var(--brand-500);
+  transform: translateY(-2px);
+}
+.pilot-sector {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: rgba(41,221,245,0.08);
+  color: var(--brand-300);
+  border: 1px solid rgba(41,221,245,0.2);
+  margin-bottom: var(--sp-2);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+.pilot-card h4 {
+  color: #fff;
+  margin-bottom: 8px;
+}
+.pilot-card p { font-size: 13px; color: var(--ink-300); }
+
+/* Pilot Energy Case */
+.pilot-energy {
+  background: var(--bg-100);
+  border: 1px solid var(--line-200);
+  border-radius: var(--r-xl);
+  padding: var(--sp-5);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-6);
+  margin-top: var(--sp-6);
+}
+.energy-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: var(--sp-4);
+}
+.energy-title h3 { color: #fff; font-size: 18px; }
+.energy-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 100px;
+  background: rgba(30,158,114,0.15);
+  color: var(--green-600);
+  border: 1px solid rgba(30,158,114,0.3);
+}
+.energy-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line-200);
+}
+.energy-row:last-child { border-bottom: none; }
+.energy-label { font-size: 13px; color: var(--ink-300); }
+.energy-val {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: #fff;
+}
+.energy-val--green {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--green-600);
+  font-weight: 600;
+}
+.energy-note {
+  font-size: 11px;
+  color: var(--ink-300);
+  font-style: italic;
+  margin-top: var(--sp-2);
+}
+
+/* ============================================================
+   AUDIT CHIPS
+   ============================================================ */
+.chips-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--chip-bg);
+  border: 1px solid var(--chip-brd);
+  border-radius: var(--r-md);
+  position: relative;
+}
+.chip:hover { border-color: var(--brand-500); }
+.chip-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink-300);
+  min-width: 68px;
+}
+.chip-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--chip-txt);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chip-copy {
+  background: none;
+  border: none;
+  color: var(--ink-300);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--r-sm);
+  font-size: 14px;
+  transition: color 0.2s;
+  line-height: 1;
+}
+.chip-copy:hover { color: var(--brand-500); }
+.chip-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-sm);
+  padding: 8px 12px;
+  font-size: 11px;
+  color: var(--ink-300);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+.chip:hover .chip-tooltip { opacity: 1; }
+
+/* ============================================================
+   6. COMPLIANCE MAPPING
+   ============================================================ */
+#compliance {
+  background: var(--bg-50);
+}
+.compliance-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--sp-8);
+}
+.compliance-header h2 { color: #fff; margin-bottom: var(--sp-2); }
+.compliance-header p { color: var(--ink-300); }
+.compliance-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-3);
+}
+.compliance-card {
+  background: var(--bg-100);
+  border: 1px solid var(--line-200);
+  border-radius: var(--r-lg);
+  padding: var(--sp-4);
+  transition: border-color 0.2s;
+}
+.compliance-card:hover { border-color: var(--soft-300); }
+.compliance-pill {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 100px;
+  border: 1px solid var(--soft-300);
+  color: var(--soft-200);
+  background: rgba(242,212,239,0.05);
+  margin-bottom: var(--sp-2);
+  letter-spacing: 0.5px;
+}
+.compliance-card h4 { color: #fff; margin-bottom: 8px; font-size: 15px; }
+.compliance-card p { font-size: 12px; color: var(--ink-300); line-height: 1.6; }
+.compliance-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: var(--sp-3);
+}
+.compliance-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ink-300);
+}
+.compliance-item::before {
+  content: '→';
+  color: var(--brand-300);
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+}
+
+/* ============================================================
+   7. IMPACT DASHBOARD PREVIEW
+   ============================================================ */
+#impact {
+  background: var(--bg-0);
+}
+.impact-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--sp-8);
+}
+.impact-header h2 { color: #fff; margin-bottom: var(--sp-2); }
+.impact-header p { color: var(--ink-300); }
+.dashboard-preview {
+  background: var(--bg-100);
+  border: 1px solid var(--line-200);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+}
+.dashboard-topbar {
+  background: var(--bg-200);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line-200);
+}
+.dashboard-topbar-dots { display: flex; gap: 6px; }
+.dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+.dot--red { background: #D64545; }
+.dot--amber { background: #B8860B; }
+.dot--green { background: #1E9E72; }
+.dashboard-topbar-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-300);
+}
+.dashboard-topbar-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--green-600);
+}
+.dashboard-topbar-status::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green-600);
+  animation: pulse-dot 2s infinite;
+}
+.dashboard-body {
+  padding: var(--sp-4);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-3);
+}
+.dash-kpi {
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+  padding: var(--sp-3);
+}
+.dash-kpi-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.dash-kpi-val {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--brand-300);
+}
+.dash-kpi-sub { font-size: 11px; color: var(--ink-300); margin-top: 4px; }
+.dashboard-api-note {
+  text-align: center;
+  padding: var(--sp-3) var(--sp-4);
+  border-top: 1px solid var(--line-200);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-300);
+}
+.dashboard-api-note span { color: var(--brand-500); }
+
+/* ============================================================
+   8. COMMUNITY PILOT NODES
+   ============================================================ */
+#community {
+  background: var(--bg-50);
+}
+.community-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--sp-8);
+}
+.community-header h2 { color: #fff; margin-bottom: var(--sp-2); }
+.community-header p { color: var(--ink-300); }
+.community-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-6);
+}
+.community-block {
+  background: var(--bg-100);
+  border: 1px solid var(--line-200);
+  border-radius: var(--r-xl);
+  padding: var(--sp-5);
+}
+.block-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--brand-300);
+  margin-bottom: var(--sp-2);
+}
+.community-block h3 { color: #fff; margin-bottom: var(--sp-2); font-size: 20px; }
+.community-block p { color: var(--ink-300); font-size: 14px; margin-bottom: var(--sp-4); }
+.library-node {
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+  padding: var(--sp-3);
+  margin-bottom: var(--sp-2);
+}
+.library-node-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.node-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--brand-300);
+}
+.node-title { font-size: 13px; color: #fff; font-weight: 600; }
+.genesis-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 2px 8px;
+  background: rgba(41,221,245,0.08);
+  border: 1px solid rgba(41,221,245,0.2);
+  border-radius: 100px;
+  color: var(--brand-300);
+  letter-spacing: 0.5px;
+  margin-left: auto;
+}
+.node-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.action-chip {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: var(--bg-100);
+  border: 1px solid var(--line-300);
+  color: var(--ink-300);
+}
+.ses-note {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--amber-600);
+  margin-top: 8px;
+}
+.pilot-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.form-field label {
+  font-size: 12px;
+  color: var(--ink-300);
+  font-weight: 500;
+}
+.form-field input, .form-field select, .form-field textarea {
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-sm);
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus { border-color: var(--brand-500); }
+.form-field textarea { resize: vertical; min-height: 80px; }
+.form-note {
+  font-size: 11px;
+  color: var(--ink-300);
+  font-style: italic;
+}
+
+/* ============================================================
+   9. TOKEN
+   ============================================================ */
+#token {
+  background: var(--bg-0);
+}
+.token-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-8);
+  align-items: center;
+}
+.token-text h2 { color: #fff; margin-bottom: var(--sp-3); }
+.token-text p { color: var(--ink-300); margin-bottom: var(--sp-3); line-height: 1.8; }
+.token-attrs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.token-attr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg-100);
+  border: 1px solid var(--line-200);
+  border-radius: var(--r-md);
+}
+.token-attr-key { font-size: 13px; color: var(--ink-300); }
+.token-attr-val {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--brand-300);
+}
+
+/* ============================================================
+   10. GOVERNANCE
+   ============================================================ */
+#governance {
+  background: var(--bg-50);
+}
+.gov-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-3);
+  margin-top: var(--sp-6);
+}
+.gov-card {
+  background: var(--bg-100);
+  border: 1px solid var(--line-200);
+  border-radius: var(--r-lg);
+  padding: var(--sp-4);
+}
+.gov-icon {
+  font-size: 24px;
+  margin-bottom: var(--sp-2);
+}
+.gov-card h4 { color: #fff; margin-bottom: 8px; }
+.gov-card p { font-size: 13px; color: var(--ink-300); line-height: 1.6; }
+
+/* ============================================================
+   11. DEVELOPERS
+   ============================================================ */
+#developers {
+  background: var(--bg-0);
+}
+.dev-header {
+  max-width: 640px;
+  margin-bottom: var(--sp-8);
+}
+.dev-header h2 { color: #fff; margin-bottom: var(--sp-2); }
+.dev-header p { color: var(--ink-300); }
+.dev-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: var(--sp-4);
+  border-bottom: 1px solid var(--line-200);
+  padding-bottom: 0;
+}
+.dev-tab {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 8px 16px;
+  border-radius: var(--r-sm) var(--r-sm) 0 0;
+  cursor: pointer;
+  color: var(--ink-300);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.dev-tab.active, .dev-tab:hover {
+  color: var(--brand-500);
+  border-bottom-color: var(--brand-500);
+}
+.code-block {
+  background: var(--bg-100);
+  border: 1px solid var(--line-200);
+  border-radius: 0 var(--r-lg) var(--r-lg) var(--r-lg);
+  padding: var(--sp-4);
+  overflow-x: auto;
+}
+.code-block pre {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: #C8D8F0;
+  white-space: pre;
+}
+.json-key { color: var(--brand-300); }
+.json-str { color: #A8E6CF; }
+.json-num { color: var(--soft-200); }
+.json-bool { color: #FFD580; }
+.dev-schemas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+}
+
+/* ============================================================
+   12. RESOURCES
+   ============================================================ */
+#resources {
+  background: var(--bg-50);
+}
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-3);
+}
+.resource-card {
+  background: var(--bg-100);
+  border: 1px solid var(--line-200);
+  border-radius: var(--r-lg);
+  padding: var(--sp-4);
+  transition: border-color 0.2s, transform 0.2s;
+  text-decoration: none;
+  display: block;
+}
+.resource-card:hover {
+  border-color: var(--brand-500);
+  transform: translateY(-2px);
+}
+.resource-type {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.resource-card h4 { color: #fff; margin-bottom: 8px; font-size: 15px; }
+.resource-card p { font-size: 12px; color: var(--ink-300); }
+.resource-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--brand-500);
+}
+
+/* ============================================================
+   13. CONTACT
+   ============================================================ */
+#contact {
+  background: var(--bg-0);
+}
+.contact-inner {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.contact-inner h2 { color: #fff; margin-bottom: var(--sp-3); }
+.contact-inner p { color: var(--ink-300); margin-bottom: var(--sp-5); }
+.contact-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  background: var(--bg-50);
+  border-top: 1px solid var(--line-200);
+  padding: var(--sp-6) 0;
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+}
+.footer-links {
+  display: flex;
+  gap: var(--sp-3);
+  list-style: none;
+  flex-wrap: wrap;
+}
+.footer-links a {
+  font-size: 12px;
+  color: var(--ink-300);
+}
+.footer-links a:hover { color: var(--brand-500); }
+.footer-copy {
+  font-size: 11px;
+  color: var(--ink-300);
+  font-family: var(--font-mono);
+}
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-inner > * {
+  animation: fadeUp 0.6s ease both;
+}
+.hero-inner > *:nth-child(1) { animation-delay: 0.05s; }
+.hero-inner > *:nth-child(2) { animation-delay: 0.15s; }
+.hero-inner > *:nth-child(3) { animation-delay: 0.25s; }
+.hero-inner > *:nth-child(4) { animation-delay: 0.35s; }
+.hero-inner > *:nth-child(5) { animation-delay: 0.45s; }
+.hero-inner > *:nth-child(6) { animation-delay: 0.55s; }
+
+/* ============================================================
+   CLIMATE INFRASTRUCTURE STACK
+   ============================================================ */
+.climate-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 860px;
+}
+.climate-layer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 16px 24px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line-200);
+}
+.climate-layer--muted {
+  background: var(--bg-100);
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.climate-layer--muted:hover { opacity: 1; }
+.climate-layer--sustain {
+  background: rgba(41,221,245,0.05);
+  border: 2px solid var(--brand-500);
+  box-shadow: 0 0 24px rgba(41,221,245,0.08);
+  opacity: 1;
+}
+.climate-layer-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.2px;
+}
+.climate-layer-items {
+  font-size: 12px;
+  color: var(--ink-300);
+  margin-left: 16px;
+}
+.climate-arrow {
+  text-align: center;
+  color: var(--brand-300);
+  font-size: 16px;
+  padding: 4px 0;
+  width: 100%;
+  display: block;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .protocol-grid, .token-grid, .community-grid, .pilot-energy { grid-template-columns: 1fr; }
+  .pilots-grid, .compliance-grid, .gov-grid, .resources-grid { grid-template-columns: 1fr 1fr; }
+  .dev-schemas { grid-template-columns: 1fr; }
+  .steps-grid { grid-template-columns: repeat(4, 1fr); gap: var(--sp-3); }
+  .steps-grid::before { display: none; }
+  .arch-layer { grid-template-columns: 80px 1fr; }
+  .nav-links { display: none; }
+  .pilots-cta-band { flex-direction: column; text-align: center; }
+  .dashboard-body { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  h1 { font-size: 32px; }
+  h2 { font-size: 26px; }
+  .steps-grid { grid-template-columns: repeat(2, 1fr); }
+  .pilots-grid, .compliance-grid, .gov-grid, .resources-grid { grid-template-columns: 1fr; }
+  .hero-counters { flex-direction: column; gap: var(--sp-4); }
+  .dashboard-body { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<nav role="navigation" aria-label="Primary navigation">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo" aria-label="SustainToken home">
+      <span class="nav-logo-dot" aria-hidden="true"></span>
+      SustainToken
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="#protocol">Protocol</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#pilots">Pilots</a></li>
+      <li><a href="#compliance">Compliance</a></li>
+      <li><a href="#developers">Developers</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="lang-switch" onclick="toggleLang()" aria-label="Switch language" id="langBtn">ES</button>
+      <a href="#pilots" class="btn btn--primary" style="padding:8px 16px; font-size:13px;">Apply for Pilot</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ============================================================
+     1. HERO
+     ============================================================ -->
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="container">
+    <div class="hero-inner">
+
+      <div class="hero-badge" role="status">
+        <span class="hero-badge-dot" aria-hidden="true"></span>
+        <span data-en="Protocol v1 · BSC Mainnet · Whitepaper v3"
+              data-es="Protocolo v1 · BSC Mainnet · Whitepaper v3">
+          Protocol v1 · BSC Mainnet · Whitepaper v3
+        </span>
+      </div>
+
+      <h1 id="hero-heading">
+        <span class="h1-muted"
+              data-en="Environmental Impact Infrastructure for"
+              data-es="Infraestructura de Impacto Ambiental para">
+          Environmental Impact Infrastructure for
+        </span>
+        <span class="h1-accent"
+              data-en="Verifiable Sustainability."
+              data-es="Sostenibilidad Verificable.">Verifiable Sustainability.</span>
+      </h1>
+
+      <p class="hero-sub"
+         data-en="On-chain MRV, IPFS evidence anchoring, and SES-ready reporting. Every environmental action — hashed, stored, and auditable."
+         data-es="MRV on-chain, anclaje de evidencia en IPFS y reportes listos para SES. Cada acción ambiental — hasheada, almacenada y auditable.">
+        On-chain MRV, IPFS evidence anchoring, and SES-ready reporting. Every environmental action — hashed, stored, and auditable.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#protocol" class="btn btn--primary btn--large"
+           data-en="Explore the Protocol"
+           data-es="Explorar el Protocolo">Explore the Protocol</a>
+        <a href="#pilots" class="btn btn--ghost btn--large"
+           data-en="Institutional Pilot Program"
+           data-es="Piloto Institucional">Institutional Pilot Program</a>
+        <a href="https://ipfs.io/ipfs/bafkreiemzyaj2cmifulavbypzr24dct2hdaxer7mk23gg57vynsoj7yjbq" target="_blank" rel="noopener" class="btn btn--ghost btn--large"
+           data-en="Read Whitepaper ↗"
+           data-es="Leer Whitepaper ↗">Read Whitepaper ↗</a>
+      </div>
+
+      <div class="hero-trust" role="list">
+        <div class="trust-item" role="listitem">
+          <svg class="trust-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1L10 6H15L11 9.5L12.5 14.5L8 11.5L3.5 14.5L5 9.5L1 6H6L8 1Z" fill="currentColor"/></svg>
+          <span data-en="GHG Protocol Aligned" data-es="Alineado GHG Protocol">GHG Protocol Aligned</span>
+        </div>
+        <div class="trust-sep" aria-hidden="true"></div>
+        <div class="trust-item" role="listitem">
+          <svg class="trust-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="2" fill="currentColor" opacity="0.6"/><path d="M5 8h6M8 5v6" stroke="white" stroke-width="1.5"/></svg>
+          <span data-en="ISSB / CSRD Ready" data-es="Listo para ISSB / CSRD">ISSB / CSRD Ready</span>
+        </div>
+        <div class="trust-sep" aria-hidden="true"></div>
+        <div class="trust-item" role="listitem">
+          <svg class="trust-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 8L7 9.5L10.5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span data-en="ISO 14064 Compatible" data-es="Compatible ISO 14064">ISO 14064 Compatible</span>
+        </div>
+        <div class="trust-sep" aria-hidden="true"></div>
+        <div class="trust-item" role="listitem">
+          <span data-en="Anti-Greenwashing by Design" data-es="Anti-Greenwashing por Diseño">Anti-Greenwashing by Design</span>
+        </div>
+      </div>
+
+      <div class="hero-counters" role="region" aria-label="Protocol statistics">
+        <div class="kpi">
+          <div class="kpi-label" data-en="Environmental Actions Verified" data-es="Acciones Ambientales Verificadas">Environmental Actions Verified</div>
+          <div class="kpi-value" id="counter1" aria-live="polite">000320</div>
+          <div class="kpi-sub" data-en="↑ API-ready · v1 static" data-es="↑ API-ready · v1 estático">↑ API-ready · v1 static</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label" data-en="Impact Ledger Records" data-es="Registros en Impact Ledger">Impact Ledger Records</div>
+          <div class="kpi-value" id="counter2" aria-live="polite">000320</div>
+          <div class="kpi-sub" data-en="↑ BSC · IPFS anchored" data-es="↑ BSC · Anclado en IPFS">↑ BSC · IPFS anchored</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     2. PROTOCOL
+     ============================================================ -->
+<section id="protocol" aria-labelledby="protocol-heading">
+  <div class="container">
+    <div class="protocol-grid">
+
+      <div class="protocol-text">
+        <div class="section-label" data-en="02 · Protocol" data-es="02 · Protocolo">02 · Protocol</div>
+        <h2 id="protocol-heading">
+          <span data-en="Verifiable by Design." data-es="Verificable por Diseño.">Verifiable by Design.</span>
+        </h2>
+        <p data-en="SustainToken is environmental impact infrastructure — not a carbon credit marketplace. We provide the cryptographic primitives and on-chain registry for organizations to record, hash, and anchor sustainability actions with institutional-grade evidence."
+           data-es="SustainToken es infraestructura de impacto ambiental — no un marketplace de créditos de carbono. Proveemos las primitivas criptográficas y el registro on-chain para que organizaciones registren, hasheen y anclen acciones de sostenibilidad con evidencia de grado institucional.">
+          SustainToken is environmental impact infrastructure — not a carbon credit marketplace. We provide the cryptographic primitives and on-chain registry for organizations to record, hash, and anchor sustainability actions with institutional-grade evidence.
+        </p>
+        <p data-en="Every action produces a SHA-256 fingerprint of its evidence file, a Content ID pinned to IPFS, and an immutable transaction hash on BSC — making greenwashing detectable and sustainability claims independently verifiable."
+           data-es="Cada acción produce una huella SHA-256 de su archivo de evidencia, un Content ID anclado en IPFS y un hash de transacción inmutable en BSC — haciendo el greenwashing detectable y las afirmaciones de sostenibilidad verificables de forma independiente.">
+          Every action produces a SHA-256 fingerprint of its evidence file, a Content ID pinned to IPFS, and an immutable transaction hash on BSC — making greenwashing detectable and sustainability claims independently verifiable.
+        </p>
+        <a href="#how-it-works" class="btn btn--ghost"
+           data-en="See how it works →"
+           data-es="Ver cómo funciona →">See how it works →</a>
+      </div>
+
+      <div class="protocol-visual" aria-label="Protocol stack layers">
+        <div class="stack-layer stack-layer--l1" role="listitem">
+          <span class="stack-num">L4</span>
+          <div class="stack-info">
+            <div class="stack-name" data-en="Reporting & Compliance" data-es="Reportes y Cumplimiento">Reporting & Compliance</div>
+            <div class="stack-desc" data-en="SES, MRV, GHG, ISSB/CSRD dashboards" data-es="SES, MRV, GHG, dashboards ISSB/CSRD">SES, MRV, GHG, ISSB/CSRD dashboards</div>
+          </div>
+          <div class="stack-tags">
+            <span class="tag tag--brand">MRV</span>
+            <span class="tag tag--brand">SES</span>
+          </div>
+        </div>
+        <div class="stack-layer stack-layer--l2">
+          <span class="stack-num">L3</span>
+          <div class="stack-info">
+            <div class="stack-name" data-en="On-chain Registry" data-es="Registro On-chain">On-chain Registry</div>
+            <div class="stack-desc" data-en="BSC smart contract · TxHash · Immutable log" data-es="Contrato BSC · TxHash · Log inmutable">BSC smart contract · TxHash · Immutable log</div>
+          </div>
+          <div class="stack-tags">
+            <span class="tag">BSC</span>
+            <span class="tag">EVM</span>
+          </div>
+        </div>
+        <div class="stack-layer stack-layer--l3">
+          <span class="stack-num">L2</span>
+          <div class="stack-info">
+            <div class="stack-name" data-en="Evidence Storage" data-es="Almacenamiento de Evidencia">Evidence Storage</div>
+            <div class="stack-desc" data-en="IPFS · Content ID · Decentralized pinning" data-es="IPFS · Content ID · Pinning descentralizado">IPFS · Content ID · Decentralized pinning</div>
+          </div>
+          <div class="stack-tags">
+            <span class="tag">IPFS</span>
+            <span class="tag">CID</span>
+          </div>
+        </div>
+        <div class="stack-layer stack-layer--l4">
+          <span class="stack-num">L1</span>
+          <div class="stack-info">
+            <div class="stack-name" data-en="Action & Hashing" data-es="Acción y Hashing">Action & Hashing</div>
+            <div class="stack-desc" data-en="SHA-256 · Evidence file · Organization node" data-es="SHA-256 · Archivo de evidencia · Nodo organización">SHA-256 · Evidence file · Organization node</div>
+          </div>
+          <div class="stack-tags">
+            <span class="tag">SHA-256</span>
+            <span class="tag">Org Node</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     3. HOW IT WORKS
+     ============================================================ -->
+<section id="how-it-works" aria-labelledby="hiw-heading">
+  <div class="container">
+    <div class="steps-header">
+      <div class="section-label" data-en="03 · How It Works" data-es="03 · Cómo Funciona">03 · How It Works</div>
+      <h2 id="hiw-heading" data-en="Seven Steps. One Verifiable Record." data-es="Siete Pasos. Un Registro Verificable.">
+        Seven Steps. One Verifiable Record.
+      </h2>
+      <p data-en="From action to on-chain evidence — a deterministic, auditable trail with no trusted intermediary."
+         data-es="De la acción a la evidencia on-chain — un rastro determinístico y auditable sin intermediarios de confianza.">
+        From action to on-chain evidence — a deterministic, auditable trail with no trusted intermediary.
+      </p>
+    </div>
+
+    <div class="steps-grid" role="list" aria-label="Protocol steps">
+
+      <div class="step" role="listitem">
+        <div class="step-node" aria-hidden="true"><span class="step-num">01</span></div>
+        <div class="step-title" data-en="Action" data-es="Acción">Action</div>
+        <div class="step-desc" data-en="Org records a sustainability action with metadata"
+             data-es="La org registra una acción de sostenibilidad con metadatos">Org records a sustainability action with metadata</div>
+      </div>
+
+      <div class="step" role="listitem">
+        <div class="step-node" aria-hidden="true"><span class="step-num">02</span></div>
+        <div class="step-title" data-en="Evidence" data-es="Evidencia">Evidence</div>
+        <div class="step-desc" data-en="Evidence file attached (PDF, CSV, sensor data)"
+             data-es="Archivo de evidencia adjunto (PDF, CSV, datos sensor)">Evidence file attached (PDF, CSV, sensor data)</div>
+      </div>
+
+      <div class="step" role="listitem">
+        <div class="step-node" aria-hidden="true"><span class="step-num">03</span></div>
+        <div class="step-title" data-en="Hash" data-es="Hash">Hash</div>
+        <div class="step-desc" data-en="SHA-256 fingerprint generated client-side"
+             data-es="Huella SHA-256 generada en el cliente">SHA-256 fingerprint generated client-side</div>
+      </div>
+
+      <div class="step" role="listitem">
+        <div class="step-node" aria-hidden="true"><span class="step-num">04</span></div>
+        <div class="step-title" data-en="IPFS" data-es="IPFS">IPFS</div>
+        <div class="step-desc" data-en="File pinned to IPFS; Content ID returned"
+             data-es="Archivo anclado en IPFS; se obtiene el Content ID">File pinned to IPFS; Content ID returned</div>
+      </div>
+
+      <div class="step" role="listitem">
+        <div class="step-node" aria-hidden="true"><span class="step-num">05</span></div>
+        <div class="step-title" data-en="On-chain" data-es="On-chain">On-chain</div>
+        <div class="step-desc" data-en="Hash + CID written to BSC smart contract"
+             data-es="Hash + CID escritos en contrato BSC">Hash + CID written to BSC smart contract</div>
+      </div>
+
+      <div class="step" role="listitem">
+        <div class="step-node" aria-hidden="true"><span class="step-num">06</span></div>
+        <div class="step-title" data-en="MRV" data-es="MRV">MRV</div>
+        <div class="step-desc" data-en="Measurement, Reporting & Verification metadata structured"
+             data-es="Metadatos MRV estructurados para reporte">Measurement, Reporting &amp; Verification metadata structured</div>
+      </div>
+
+      <div class="step" role="listitem">
+        <div class="step-node" aria-hidden="true"><span class="step-num">07</span></div>
+        <div class="step-title" data-en="SES" data-es="SES">SES</div>
+        <div class="step-desc" data-en="Sustainability Evidence Score ready for reporting"
+             data-es="Sustainability Evidence Score listo para reportes">Sustainability Evidence Score ready for reporting</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     4. ARCHITECTURE
+     ============================================================ -->
+<section id="architecture" aria-labelledby="arch-heading">
+  <div class="container">
+    <div class="arch-header">
+      <div class="section-label" data-en="04 · Architecture" data-es="04 · Arquitectura">04 · Architecture</div>
+      <h2 id="arch-heading" data-en="Protocol Stack — 4 Layers" data-es="Stack del Protocolo — 4 Capas">Protocol Stack — 4 Layers</h2>
+      <p data-en="A modular infrastructure stack designed for verifiability, interoperability, and institutional-grade auditability."
+         data-es="Un stack de infraestructura modular diseñado para verificabilidad, interoperabilidad y auditabilidad de grado institucional.">
+        A modular infrastructure stack designed for verifiability, interoperability, and institutional-grade auditability.
+      </p>
+    </div>
+
+    <div class="arch-stack" role="list">
+
+      <div class="arch-layer" role="listitem">
+        <div class="arch-layer-num">
+          <span data-en="Layer" data-es="Capa">Layer</span>
+          <span>04</span>
+        </div>
+        <div class="arch-layer-body">
+          <div class="arch-layer-title" data-en="Application Layer" data-es="Capa de Aplicación">Application Layer</div>
+          <div class="arch-layer-desc" data-en="Web Dashboard · Mobile · APIs · Utilities · Corporates · Municipalities"
+               data-es="Web Dashboard · Mobile · APIs · Utilities · Corporativos · Municipios">
+            Web Dashboard · Mobile · APIs · Utilities · Corporates · Municipalities
+          </div>
+          <div class="arch-layer-tags">
+            <span class="tag tag--brand">Dashboard</span>
+            <span class="tag tag--brand">APIs</span>
+            <span class="tag">Mobile</span>
+            <span class="tag">v2 roadmap</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-layer" role="listitem">
+        <div class="arch-layer-num">
+          <span data-en="Layer" data-es="Capa">Layer</span>
+          <span>03</span>
+        </div>
+        <div class="arch-layer-body">
+          <div class="arch-layer-title" data-en="Impact Verification Layer" data-es="Capa de Verificación de Impacto">Impact Verification Layer</div>
+          <div class="arch-layer-desc" data-en="Sustain Action Standard (SAS) · MRV Rules &amp; Validation · SES — Environmental Score · Anti-Greenwashing Checks"
+               data-es="Sustain Action Standard (SAS) · Reglas MRV y Validación · SES — Environmental Score · Controles Anti-Greenwashing">
+            Sustain Action Standard (SAS) · MRV Rules &amp; Validation · SES — Environmental Score · Anti-Greenwashing Checks
+          </div>
+          <div class="arch-layer-tags">
+            <span class="tag tag--brand">SAS</span>
+            <span class="tag tag--brand">MRV</span>
+            <span class="tag tag--brand">SES</span>
+            <span class="tag">Anti-Greenwashing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-layer" role="listitem">
+        <div class="arch-layer-num">
+          <span data-en="Layer" data-es="Capa">Layer</span>
+          <span>02</span>
+        </div>
+        <div class="arch-layer-body">
+          <div class="arch-layer-title" data-en="Impact Ledger Layer" data-es="Capa Impact Ledger">Impact Ledger Layer</div>
+          <div class="arch-layer-desc" data-en="On-chain Registration · Smart Contracts · Audit Trail · On-chain Anchors · BSC Mainnet · Sustain Doc Hub"
+               data-es="Registro On-chain · Smart Contracts · Audit Trail · Anclajes On-chain · BSC Mainnet · Sustain Doc Hub">
+            On-chain Registration · Smart Contracts · Audit Trail · On-chain Anchors · BSC Mainnet
+          </div>
+          <div class="arch-layer-tags">
+            <span class="tag">BSC</span>
+            <span class="tag">EVM</span>
+            <span class="tag">TxHash</span>
+            <span class="tag">BscScan</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-layer" role="listitem">
+        <div class="arch-layer-num">
+          <span data-en="Layer" data-es="Capa">Layer</span>
+          <span>01</span>
+        </div>
+        <div class="arch-layer-body">
+          <div class="arch-layer-title" data-en="Evidence Data Layer" data-es="Capa de Datos de Evidencia">Evidence Data Layer</div>
+          <div class="arch-layer-desc" data-en="Evidence Capture · Cryptographic Hash (SHA-256) · Decentralized Storage (IPFS CID) · No PII in public layer"
+               data-es="Captura de Evidencia · Hash Criptográfico (SHA-256) · Almacenamiento Descentralizado (IPFS CID) · Sin PII en capa pública">
+            Evidence Capture · Cryptographic Hash (SHA-256) · Decentralized Storage (IPFS CID)
+          </div>
+          <div class="arch-layer-tags">
+            <span class="tag">SHA-256</span>
+            <span class="tag">IPFS CID</span>
+            <span class="tag">No PII</span>
+            <span class="tag">Client-side</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Climate Infrastructure Stack — vPro (Sustain Emphasis) -->
+    <div style="margin-top:var(--sp-10);">
+      <div class="section-label" style="margin-bottom:var(--sp-3);"
+           data-en="Sustain in the Climate Stack"
+           data-es="Sustain en el Stack Climático">Sustain in the Climate Stack</div>
+      <p style="color:var(--ink-300); max-width:600px; margin-bottom:var(--sp-6); font-size:14px;"
+         data-en="Where Sustain sits in the global climate infrastructure — the data and verification layer between accounting standards and markets."
+         data-es="Dónde se ubica Sustain en la infraestructura climática global — la capa de datos y verificación entre los estándares contables y los mercados.">
+        Where Sustain sits in the global climate infrastructure — the data and verification layer between accounting standards and markets.
+      </p>
+
+      <div class="climate-stack" role="list" aria-label="Climate Infrastructure Stack">
+
+        <div class="climate-layer climate-layer--muted" role="listitem">
+          <span class="climate-layer-title" data-en="Policy / Regulation" data-es="Política / Regulación">Policy / Regulation</span>
+          <span class="climate-layer-items">EU Taxonomy · Paris Agreement · ETS</span>
+        </div>
+        <div class="climate-arrow" aria-hidden="true">↓</div>
+
+        <div class="climate-layer climate-layer--muted" role="listitem">
+          <span class="climate-layer-title" data-en="Accounting Standards" data-es="Estándares Contables">Accounting Standards</span>
+          <span class="climate-layer-items">GHG Protocol · ISSB/IFRS S2 · CSRD</span>
+        </div>
+        <div class="climate-arrow" aria-hidden="true">↓</div>
+
+        <div class="climate-layer climate-layer--sustain" role="listitem" aria-label="Sustain Protocol — Data and Verification Layer">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+            <div>
+              <div class="climate-layer-title">
+                <span data-en="Data &amp; Verification Layer" data-es="Capa de Datos y Verificación">Data &amp; Verification Layer</span>
+                <span style="color:var(--brand-500); margin-left:8px;">— Sustain Protocol</span>
+              </div>
+              <div class="climate-layer-items" style="color:var(--brand-300); margin-top:6px; font-family:var(--font-mono);">
+                Evidence → Hash → IPFS → On-chain Anchors → MRV → SES
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="width:8px; height:8px; border-radius:50%; background:var(--brand-500); display:inline-block; box-shadow:0 0 8px var(--brand-500);"></span>
+              <span style="font-family:var(--font-mono); font-size:11px; color:var(--brand-500); letter-spacing:1px;"
+                    data-en="YOU ARE HERE" data-es="AQUÍ ESTAMOS">YOU ARE HERE</span>
+            </div>
+          </div>
+        </div>
+        <div class="climate-arrow" aria-hidden="true">↓</div>
+
+        <div class="climate-layer climate-layer--muted" role="listitem">
+          <span class="climate-layer-title" data-en="Markets / Finance" data-es="Mercados / Finanzas">Markets / Finance</span>
+          <span class="climate-layer-items" data-en="Credits · Green Bonds · Climate Finance" data-es="Créditos · Bonos Verdes · Finanzas Climáticas">Credits · Green Bonds · Climate Finance</span>
+        </div>
+        <div class="climate-arrow" aria-hidden="true">↓</div>
+
+        <div class="climate-layer climate-layer--muted" role="listitem">
+          <span class="climate-layer-title" data-en="Applications" data-es="Aplicaciones">Applications</span>
+          <span class="climate-layer-items" data-en="ESG Platforms · Corporate Dashboards · City Programs" data-es="Plataformas ESG · Dashboards Corporativos · Programas Municipales">ESG Platforms · Corporate Dashboards · City Programs</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     5. INSTITUTIONAL PILOTS
+     ============================================================ -->
+<section id="pilots" aria-labelledby="pilots-heading">
+  <div class="container">
+
+    <div class="pilots-header">
+      <div class="section-label" data-en="05 · Institutional Pilots" data-es="05 · Pilotos Institucionales">05 · Institutional Pilots</div>
+      <h2 id="pilots-heading" data-en="Prove Sustainability. Verifiably."
+          data-es="Prueba Sostenibilidad. De Forma Verificable.">Prove Sustainability. Verifiably.</h2>
+      <p data-en="Run a structured 90-day pilot with on-chain evidence from day one. No greenwashing. No trust required."
+         data-es="Ejecutá un piloto estructurado de 90 días con evidencia on-chain desde el primer día. Sin greenwashing. Sin requerir confianza.">
+        Run a structured 90-day pilot with on-chain evidence from day one. No greenwashing. No trust required.
+      </p>
+    </div>
+
+    <div class="pilots-cta-band" role="region" aria-labelledby="pilot-cta-title">
+      <div class="pilots-cta-text">
+        <h3 id="pilot-cta-title"
+            data-en="Run a verifiable sustainability pilot in 90 days."
+            data-es="Ejecutá un piloto de sostenibilidad verificable en 90 días.">
+          Run a verifiable sustainability pilot in 90 days.
+        </h3>
+        <p data-en="Organizations, municipalities, and enterprises. No pre-existing infrastructure required."
+           data-es="Organizaciones, municipios y empresas. Sin infraestructura previa requerida.">
+          Organizations, municipalities, and enterprises. No pre-existing infrastructure required.
+        </p>
+      </div>
+      <a href="#contact" class="btn btn--primary btn--large"
+         data-en="Apply for Pilot →"
+         data-es="Aplicar al Piloto →">Apply for Pilot →</a>
+    </div>
+
+    <div class="pilots-grid" role="list">
+
+      <article class="pilot-card" role="listitem">
+        <div class="pilot-sector" data-en="ENERGY" data-es="ENERGÍA">ENERGY</div>
+        <h4 data-en="Energy Consumption Reduction" data-es="Reducción de Consumo Energético">Energy Consumption Reduction</h4>
+        <p data-en="Monitor kWh/day normalized reduction against a verified baseline. Evidence: utility bills, sensor data."
+           data-es="Monitorear reducción normalizada de kWh/día contra una línea base verificada. Evidencia: facturas, datos de sensores.">
+          Monitor kWh/day normalized reduction against a verified baseline. Evidence: utility bills, sensor data.
+        </p>
+      </article>
+
+      <article class="pilot-card" role="listitem">
+        <div class="pilot-sector" data-en="WASTE" data-es="RESIDUOS">WASTE</div>
+        <h4 data-en="Waste Reduction & Diversion" data-es="Reducción y Desvío de Residuos">Waste Reduction & Diversion</h4>
+        <p data-en="Document waste diversion rates with certified weighing reports and photographic evidence."
+           data-es="Documentar tasas de desvío de residuos con reportes de pesaje certificados y evidencia fotográfica.">
+          Document waste diversion rates with certified weighing reports and photographic evidence.
+        </p>
+      </article>
+
+      <article class="pilot-card" role="listitem">
+        <div class="pilot-sector" data-en="MOBILITY" data-es="MOVILIDAD">MOBILITY</div>
+        <h4 data-en="Fleet Emissions Monitoring" data-es="Monitoreo de Emisiones de Flota">Fleet Emissions Monitoring</h4>
+        <p data-en="Track fuel consumption and compute Scope 1 emissions per km, anchored with fuel receipts."
+           data-es="Rastrear consumo de combustible y calcular emisiones Scope 1 por km, ancladas con comprobantes.">
+          Track fuel consumption and compute Scope 1 emissions per km, anchored with fuel receipts.
+        </p>
+      </article>
+
+    </div>
+
+    <!-- Pilot Energy Case -->
+    <div class="pilot-energy" role="region" aria-labelledby="energy-case-title">
+      <div>
+        <div class="energy-title">
+          <h3 id="energy-case-title" data-en="Genesis Pilot · Energy" data-es="Piloto Génesis · Energía">Genesis Pilot · Energy</h3>
+          <span class="energy-badge" data-en="VERIFIED" data-es="VERIFICADO">VERIFIED</span>
+        </div>
+        <div>
+          <div class="energy-row">
+            <span class="energy-label" data-en="Baseline (Bill #1)" data-es="Línea base (Factura #1)">Baseline (Bill #1)</span>
+            <span class="energy-val">308 kWh / 31 d = 9.9355 kWh/d</span>
+          </div>
+          <div class="energy-row">
+            <span class="energy-label" data-en="Measurement (Bill #2)" data-es="Medición (Factura #2)">Measurement (Bill #2)</span>
+            <span class="energy-val">311 kWh / 35 d = 8.8857 kWh/d</span>
+          </div>
+          <div class="energy-row">
+            <span class="energy-label" data-en="Normalized Reduction" data-es="Reducción Normalizada">Normalized Reduction</span>
+            <span class="energy-val--green">−10.57%</span>
+          </div>
+        </div>
+        <p class="energy-note"
+           data-en="kWh/day normalization removes billing period bias. Methodology: (baseline_rate − measure_rate) / baseline_rate."
+           data-es="La normalización kWh/día elimina el sesgo del período de facturación. Metodología: (tasa_base − tasa_medición) / tasa_base.">
+          kWh/day normalization removes billing period bias. Methodology: (baseline_rate − measure_rate) / baseline_rate.
+        </p>
+      </div>
+
+      <div>
+        <div class="section-label" style="margin-bottom:16px;"
+             data-en="Audit Trail" data-es="Rastro de Auditoría">Audit Trail</div>
+        <div class="chips-stack">
+          <div class="chip" role="group" aria-label="SHA-256 hash">
+            <span class="chip-label">SHA-256</span>
+            <code class="chip-value">26da15d5d0f3c8a1b4e7f2d9…ab5e</code>
+            <button class="chip-copy" onclick="copyChip(this, '26da15d5d0f3c8a1b4e7f2d9ab5e')" aria-label="Copy SHA-256 hash">⧉</button>
+            <div class="chip-tooltip" role="tooltip"
+                 data-en="Cryptographic fingerprint of the evidence file. Any modification changes this hash."
+                 data-es="Huella criptográfica del archivo de evidencia. Cualquier modificación cambia este hash.">
+              Cryptographic fingerprint of the evidence file. Any modification changes this hash.
+            </div>
+          </div>
+          <div class="chip" role="group" aria-label="IPFS Content ID">
+            <span class="chip-label">IPFS CID</span>
+            <code class="chip-value">bafybeig3z7qkx4p2r8m…e9xt</code>
+            <button class="chip-copy" onclick="copyChip(this, 'bafybeig3z7qkx4p2r8me9xt')" aria-label="Copy IPFS Content ID">⧉</button>
+            <div class="chip-tooltip" role="tooltip"
+                 data-en="Content-addressed identifier on IPFS. No PII exposed in public layer."
+                 data-es="Identificador de contenido en IPFS. Sin PII expuesto en la capa pública.">
+              Content-addressed identifier on IPFS. No PII exposed in public layer.
+            </div>
+          </div>
+          <div class="chip" role="group" aria-label="BSC Transaction Hash">
+            <span class="chip-label">TxHash</span>
+            <code class="chip-value">0x4a7c3f2e1d8b…9f1a</code>
+            <button class="chip-copy" onclick="copyChip(this, '0x4a7c3f2e1d8b9f1a')" aria-label="Copy transaction hash">⧉</button>
+            <div class="chip-tooltip" role="tooltip"
+                 data-en="Immutable on-chain record on BSC. Publicly auditable via BscScan."
+                 data-es="Registro on-chain inmutable en BSC. Auditable públicamente via BscScan.">
+              Immutable on-chain record on BSC. Publicly auditable via BscScan.
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:16px; display:flex; gap:8px; flex-wrap:wrap;">
+          <a href="https://bscscan.com/address/0x837C9dFA3342139bc5892c77fc5EadA4D9522CE8#events" target="_blank" rel="noopener" class="btn btn--ghost" style="font-size:12px; padding:8px 14px;"
+             data-en="View on BscScan ↗" data-es="Ver en BscScan ↗">View on BscScan ↗</a>
+          <a href="https://ipfs.io/ipfs/bafkreiemzyaj2cmifulavbypzr24dct2hdaxer7mk23gg57vynsoj7yjbq" target="_blank" rel="noopener" class="btn btn--ghost" style="font-size:12px; padding:8px 14px;"
+             data-en="Whitepaper IPFS ↗" data-es="Whitepaper IPFS ↗">Whitepaper IPFS ↗</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     6. COMPLIANCE MAPPING
+     ============================================================ -->
+<section id="compliance" aria-labelledby="compliance-heading">
+  <div class="container">
+    <div class="compliance-header">
+      <div class="section-label" data-en="06 · Compliance Mapping" data-es="06 · Mapeo de Cumplimiento">06 · Compliance Mapping</div>
+      <h2 id="compliance-heading" data-en="Built for Every Framework." data-es="Construido para Cada Marco.">Built for Every Framework.</h2>
+      <p data-en="SustainToken's data structure is designed to map directly to major sustainability reporting frameworks — no extra conversion layer required."
+         data-es="La estructura de datos de SustainToken está diseñada para mapear directamente a los principales marcos de reporte de sostenibilidad — sin capa de conversión adicional.">
+        SustainToken's data structure is designed to map directly to major sustainability reporting frameworks — no extra conversion layer required.
+      </p>
+    </div>
+
+    <div class="compliance-grid" role="list">
+
+      <div class="compliance-card" role="listitem">
+        <div class="compliance-pill">GHG PROTOCOL</div>
+        <h4 data-en="GHG Protocol" data-es="Protocolo GHG">GHG Protocol</h4>
+        <p data-en="Scope 1, 2, 3 emission categories mapped to action types."
+           data-es="Categorías de emisión Scope 1, 2, 3 mapeadas a tipos de acción.">
+          Scope 1, 2, 3 emission categories mapped to action types.
+        </p>
+        <div class="compliance-items">
+          <div class="compliance-item" data-en="Direct emissions (S1) actionable" data-es="Emisiones directas (S1) accionables">Direct emissions (S1) actionable</div>
+          <div class="compliance-item" data-en="Energy indirect (S2) tracked" data-es="Indirecto energético (S2) rastreado">Energy indirect (S2) tracked</div>
+          <div class="compliance-item" data-en="Value chain (S3) extensible" data-es="Cadena de valor (S3) extensible">Value chain (S3) extensible</div>
+        </div>
+      </div>
+
+      <div class="compliance-card" role="listitem">
+        <div class="compliance-pill">ISSB / IFRS S2</div>
+        <h4 data-en="ISSB Standards" data-es="Estándares ISSB">ISSB Standards</h4>
+        <p data-en="Climate-related disclosures aligned with IFRS S1/S2 structure."
+           data-es="Divulgaciones relacionadas con el clima alineadas con la estructura IFRS S1/S2.">
+          Climate-related disclosures aligned with IFRS S1/S2 structure.
+        </p>
+        <div class="compliance-items">
+          <div class="compliance-item" data-en="Strategy & risk fields" data-es="Campos de estrategia y riesgo">Strategy & risk fields</div>
+          <div class="compliance-item" data-en="Quantitative metrics export" data-es="Exportación de métricas cuantitativas">Quantitative metrics export</div>
+          <div class="compliance-item" data-en="Transition plan linkage" data-es="Vinculación a plan de transición">Transition plan linkage</div>
+        </div>
+      </div>
+
+      <div class="compliance-card" role="listitem">
+        <div class="compliance-pill">CSRD / ESRS</div>
+        <h4 data-en="EU CSRD" data-es="EU CSRD">EU CSRD</h4>
+        <p data-en="European Sustainability Reporting Standards mapping for EU-regulated entities."
+           data-es="Mapeo de Estándares Europeos de Reporte de Sostenibilidad para entidades reguladas en la UE.">
+          European Sustainability Reporting Standards mapping for EU-regulated entities.
+        </p>
+        <div class="compliance-items">
+          <div class="compliance-item" data-en="ESRS E1 climate mapping" data-es="Mapeo ESRS E1 clima">ESRS E1 climate mapping</div>
+          <div class="compliance-item" data-en="Double materiality hooks" data-es="Hooks de doble materialidad">Double materiality hooks</div>
+          <div class="compliance-item" data-en="Audit-ready evidence trail" data-es="Rastro de evidencia listo para auditoría">Audit-ready evidence trail</div>
+        </div>
+      </div>
+
+      <div class="compliance-card" role="listitem">
+        <div class="compliance-pill">ISO 14064</div>
+        <h4 data-en="ISO 14064" data-es="ISO 14064">ISO 14064</h4>
+        <p data-en="Greenhouse gas quantification and verification standard compliance."
+           data-es="Cumplimiento del estándar de cuantificación y verificación de GEI.">
+          Greenhouse gas quantification and verification standard compliance.
+        </p>
+        <div class="compliance-items">
+          <div class="compliance-item" data-en="Quantification methodology" data-es="Metodología de cuantificación">Quantification methodology</div>
+          <div class="compliance-item" data-en="Verification audit trail" data-es="Rastro de auditoría de verificación">Verification audit trail</div>
+          <div class="compliance-item" data-en="Third-party verifiable" data-es="Verificable por terceros">Third-party verifiable</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     7. IMPACT DASHBOARD PREVIEW
+     ============================================================ -->
+<section id="impact" aria-labelledby="impact-heading">
+  <div class="container">
+    <div class="impact-header">
+      <div class="section-label" data-en="07 · Impact Dashboard" data-es="07 · Dashboard de Impacto">07 · Impact Dashboard</div>
+      <h2 id="impact-heading" data-en="Real-Time Impact. Preview." data-es="Impacto en Tiempo Real. Preview.">Real-Time Impact. Preview.</h2>
+      <p data-en="Static in v1 — API-ready for live data in v2. Every metric backed by on-chain records."
+         data-es="Estático en v1 — API-ready para datos en vivo en v2. Cada métrica respaldada por registros on-chain.">
+        Static in v1 — API-ready for live data in v2. Every metric backed by on-chain records.
+      </p>
+    </div>
+
+    <div class="dashboard-preview" role="region" aria-label="Impact dashboard">
+      <div class="dashboard-topbar" aria-hidden="true">
+        <div class="dashboard-topbar-dots">
+          <div class="dot dot--red"></div>
+          <div class="dot dot--amber"></div>
+          <div class="dot dot--green"></div>
+        </div>
+        <div class="dashboard-topbar-label">SustainToken · Impact Ledger · v1</div>
+        <div class="dashboard-topbar-status" data-en="All systems operational" data-es="Todos los sistemas operativos">All systems operational</div>
+      </div>
+      <div class="dashboard-body">
+        <div class="dash-kpi">
+          <div class="dash-kpi-label" data-en="Actions Verified" data-es="Acciones Verificadas">Actions Verified</div>
+          <div class="dash-kpi-val">000320</div>
+          <div class="dash-kpi-sub" data-en="On-chain records" data-es="Registros on-chain">On-chain records</div>
+        </div>
+        <div class="dash-kpi">
+          <div class="dash-kpi-label" data-en="Active Pilots" data-es="Pilotos Activos">Active Pilots</div>
+          <div class="dash-kpi-val">001</div>
+          <div class="dash-kpi-sub" data-en="Genesis · Energy" data-es="Génesis · Energía">Genesis · Energy</div>
+        </div>
+        <div class="dash-kpi">
+          <div class="dash-kpi-label" data-en="Avg. Reduction" data-es="Reducción Promedio">Avg. Reduction</div>
+          <div class="dash-kpi-val">−10.57%</div>
+          <div class="dash-kpi-sub" data-en="kWh/day normalized" data-es="kWh/día normalizado">kWh/day normalized</div>
+        </div>
+      </div>
+      <div class="dashboard-api-note">
+        <span data-en="API endpoint (v2):" data-es="Endpoint API (v2):">API endpoint (v2):</span>
+        <span> GET </span>
+        <span>api.sustaintoken.org/v2/impact/summary</span>
+        <span> · </span>
+        <span data-en="Auth: Bearer token" data-es="Auth: Bearer token">Auth: Bearer token</span>
+        <!-- login/dashboard hook -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     8. COMMUNITY PILOT NODES
+     ============================================================ -->
+<section id="community" aria-labelledby="community-heading">
+  <div class="container">
+    <div class="community-header">
+      <div class="section-label" data-en="08 · Community Pilot Nodes" data-es="08 · Nodos Piloto Comunitarios">08 · Community Pilot Nodes</div>
+      <h2 id="community-heading" data-en="Open Infrastructure. Real Evidence." data-es="Infraestructura Abierta. Evidencia Real.">Open Infrastructure. Real Evidence.</h2>
+      <p data-en="Community nodes generate the evidence base that validates the protocol. Participation is non-incentivized and transparent."
+         data-es="Los nodos comunitarios generan la base de evidencia que valida el protocolo. La participación es no incentivada y transparente.">
+        Community nodes generate the evidence base that validates the protocol. Participation is non-incentivized and transparent.
+      </p>
+    </div>
+
+    <div class="community-grid">
+
+      <!-- Block A: Pilot Library -->
+      <div class="community-block" role="region" aria-labelledby="library-title">
+        <div class="block-label" data-en="A · Pilot Library" data-es="A · Biblioteca de Pilotos">A · Pilot Library</div>
+        <h3 id="library-title" data-en="Pilot Library" data-es="Biblioteca de Pilotos">Pilot Library</h3>
+        <p data-en="Public record of community pilot nodes and their verified actions."
+           data-es="Registro público de nodos piloto comunitarios y sus acciones verificadas.">
+          Public record of community pilot nodes and their verified actions.
+        </p>
+        <div class="library-node" role="article">
+          <div class="library-node-header">
+            <span class="node-id">#0001</span>
+            <span class="node-title" data-en="User Node — Genesis" data-es="Nodo Usuario — Génesis">User Node — Genesis</span>
+            <span class="genesis-tag" data-en="GENESIS" data-es="GÉNESIS">GENESIS</span>
+          </div>
+          <div class="node-actions" role="list" aria-label="Genesis actions">
+            <span class="action-chip" title="2026-02-04 · Mar del Plata">Beach Cleanup #1</span>
+            <span class="action-chip" title="2026-02-06 · Mar del Plata">Beach Cleanup #2</span>
+            <span class="action-chip" title="2026-02-08 · Playa Alfar">Beach Cleanup #3</span>
+            <span class="action-chip" title="2026-02-08 · Mar del Plata">Household Recycling #1</span>
+            <span class="action-chip" title="2026-02-13 · Mar del Plata">Household Recycling #2</span>
+            <span class="action-chip" title="2026-02-11 · Mar del Plata">Sanitary Paper Sep.</span>
+          </div>
+          <!-- Real IPFS + TxHash anchors — Node #0001 Genesis -->
+          <div class="chips-stack" style="margin-top:12px;">
+            <div class="chip" role="group" aria-label="Beach Cleanup #1 IPFS">
+              <span class="chip-label">IPFS</span>
+              <code class="chip-value">bafybeihgrkfajvq…56iey</code>
+              <a href="https://ipfs.io/ipfs/bafybeihgrkfajvqslygn25igpppcc5yubz3y5gpcvb7kgay2sxrrz56iey" target="_blank" rel="noopener" class="chip-copy" aria-label="Open Beach Cleanup #1 on IPFS" title="Open on IPFS">↗</a>
+              <div class="chip-tooltip">Beach Cleanup · Mar del Plata · 2026-02-04</div>
+            </div>
+            <div class="chip" role="group" aria-label="Beach Cleanup #1 TxHash">
+              <span class="chip-label">TxHash</span>
+              <code class="chip-value">0x4e35e7b8…1a3ef</code>
+              <a href="https://bscscan.com/tx/0x4e35e7b872c36cc2744e6311564c60d338056df0d19612eb7b0a00b2a9e1a3ef" target="_blank" rel="noopener" class="chip-copy" aria-label="View on BscScan" title="View on BscScan">↗</a>
+              <div class="chip-tooltip">On-chain · BSC Mainnet · Beach Cleanup #1</div>
+            </div>
+          </div>
+          <div class="ses-note"
+               data-en="⚠ 6 Genesis actions · SES score pending"
+               data-es="⚠ 6 acciones Génesis · SES score pendiente">
+            ⚠ 6 Genesis actions · SES score pending
+          </div>
+        </div>
+      </div>
+
+      <!-- Block B: Join Program -->
+      <div class="community-block" role="region" aria-labelledby="join-title">
+        <div class="block-label" data-en="B · Pilot Node Program" data-es="B · Programa Nodo Piloto">B · Pilot Node Program</div>
+        <h3 id="join-title" data-en="Become a Pilot Node" data-es="Convertite en un Nodo Piloto">Become a Pilot Node</h3>
+        <p data-en="Non-incentivized. Open participation. Your actions contribute to the protocol's public evidence base."
+           data-es="No incentivado. Participación abierta. Tus acciones contribuyen a la base de evidencia pública del protocolo.">
+          Non-incentivized. Open participation. Your actions contribute to the protocol's public evidence base.
+        </p>
+        <form class="pilot-form" onsubmit="handleNodeForm(event)" aria-label="Pilot node registration">
+          <div class="form-field">
+            <label for="org-name" data-en="Organization / Name" data-es="Organización / Nombre">Organization / Name</label>
+            <input type="text" id="org-name" placeholder="Acme Corp or Jane Doe" autocomplete="organization" />
+          </div>
+          <div class="form-field">
+            <label for="pilot-type" data-en="Action Type" data-es="Tipo de Acción">Action Type</label>
+            <select id="pilot-type">
+              <option value="" data-en="Select…" data-es="Seleccionar…">Select…</option>
+              <option value="energy" data-en="Energy Reduction" data-es="Reducción Energética">Energy Reduction</option>
+              <option value="waste" data-en="Waste Diversion" data-es="Desvío de Residuos">Waste Diversion</option>
+              <option value="mobility" data-en="Mobility / Emissions" data-es="Movilidad / Emisiones">Mobility / Emissions</option>
+              <option value="water" data-en="Water Use" data-es="Uso del Agua">Water Use</option>
+              <option value="other" data-en="Other" data-es="Otro">Other</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="pilot-msg" data-en="Brief description" data-es="Descripción breve">Brief description</label>
+            <textarea id="pilot-msg" rows="3" placeholder="Describe your sustainability action…"></textarea>
+          </div>
+          <p class="form-note"
+             data-en="No token reward. Non-incentivized participation only."
+             data-es="Sin recompensa en tokens. Solo participación no incentivada.">
+            No token reward. Non-incentivized participation only.
+          </p>
+          <button type="submit" class="btn btn--primary"
+                  data-en="Submit Node Application"
+                  data-es="Enviar Solicitud de Nodo">Submit Node Application</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     9. TOKEN
+     ============================================================ -->
+<section id="token" aria-labelledby="token-heading">
+  <div class="container">
+    <div class="token-grid">
+      <div class="token-text">
+        <div class="section-label" data-en="09 · Token" data-es="09 · Token">09 · Token</div>
+        <h2 id="token-heading" data-en="The SustainToken." data-es="El SustainToken.">The SustainToken.</h2>
+        <p data-en="SustainToken (SUST) is the protocol's utility and governance token. It is not a carbon credit, not a speculative asset, and not a financial instrument. It represents verified environmental action — backed by cryptographic evidence."
+           data-es="SustainToken (SUST) es el token de utilidad y gobernanza del protocolo. No es un crédito de carbono, no es un activo especulativo y no es un instrumento financiero. Representa acción ambiental verificada — respaldada por evidencia criptográfica.">
+          SustainToken (SUST) is the protocol's utility and governance token. It is not a carbon credit, not a speculative asset, and not a financial instrument. It represents verified environmental action — backed by cryptographic evidence.
+        </p>
+        <a href="#governance" class="btn btn--ghost"
+           data-en="See Governance →"
+           data-es="Ver Gobernanza →">See Governance →</a>
+      </div>
+      <div class="token-attrs" role="list" aria-label="Token attributes">
+        <div class="token-attr" role="listitem">
+          <span class="token-attr-key" data-en="Ticker" data-es="Ticker">Ticker</span>
+          <span class="token-attr-val">SUST</span>
+        </div>
+        <div class="token-attr" role="listitem">
+          <span class="token-attr-key" data-en="Network" data-es="Red">Network</span>
+          <span class="token-attr-val">BSC Mainnet</span>
+        </div>
+        <div class="token-attr" role="listitem">
+          <span class="token-attr-key" data-en="Standard" data-es="Estándar">Standard</span>
+          <span class="token-attr-val">BEP-20</span>
+        </div>
+        <div class="token-attr" role="listitem">
+          <span class="token-attr-key" data-en="Backed by" data-es="Respaldado por">Backed by</span>
+          <span class="token-attr-val">Verified actions · IPFS + TxHash</span>
+        </div>
+        <div class="token-attr" role="listitem">
+          <span class="token-attr-key" data-en="Contract" data-es="Contrato">Contract</span>
+          <span class="token-attr-val">Sustain Doc Hub · BSC</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     10. GOVERNANCE
+     ============================================================ -->
+<section id="governance" aria-labelledby="gov-heading">
+  <div class="container">
+    <div class="section-label" data-en="10 · Governance" data-es="10 · Gobernanza">10 · Governance</div>
+    <h2 id="gov-heading" style="color:#fff; margin-bottom:var(--sp-2);"
+        data-en="Transparent. On-chain. Auditable."
+        data-es="Transparente. On-chain. Auditable.">Transparent. On-chain. Auditable.</h2>
+    <p style="color:var(--ink-300); max-width:600px;"
+       data-en="Protocol governance is progressively decentralized. V1 decisions are documented on-chain. V2 will introduce token-weighted proposals."
+       data-es="La gobernanza del protocolo está progresivamente descentralizada. Las decisiones V1 están documentadas on-chain. V2 introducirá propuestas ponderadas por token.">
+      Protocol governance is progressively decentralized. V1 decisions are documented on-chain. V2 will introduce token-weighted proposals.
+    </p>
+    <div class="gov-grid" role="list">
+      <div class="gov-card" role="listitem">
+        <div class="gov-icon" aria-hidden="true">⛓</div>
+        <h4 data-en="On-chain Documentation" data-es="Documentación On-chain">On-chain Documentation</h4>
+        <p data-en="All protocol decisions, schema updates, and whitepaper versions anchored to BSC."
+           data-es="Todas las decisiones del protocolo, actualizaciones de esquema y versiones del whitepaper ancladas en BSC.">
+          All protocol decisions, schema updates, and whitepaper versions anchored to BSC.
+        </p>
+      </div>
+      <div class="gov-card" role="listitem">
+        <div class="gov-icon" aria-hidden="true">📋</div>
+        <h4 data-en="Whitepaper v3" data-es="Whitepaper v3">Whitepaper v3</h4>
+        <p data-en="Full protocol specification available on-chain and via GitHub mirror. IPFS-pinned."
+           data-es="Especificación completa del protocolo disponible on-chain y via mirror de GitHub. Anclada en IPFS.">
+          Full protocol specification available on-chain and via GitHub mirror. IPFS-pinned.
+        </p>
+      </div>
+      <div class="gov-card" role="listitem">
+        <div class="gov-icon" aria-hidden="true">🗳</div>
+        <h4 data-en="Token Governance (v2)" data-es="Gobernanza Token (v2)">Token Governance (v2)</h4>
+        <p data-en="SUST holders will vote on protocol parameters, schema extensions, and pilot standards."
+           data-es="Los holders de SUST votarán sobre parámetros del protocolo, extensiones de esquema y estándares de piloto.">
+          SUST holders will vote on protocol parameters, schema extensions, and pilot standards.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     11. DEVELOPERS
+     ============================================================ -->
+<section id="developers" aria-labelledby="dev-heading">
+  <div class="container">
+    <div class="dev-header">
+      <div class="section-label" data-en="11 · Developers" data-es="11 · Desarrolladores">11 · Developers</div>
+      <h2 id="dev-heading" data-en="Build on the Protocol." data-es="Construí sobre el Protocolo.">Build on the Protocol.</h2>
+      <p data-en="Open schemas, documented APIs (v2 roadmap), and a public contract on BSC. Integrate verifiable sustainability into your stack."
+         data-es="Esquemas abiertos, APIs documentadas (roadmap v2) y un contrato público en BSC. Integrá sostenibilidad verificable en tu stack.">
+        Open schemas, documented APIs (v2 roadmap), and a public contract on BSC. Integrate verifiable sustainability into your stack.
+      </p>
+    </div>
+
+    <div class="dev-tabs" role="tablist">
+      <button class="dev-tab active" onclick="showTab('action')" role="tab" aria-selected="true" data-en="action_report.json" data-es="action_report.json">action_report.json</button>
+      <button class="dev-tab" onclick="showTab('manifest')" role="tab" aria-selected="false" data-en="manifest.json" data-es="manifest.json">manifest.json</button>
+    </div>
+
+    <div id="tab-action" class="code-block" role="tabpanel">
+      <pre><span class="json-key">{</span>
+  <span class="json-key">"schema_version"</span>: <span class="json-str">"1.0.0"</span>,
+  <span class="json-key">"action_id"</span>: <span class="json-str">"ST-2024-001"</span>,
+  <span class="json-key">"org_id"</span>: <span class="json-str">"NODE-0001"</span>,
+  <span class="json-key">"action_type"</span>: <span class="json-str">"energy_reduction"</span>,
+  <span class="json-key">"category"</span>: <span class="json-str">"scope_2"</span>,
+  <span class="json-key">"timestamp"</span>: <span class="json-str">"2024-03-01T00:00:00Z"</span>,
+  <span class="json-key">"metric"</span>: {
+    <span class="json-key">"unit"</span>: <span class="json-str">"kWh_per_day"</span>,
+    <span class="json-key">"baseline"</span>: <span class="json-num">9.9355</span>,
+    <span class="json-key">"measured"</span>: <span class="json-num">8.8857</span>,
+    <span class="json-key">"reduction_pct"</span>: <span class="json-num">-10.57</span>,
+    <span class="json-key">"methodology"</span>: <span class="json-str">"kWh_day_normalization_v1"</span>
+  },
+  <span class="json-key">"evidence"</span>: {
+    <span class="json-key">"sha256"</span>: <span class="json-str">"26da15d5d0f3c8a1b4e7f2d9...ab5e"</span>,
+    <span class="json-key">"ipfs_cid"</span>: <span class="json-str">"bafybeig3z7qkx4p2r8m...e9xt"</span>,
+    <span class="json-key">"tx_hash"</span>: <span class="json-str">"0x4a7c3f2e1d8b...9f1a"</span>,
+    <span class="json-key">"chain"</span>: <span class="json-str">"bsc_mainnet"</span>,
+    <span class="json-key">"pii_in_public_layer"</span>: <span class="json-bool">false</span>
+  },
+  <span class="json-key">"ses_score"</span>: <span class="json-bool">null</span>,
+  <span class="json-key">"ses_note"</span>: <span class="json-str">"pending — genesis actions"</span>
+<span class="json-key">}</span></pre>
+    </div>
+
+    <div id="tab-manifest" class="code-block" role="tabpanel" style="display:none;">
+      <pre><span class="json-key">{</span>
+  <span class="json-key">"manifest_version"</span>: <span class="json-str">"1.0.0"</span>,
+  <span class="json-key">"pilot_id"</span>: <span class="json-str">"PILOT-ENERGY-001"</span>,
+  <span class="json-key">"node_id"</span>: <span class="json-str">"NODE-0001"</span>,
+  <span class="json-key">"pilot_type"</span>: <span class="json-str">"energy"</span>,
+  <span class="json-key">"period"</span>: {
+    <span class="json-key">"start"</span>: <span class="json-str">"2024-01-01"</span>,
+    <span class="json-key">"end"</span>: <span class="json-str">"2024-03-31"</span>,
+    <span class="json-key">"days"</span>: <span class="json-num">90</span>
+  },
+  <span class="json-key">"baseline"</span>: {
+    <span class="json-key">"bill_period_days"</span>: <span class="json-num">31</span>,
+    <span class="json-key">"total_kwh"</span>: <span class="json-num">308</span>,
+    <span class="json-key">"kwh_per_day"</span>: <span class="json-num">9.9355</span>,
+    <span class="json-key">"evidence_sha256"</span>: <span class="json-str">"baseline_hash_here"</span>
+  },
+  <span class="json-key">"measurements"</span>: [
+    {
+      <span class="json-key">"bill_id"</span>: <span class="json-str">"BILL-002"</span>,
+      <span class="json-key">"period_days"</span>: <span class="json-num">35</span>,
+      <span class="json-key">"total_kwh"</span>: <span class="json-num">311</span>,
+      <span class="json-key">"kwh_per_day"</span>: <span class="json-num">8.8857</span>,
+      <span class="json-key">"sha256"</span>: <span class="json-str">"26da15d5d0...ab5e"</span>,
+      <span class="json-key">"ipfs_cid"</span>: <span class="json-str">"bafybeig3z7...e9xt"</span>,
+      <span class="json-key">"tx_hash"</span>: <span class="json-str">"0x4a7c3f2e...9f1a"</span>
+    }
+  ],
+  <span class="json-key">"compliance"</span>: [<span class="json-str">"ghg_protocol"</span>, <span class="json-str">"iso_14064"</span>],
+  <span class="json-key">"pii_in_public_layer"</span>: <span class="json-bool">false</span>
+<span class="json-key">}</span></pre>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     12. RESOURCES
+     ============================================================ -->
+<section id="resources" aria-labelledby="resources-heading">
+  <div class="container">
+    <div class="section-label" data-en="12 · Resources" data-es="12 · Recursos">12 · Resources</div>
+    <h2 id="resources-heading" style="color:#fff; margin-bottom:var(--sp-6);"
+        data-en="Protocol Documentation." data-es="Documentación del Protocolo.">Protocol Documentation.</h2>
+    <div class="resources-grid" role="list">
+      <a href="https://ipfs.io/ipfs/bafkreiemzyaj2cmifulavbypzr24dct2hdaxer7mk23gg57vynsoj7yjbq" target="_blank" rel="noopener" class="resource-card" role="listitem">
+        <div class="resource-type">WHITEPAPER · EN</div>
+        <h4 data-en="Whitepaper v3" data-es="Whitepaper v3">Whitepaper v3</h4>
+        <p data-en="Full protocol specification. Environmental Impact Infrastructure for Verifiable Sustainability. IPFS-pinned."
+           data-es="Especificación completa del protocolo. IPFS-anclado.">
+          Full protocol specification. IPFS-pinned.
+        </p>
+        <div class="resource-link">
+          <span data-en="Open on IPFS" data-es="Abrir en IPFS">Open on IPFS</span>
+          <span>↗</span>
+        </div>
+      </a>
+      <a href="https://ipfs.io/ipfs/bafkreies6ojo356gugv6q2kdjkwjmy2zrbyd3dhrvxpy4s4hwmfw7dol4y" target="_blank" rel="noopener" class="resource-card" role="listitem">
+        <div class="resource-type">WHITEPAPER · ES</div>
+        <h4 data-en="Whitepaper v3 — Español" data-es="Whitepaper v3 — Español">Whitepaper v3 — Español</h4>
+        <p data-en="Versión en español de la especificación del protocolo. IPFS-pinned."
+           data-es="Versión en español de la especificación del protocolo. IPFS-anclado.">
+          Versión en español. IPFS-pinned.
+        </p>
+        <div class="resource-link">
+          <span data-en="Abrir en IPFS" data-es="Abrir en IPFS">Abrir en IPFS</span>
+          <span>↗</span>
+        </div>
+      </a>
+      <a href="https://bscscan.com/address/0x837C9dFA3342139bc5892c77fc5EadA4D9522CE8#events" target="_blank" rel="noopener" class="resource-card" role="listitem">
+        <div class="resource-type" data-en="ON-CHAIN · BSC" data-es="ON-CHAIN · BSC">ON-CHAIN · BSC</div>
+        <h4 data-en="Sustain Doc Hub" data-es="Sustain Doc Hub">Sustain Doc Hub</h4>
+        <p data-en="Smart contract on BSC Mainnet. Immutable document registry — whitepaper versions, protocol specs, governance anchors."
+           data-es="Contrato en BSC Mainnet. Registro inmutable de documentos — whitepaper, specs, gobernanza.">
+          Smart contract on BSC Mainnet. Immutable document registry.
+        </p>
+        <div class="resource-link" style="flex-direction:column; align-items:flex-start; gap:4px;">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span data-en="View on BscScan" data-es="Ver en BscScan">View on BscScan</span>
+            <span>↗</span>
+          </div>
+          <code style="font-family:var(--font-mono); font-size:10px; color:var(--ink-300);">0x837C9dFA…CE8</code>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     13. CONTACT
+     ============================================================ -->
+<section id="contact" aria-labelledby="contact-heading">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="section-label" style="justify-content:center;" data-en="13 · Contact" data-es="13 · Contacto">13 · Contact</div>
+      <h2 id="contact-heading" data-en="Ready to build verifiable sustainability?" data-es="¿Listo para construir sostenibilidad verificable?">
+        Ready to build verifiable sustainability?
+      </h2>
+      <p data-en="Whether you're an institution running a pilot, a developer integrating the protocol, or an organization mapping to compliance frameworks — let's talk."
+         data-es="Ya sea que seas una institución ejecutando un piloto, un desarrollador integrando el protocolo, u una organización mapeando marcos de cumplimiento — hablemos.">
+        Whether you're an institution running a pilot, a developer integrating the protocol, or an organization mapping to compliance frameworks — let's talk.
+      </p>
+      <div class="contact-actions">
+        <a href="/cdn-cgi/l/email-protection#8fece0e1fbeeecfbcffcfafcfbeee6e1fbe0e4eae1a1e0fde8" class="btn btn--primary btn--large" data-en="Apply for Pilot" data-es="Aplicar al Piloto">Apply for Pilot</a>
+        <a href="/cdn-cgi/l/email-protection#d7b3b2a197a4a2a4a3b6beb9a3b8bcb2b9f9b8a5b0" class="btn btn--ghost btn--large" data-en="Developer Inquiry" data-es="Consulta de Desarrollador">Developer Inquiry</a>
+        <a href="#resources" class="btn btn--ghost btn--large"
+           data-en="Read Whitepaper"
+           data-es="Leer Whitepaper">Read Whitepaper</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer role="contentinfo">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">SustainToken<span style="color:var(--brand-500);">.</span></div>
+      <ul class="footer-links" role="list">
+        <li><a href="#protocol" data-en="Protocol" data-es="Protocolo">Protocol</a></li>
+        <li><a href="#pilots" data-en="Pilots" data-es="Pilotos">Pilots</a></li>
+        <li><a href="#compliance" data-en="Compliance" data-es="Cumplimiento">Compliance</a></li>
+        <li><a href="#developers" data-en="Developers" data-es="Desarrolladores">Developers</a></li>
+        <li><a href="#resources" data-en="Resources" data-es="Recursos">Resources</a></li>
+        <li><a href="#contact" data-en="Contact" data-es="Contacto">Contact</a></li>
+      </ul>
+      <div class="footer-copy">
+        © 2024 SustainToken.org · <span data-en="Environmental Impact Infrastructure" data-es="Infraestructura de Impacto Ambiental">Environmental Impact Infrastructure</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  /* ---- Language Switch ---- */
+  let currentLang = 'en';
+
+  function toggleLang() {
+    currentLang = currentLang === 'en' ? 'es' : 'en';
+    const btn = document.getElementById('langBtn');
+    btn.textContent = currentLang === 'en' ? 'ES' : 'EN';
+    btn.setAttribute('aria-label', currentLang === 'en' ? 'Switch to Spanish' : 'Switch to English');
+
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const key = currentLang === 'en' ? 'data-en' : 'data-es';
+      if (el.getAttribute(key)) {
+        if (el.tagName === 'INPUT' && el.placeholder) {
+          // don't replace content of inputs
+        } else if (el.tagName !== 'INPUT' && el.tagName !== 'TEXTAREA') {
+          el.textContent = el.getAttribute(key);
+        }
+      }
+    });
+  }
+
+  /* ---- Tab Switch (Developers) ---- */
+  function showTab(tab) {
+    document.getElementById('tab-action').style.display = tab === 'action' ? 'block' : 'none';
+    document.getElementById('tab-manifest').style.display = tab === 'manifest' ? 'block' : 'none';
+    document.querySelectorAll('.dev-tab').forEach((t, i) => {
+      t.classList.toggle('active', (i === 0 && tab === 'action') || (i === 1 && tab === 'manifest'));
+      t.setAttribute('aria-selected', String((i === 0 && tab === 'action') || (i === 1 && tab === 'manifest')));
+    });
+  }
+
+  /* ---- Copy Chip ---- */
+  function copyChip(btn, val) {
+    navigator.clipboard.writeText(val).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✓';
+      btn.style.color = 'var(--green-600)';
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.style.color = '';
+      }, 1500);
+    }).catch(() => {});
+  }
+
+  /* ---- Pilot Node Form ---- */
+  function handleNodeForm(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    const orig = btn.textContent;
+    btn.textContent = '✓ Application received';
+    btn.style.background = 'var(--green-600)';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.background = '';
+      btn.disabled = false;
+      e.target.reset();
+    }, 3000);
+  }
+
+  /* ---- Scroll-based nav highlight ---- */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.style.color = link.getAttribute('href') === '#' + entry.target.id
+            ? 'var(--brand-50

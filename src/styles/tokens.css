@@ -1,0 +1,56 @@
+/* ============================================================
+   CSS CUSTOM PROPERTIES — SustainToken Design System
+   ============================================================ */
+:root {
+  /* Brand palette (client-specified) */
+  --brand-700: #1EC0D8;
+  --brand-500: #29DDF5;
+  --brand-300: #97ECF9;
+  --brand-100: #E6FBFE;
+
+  --ink-900: #1B365F;
+  --ink-700: #2A4A7A;
+  --ink-500: #3E5E92;
+  --ink-300: #6F88AE;
+
+  --soft-300: #E8BEE0;
+  --soft-200: #F2D4EF;
+  --soft-100: #FAEFF8;
+
+  --bg-0:   #05080F;
+  --bg-50:  #090D18;
+  --bg-100: #0D1422;
+  --bg-200: #111A2B;
+  --line-200: #1D2940;
+  --line-300: #243250;
+
+  --green-600: #1E9E72;
+  --red-600:   #D64545;
+  --amber-600: #B8860B;
+
+  --chip-bg:  #0D1422;
+  --chip-brd: #1D2940;
+  --chip-txt: #97ECF9;
+
+  /* Typography */
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* Spacing (8pt system) */
+  --sp-1: 8px;
+  --sp-2: 16px;
+  --sp-3: 24px;
+  --sp-4: 32px;
+  --sp-5: 40px;
+  --sp-6: 48px;
+  --sp-8: 64px;
+  --sp-10: 80px;
+  --sp-12: 96px;
+
+  /* Radii */
+  --r-sm: 6px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+}
