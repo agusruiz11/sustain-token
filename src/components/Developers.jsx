@@ -123,6 +123,7 @@ export default function Developers() {
         >
           <CodeManifest />
         </div>
+        <p className="dev-privacy-note">{t('developers.privacyNote')}</p>
       </div>
     </section>
   );

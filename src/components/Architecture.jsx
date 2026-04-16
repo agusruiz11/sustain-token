@@ -85,8 +85,8 @@ function ClimateStack() {
       </div>
       <span className="climate-arrow" aria-hidden="true">↓</span>
 
-      <div className="climate-layer climate-layer--muted" role="listitem">
-        <span className="climate-layer-title">{t('architecture.climateAccounting')}</span>
+      <div className="climate-layer climate-layer--muted" role="listitem" style={{ boxShadow: 'inset 4px 0 0 rgba(41,221,245,0.85)', paddingLeft: '16px', borderColor: 'rgba(41,221,245,0.15)' }}>
+        <span className="climate-layer-title" style={{ color: 'rgba(242, 212, 239,0.95)' }}>{t('architecture.climateAccounting')}</span>
         <span className="climate-layer-items">GHG Protocol · ISSB/IFRS S2 · CSRD</span>
       </div>
       <span className="climate-arrow" aria-hidden="true">↓</span>
@@ -100,7 +100,7 @@ function ClimateStack() {
           <div>
             <div className="climate-layer-title">
               <span>{t('architecture.climateDataLayer')}</span>
-              <span style={{ color: 'var(--brand-500)', marginLeft: '8px' }}>— Sustain Protocol</span>
+              <span style={{ color: 'var(--brand-500)', marginLeft: '8px' }}>— Sustain</span>
             </div>
             <div className="climate-layer-items" style={{ color: 'var(--brand-300)', marginTop: '6px', fontFamily: 'var(--font-mono)' }}>
               Evidence → Hash → IPFS → On-chain Anchors → MRV → SES

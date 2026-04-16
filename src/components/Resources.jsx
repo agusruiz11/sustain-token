@@ -7,9 +7,12 @@ export default function Resources() {
     <section id="resources" aria-labelledby="resources-heading">
       <div className="container">
         <div className="section-label">{t('resources.sectionLabel')}</div>
-        <h2 id="resources-heading" style={{ color: '#fff', marginBottom: 'var(--sp-6)' }}>
+        <h2 id="resources-heading" style={{ color: '#fff', marginBottom: 'var(--sp-2)' }}>
           {t('resources.heading')}
         </h2>
+        <p style={{ color: 'var(--ink-300)', marginBottom: 'var(--sp-6)' }}>
+          {t('resources.sub')}
+        </p>
         <div className="resources-grid" role="list">
 
           <a

@@ -8,16 +8,16 @@ const CARDS = [
     items: ['card1item1', 'card1item2', 'card1item3'],
   },
   {
-    pill: 'ISSB / IFRS S2',
-    titleKey: 'card2Title',
-    descKey: 'card2Desc',
-    items: ['card2item1', 'card2item2', 'card2item3'],
-  },
-  {
     pill: 'CSRD / ESRS',
     titleKey: 'card3Title',
     descKey: 'card3Desc',
     items: ['card3item1', 'card3item2', 'card3item3'],
+  },
+  {
+    pill: 'ISSB / IFRS S2',
+    titleKey: 'card2Title',
+    descKey: 'card2Desc',
+    items: ['card2item1', 'card2item2', 'card2item3'],
   },
   {
     pill: 'ISO 14064',
@@ -37,6 +37,7 @@ export default function Compliance() {
           <div className="section-label">{t('compliance.sectionLabel')}</div>
           <h2 id="compliance-heading">{t('compliance.heading')}</h2>
           <p>{t('compliance.sub')}</p>
+          <p className="compliance-disclaimer">{t('compliance.disclaimer')}</p>
         </div>
 
         <div className="compliance-grid" role="list">

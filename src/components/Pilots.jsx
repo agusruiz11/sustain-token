@@ -1,5 +1,71 @@
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useClipboard } from '../hooks/useClipboard';
+
+function VerifiedBadge({ label, tooltip }) {
+  const [hovered, setHovered] = useState(false);
+  const [tapped, setTapped] = useState(false);
+  const ref = useRef(null);
+
+  const visible = hovered || tapped;
+
+  // close on outside tap (mobile)
+  useEffect(() => {
+    if (!tapped) return;
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setTapped(false);
+    };
+    document.addEventListener('pointerdown', handler);
+    return () => document.removeEventListener('pointerdown', handler);
+  }, [tapped]);
+
+  return (
+    <div ref={ref} style={{ position: 'relative', display: 'inline-flex' }}>
+      <motion.span
+        className="energy-badge"
+        onHoverStart={() => setHovered(true)}
+        onHoverEnd={() => setHovered(false)}
+        onTap={() => setTapped((v) => !v)}
+        animate={{
+          scale: [1, 1.07],
+          boxShadow: [
+            '0 0 3px rgba(30,158,114,0.12), 0 0 6px rgba(30,158,114,0.05), 0 0 0px rgba(30,158,114,0)',
+            '0 0 12px rgba(30,158,114,0.75), 0 0 26px rgba(30,158,114,0.42), 0 0 42px rgba(30,158,114,0.18)',
+          ],
+          borderColor: ['rgba(30,158,114,0.22)', 'rgba(30,158,114,0.75)'],
+          backgroundColor: ['rgba(30,158,114,0.07)', 'rgba(30,158,114,0.24)'],
+        }}
+        transition={{ duration: 1.5, ease: 'easeInOut', repeat: Infinity, repeatType: 'mirror' }}
+        whileHover={{
+          scale: 1.1,
+          y: -2,
+          backgroundColor: 'rgba(30,158,114,0.30)',
+          borderColor: 'rgba(30,158,114,0.8)',
+          boxShadow: '0 0 16px rgba(30,158,114,0.85), 0 0 32px rgba(30,158,114,0.45), 0 4px 14px rgba(0,0,0,0.35)',
+          transition: { duration: 0.18, ease: 'easeOut' },
+        }}
+      >
+        {label}
+      </motion.span>
+
+      <AnimatePresence>
+        {visible && (
+          <motion.div
+            role="tooltip"
+            className="badge-tooltip"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{ duration: 0, exit: { duration: 0.15 } }}
+          >
+            {tooltip}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 function AuditChip({ label, value, display, tooltip, copyAriaLabel, linkHref, linkAriaLabel }) {
   const { copyChip } = useClipboard();
@@ -70,8 +136,14 @@ export default function Pilots() {
           <div>
             <div className="energy-title">
               <h3 id="energy-case-title">{t('pilots.energyTitle')}</h3>
-              <span className="energy-badge">{t('pilots.energyBadge')}</span>
+              <VerifiedBadge
+                label={t('pilots.energyBadge')}
+                tooltip={t('pilots.energyBadgeTooltip')}
+              />
             </div>
+            <p style={{ fontSize: '11px', color: 'var(--ink-400)', fontFamily: 'var(--font-mono)', marginBottom: '12px', letterSpacing: '0.3px', whiteSpace: 'pre-wrap' }}>
+              {t('pilots.energyGenesisMeta')}
+            </p>
             <div>
               <div className="energy-row">
                 <span className="energy-label">{t('pilots.energyBaseline')}</span>

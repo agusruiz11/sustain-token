@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import emailjs from '@emailjs/browser';
 import { useTranslation } from 'react-i18next';
 
 const GENESIS_ACTIONS = [
@@ -12,15 +13,31 @@ const GENESIS_ACTIONS = [
 
 export default function Community() {
   const { t } = useTranslation();
+  const formRef = useRef(null);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(false);
 
   function handleNodeForm(e) {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      e.target.reset();
-    }, 3000);
+    setError(false);
+
+    emailjs
+      .sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY },
+      )
+      .then(() => {
+        setSubmitted(true);
+        setTimeout(() => {
+          setSubmitted(false);
+          formRef.current.reset();
+        }, 3000);
+      })
+      .catch(() => {
+        setError(true);
+      });
   }
 
   return (
@@ -94,6 +111,7 @@ export default function Community() {
             <p>{t('community.blockBDesc')}</p>
 
             <form
+              ref={formRef}
               className="pilot-form"
               onSubmit={handleNodeForm}
               aria-label={t('community.formAriaLabel')}
@@ -103,13 +121,15 @@ export default function Community() {
                 <input
                   type="text"
                   id="org-name"
+                  name="from_name"
                   placeholder="Acme Corp or Jane Doe"
                   autoComplete="organization"
+                  required
                 />
               </div>
               <div className="form-field">
                 <label htmlFor="pilot-type">{t('community.formTypeLabel')}</label>
-                <select id="pilot-type">
+                <select id="pilot-type" name="action_type" required>
                   <option value="">{t('community.formTypeSelect')}</option>
                   <option value="energy">{t('community.formTypeEnergy')}</option>
                   <option value="waste">{t('community.formTypeWaste')}</option>
@@ -122,11 +142,15 @@ export default function Community() {
                 <label htmlFor="pilot-msg">{t('community.formMsgLabel')}</label>
                 <textarea
                   id="pilot-msg"
+                  name="message"
                   rows="3"
                   placeholder="Describe your sustainability action…"
                 />
               </div>
               <p className="form-note">{t('community.formNote')}</p>
+              {error && (
+                <p className="form-error">Something went wrong. Please try again.</p>
+              )}
               <button
                 type="submit"
                 className="btn btn--primary"

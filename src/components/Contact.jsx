@@ -23,6 +23,7 @@ export default function Contact() {
               {t('contact.btnWhitepaper')}
             </a>
           </div>
+          <p className="contact-closing">{t('contact.closing')}</p>
         </div>
       </div>
     </section>

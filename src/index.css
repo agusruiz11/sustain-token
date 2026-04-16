@@ -2,8 +2,8 @@
    RESET & BASE
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
-body {
+html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
+body { overflow-x: hidden;
   background: var(--bg-0);
   color: #C8D8F0;
   font-family: var(--font-body);
@@ -221,7 +221,10 @@ h4 { font-size: 16px; font-weight: 700; }
 .hero-inner {
   position: relative;
   z-index: 1;
-  max-width: 900px;
+  max-width: 1100px;
+}
+#hero .container {
+  padding: 0 12px;
 }
 .hero-badge {
   display: inline-flex;
@@ -613,14 +616,40 @@ h4 { font-size: 16px; font-weight: 700; }
   margin-bottom: var(--sp-4);
 }
 .energy-title h3 { color: #fff; font-size: 18px; }
+
+.badge-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  white-space: nowrap;
+  background: rgba(4,10,20,0.97);
+  border: 1px solid rgba(30,158,114,0.35);
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: rgba(30,158,114,0.9);
+  line-height: 1.5;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  pointer-events: none;
+  z-index: 10;
+}
+
+@media (max-width: 600px) {
+  .badge-tooltip {
+    white-space: normal;
+    max-width: 80vw;
+  }
+}
 .energy-badge {
   font-family: var(--font-mono);
   font-size: 10px;
   padding: 3px 8px;
   border-radius: 100px;
-  background: rgba(30,158,114,0.15);
   color: var(--green-600);
-  border: 1px solid rgba(30,158,114,0.3);
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-block;
 }
 .energy-row {
   display: flex;
@@ -712,6 +741,7 @@ h4 { font-size: 16px; font-weight: 700; }
 }
 .compliance-header h2 { color: #fff; margin-bottom: var(--sp-2); }
 .compliance-header p { color: var(--ink-300); }
+.compliance-disclaimer { font-size: 12px; color: var(--ink-400, #555); font-style: italic; margin-top: var(--sp-2); }
 .compliance-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -924,6 +954,7 @@ h4 { font-size: 16px; font-weight: 700; }
 .form-field textarea:focus { border-color: var(--brand-500); }
 .form-field textarea { resize: vertical; min-height: 80px; }
 .form-note { font-size: 11px; color: var(--ink-300); font-style: italic; }
+.form-error { font-size: 12px; color: #f87171; margin: 0; }
 
 /* ============================================================
    9. TOKEN
@@ -975,6 +1006,7 @@ h4 { font-size: 16px; font-weight: 700; }
    ============================================================ */
 #developers { background: var(--bg-0); }
 .dev-header { max-width: 640px; margin-bottom: var(--sp-8); }
+.dev-privacy-note { font-size: 12px; color: var(--ink-300); font-style: italic; margin-top: var(--sp-4); }
 .dev-header h2 { color: #fff; margin-bottom: var(--sp-2); }
 .dev-header p { color: var(--ink-300); }
 .dev-tabs {
@@ -1069,6 +1101,7 @@ h4 { font-size: 16px; font-weight: 700; }
 }
 .contact-inner h2 { color: #fff; margin-bottom: var(--sp-3); }
 .contact-inner p { color: var(--ink-300); margin-bottom: var(--sp-5); }
+.contact-closing { font-size: 12px; color: var(--ink-400, #555); font-style: italic; margin-top: var(--sp-6); margin-bottom: 0 !important; }
 .contact-actions {
   display: flex;
   justify-content: center;

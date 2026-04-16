@@ -31,7 +31,7 @@ export default function Impact() {
             </div>
             <div className="dash-kpi">
               <div className="dash-kpi-label">{t('impact.kpi2Label')}</div>
-              <div className="dash-kpi-val">001</div>
+              <div className="dash-kpi-val">002</div>
               <div className="dash-kpi-sub">{t('impact.kpi2Sub')}</div>
             </div>
             <div className="dash-kpi">
@@ -43,10 +43,7 @@ export default function Impact() {
           <div className="dashboard-api-note">
             {/* hook login/dashboard — v2 */}
             <span>{t('impact.apiEndpointLabel')}</span>
-            <span> GET </span>
-            <span>api.sustaintoken.org/v2/impact/summary</span>
-            <span> · </span>
-            <span>{t('impact.apiAuth')}</span>
+            <span> api.sustain.org / api.sustainprotocol.org</span>
           </div>
         </div>
       </div>

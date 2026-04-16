@@ -35,20 +35,11 @@ export default function Hero() {
 
           {/* ── MAIN TITLE ── */}
           <motion.div variants={fadeUp}>
-            <p style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: 'clamp(12px, 1.1vw, 14px)',
-              color: 'var(--ink-300)',
-              letterSpacing: '0.3px',
-              marginBottom: '8px',
-            }}>
-              {t('hero.h1Muted')}
-            </p>
             <h1
               id="hero-heading"
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(48px, 7.5vw, 106px)',
+                fontSize: 'clamp(44px, 6.8vw, 96px)',
                 fontWeight: 800,
                 lineHeight: 0.9,
                 letterSpacing: '-3px',
@@ -57,24 +48,21 @@ export default function Hero() {
                 textTransform: 'uppercase',
               }}
             >
-              SUSTAIN<br />TOKEN
+              SUSTAIN<br />PROTOCOL
             </h1>
-          </motion.div>
-
-          {/* accent subtitle */}
-          <motion.p
-            variants={fadeUp}
-            style={{
+            <p style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(15px, 1.8vw, 21px)',
-              fontWeight: 700,
+              fontSize: 'clamp(22px, 2.8vw, 40px)',
+              fontWeight: 600,
               color: '#fff',
-              marginTop: '20px',
-              letterSpacing: '-0.2px',
-            }}
-          >
-            {t('hero.h1Accent')}
-          </motion.p>
+              letterSpacing: '-0.5px',
+              lineHeight: 1.15,
+              marginTop: '18px',
+              marginBottom: 0,
+            }}>
+              {t('hero.headline')}
+            </p>
+          </motion.div>
 
           {/* sub */}
           <motion.p className="hero-sub" variants={fadeUp} style={{ marginTop: '14px' }}>
@@ -139,13 +127,13 @@ export default function Hero() {
             <div className="kpi">
               <div className="kpi-label">{t('hero.kpi1Label')}</div>
               {/* TODO: conectar a API v2 */}
-              <div className="kpi-value" id="counter1" aria-live="polite">000320</div>
+              <div className="kpi-value" id="counter1" aria-live="polite">000080</div>
               <div className="kpi-sub">{t('hero.kpi1Sub')}</div>
             </div>
             <div className="kpi">
               <div className="kpi-label">{t('hero.kpi2Label')}</div>
               {/* TODO: conectar a API v2 */}
-              <div className="kpi-value" id="counter2" aria-live="polite">000320</div>
+              <div className="kpi-value" id="counter2" aria-live="polite">000080</div>
               <div className="kpi-sub">{t('hero.kpi2Sub')}</div>
             </div>
           </motion.div>

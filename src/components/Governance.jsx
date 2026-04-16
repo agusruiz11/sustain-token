@@ -28,6 +28,9 @@ export default function Governance() {
             </div>
           ))}
         </div>
+        <p style={{ color: 'var(--ink-300)', marginTop: 'var(--sp-6)', fontStyle: 'italic', whiteSpace: 'nowrap' }}>
+          {t('governance.closing')}
+        </p>
       </div>
     </section>
   );
