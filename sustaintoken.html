@@ -2577,4 +2577,12 @@ footer {
       if (entry.isIntersecting) {
         navLinks.forEach(link => {
           link.style.color = link.getAttribute('href') === '#' + entry.target.id
-            ? 'var(--brand-50
+            ? 'var(--brand-500)' : '';
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
