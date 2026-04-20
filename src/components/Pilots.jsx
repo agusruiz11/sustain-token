@@ -108,7 +108,12 @@ export default function Pilots() {
             <h3 id="pilot-cta-title">{t('pilots.ctaHeading')}</h3>
             <p>{t('pilots.ctaSub')}</p>
           </div>
-          <a href="#contact" className="btn btn--primary btn--large">
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLScNIRBEqZO6R-6Y8ZE7UFl2zqu_yuv5Eh9Ba-uI8K5QIQ04KQ/viewform?usp=send_form"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn--primary btn--large"
+          >
             {t('pilots.ctaBtn')}
           </a>
         </div>
