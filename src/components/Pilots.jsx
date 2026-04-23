@@ -195,7 +195,7 @@ export default function Pilots() {
             </div>
             <div style={{ marginTop: '16px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <a
-                href="https://bscscan.com/address/0x837C9dFA3342139bc5892c77fc5EadA4D9522CE8#events"
+                href="https://bscscan.com/tx/0xb7674a09cf7bf3201ff7046e72d916993f4357024be1230fd56df6c6049c85a8#eventlog"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn--ghost"

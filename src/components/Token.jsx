@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 const TOKEN_ATTRS = [
-  { keyLabel: 'ticker',   value: 'SUST' },
+  { keyLabel: 'ticker',   value: 'SUS' },
   { keyLabel: 'network',  value: 'BSC Mainnet' },
   { keyLabel: 'standard', value: 'BEP-20' },
   { keyLabel: 'backedBy', value: 'Verified actions · IPFS + TxHash' },
