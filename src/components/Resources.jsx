@@ -48,7 +48,7 @@ export default function Resources() {
           </a>
 
           <a
-            href="https://bscscan.com/address/0x837C9dFA3342139bc5892c77fc5EadA4D9522CE8#events"
+            href="https://bscscan.com/address/0x141cc96351d622fcf26fAA40E0fd2a1ba8D25e1B#events"
             target="_blank"
             rel="noopener noreferrer"
             className="resource-card"
@@ -63,7 +63,7 @@ export default function Resources() {
                 <span>↗</span>
               </div>
               <code style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--ink-300)' }}>
-                0x837C9dFA…CE8
+                0x141cc963…5e1B
               </code>
             </div>
           </a>
