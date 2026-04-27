@@ -1286,6 +1286,8 @@ footer {
   .hero-counters { flex-direction: column; gap: var(--sp-4); }
   .hero-trust { gap: var(--sp-2); }
   .trust-sep { display: none; }
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
 
   /* Grids */
   .steps-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1305,6 +1307,8 @@ footer {
 
   /* Pilots */
   .pilots-cta-band { padding: var(--sp-4); }
+  .energy-row { flex-direction: column; gap: 4px; align-items: flex-start; }
+  .energy-val, .energy-val--green { font-size: 13px; }
 
   /* Dashboard topbar */
   .dashboard-topbar { flex-wrap: wrap; gap: 8px; }
@@ -1316,12 +1320,19 @@ footer {
   /* Chip values */
   .chip-value { font-size: 11px; }
 
+  /* Chip tooltip */
+  .chip-tooltip { white-space: normal; max-width: 80vw; }
+
   /* Footer */
   .footer-inner { flex-direction: column; align-items: center; gap: var(--sp-3); }
   .footer-links { flex-wrap: wrap; justify-content: center; }
 
   /* Code block */
   .code-block pre { font-size: 11px; }
+
+  /* Pilot energy card */
+  .pilot-energy { padding: var(--sp-4); gap: var(--sp-4); }
+  .energy-title { flex-wrap: wrap; gap: 8px; }
 
   /* Dev tabs */
   .dev-tabs { flex-wrap: wrap; gap: 4px; }
