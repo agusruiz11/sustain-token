@@ -39,10 +39,10 @@ export default function Hero() {
               id="hero-heading"
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(44px, 6.8vw, 96px)',
+                fontSize: 'clamp(32px, 10vw, 96px)',
                 fontWeight: 800,
                 lineHeight: 0.9,
-                letterSpacing: '-3px',
+                letterSpacing: 'clamp(-1.5px, -0.07em, -3px)',
                 color: 'var(--brand-500)',
                 margin: 0,
                 textTransform: 'uppercase',
@@ -52,7 +52,7 @@ export default function Hero() {
             </h1>
             <p style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(22px, 2.8vw, 40px)',
+              fontSize: 'clamp(16px, 5vw, 40px)',
               fontWeight: 600,
               color: '#fff',
               letterSpacing: '-0.5px',

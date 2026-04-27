@@ -1288,6 +1288,7 @@ footer {
   .trust-sep { display: none; }
   .hero-actions { flex-direction: column; }
   .hero-actions .btn { width: 100%; justify-content: center; }
+  .hero-badge { font-size: 10px; letter-spacing: 0.5px; padding: 5px 10px; }
 
   /* Grids */
   .steps-grid { grid-template-columns: repeat(2, 1fr); }
