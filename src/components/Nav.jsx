@@ -57,8 +57,8 @@ export default function Nav() {
           >
             {t('nav.langSwitch')}
           </button>
-          <a href="#pilots" className="btn btn--primary nav-cta-desktop" style={{ padding: '8px 16px', fontSize: '13px' }}>
-            {t('nav.applyPilot')}
+          <a href="#community" className="btn btn--primary nav-cta-desktop" style={{ padding: '8px 16px', fontSize: '13px' }}>
+            {t('nav.pilotNode')}
           </a>
           <button
             className="nav-hamburger"
@@ -90,8 +90,8 @@ export default function Nav() {
               );
             })}
           </ul>
-          <a href="#pilots" className="btn btn--primary" style={{ width: '100%', justifyContent: 'center' }} onClick={closeMenu}>
-            {t('nav.applyPilot')}
+          <a href="#community" className="btn btn--primary" style={{ width: '100%', justifyContent: 'center' }} onClick={closeMenu}>
+            {t('nav.pilotNode')}
           </a>
         </div>
       )}

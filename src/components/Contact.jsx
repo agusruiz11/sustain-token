@@ -13,7 +13,7 @@ export default function Contact() {
           <h2 id="contact-heading">{t('contact.heading')}</h2>
           <p>{t('contact.desc')}</p>
           <div className="contact-actions">
-            <a href="mailto:contact@sustaintoken.org" className="btn btn--primary btn--large">
+            <a href="#community" className="btn btn--primary btn--large">
               {t('contact.btnPilot')}
             </a>
             <a href="mailto:contact@sustaintoken.org" className="btn btn--ghost btn--large">

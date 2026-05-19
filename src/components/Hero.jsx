@@ -71,10 +71,7 @@ export default function Hero() {
 
           {/* actions */}
           <motion.div className="hero-actions" variants={fadeUp}>
-            <a href="#protocol" className="btn btn--primary btn--large">
-              {t('hero.btnProtocol')}
-            </a>
-            <a href="#pilots" className="btn btn--ghost btn--large">
+            <a href="#community" className="btn btn--primary btn--large">
               {t('hero.btnPilot')}
             </a>
             <a

@@ -135,6 +135,8 @@ export default function Community() {
                   <option value="waste">{t('community.formTypeWaste')}</option>
                   <option value="mobility">{t('community.formTypeMobility')}</option>
                   <option value="water">{t('community.formTypeWater')}</option>
+                  <option value="organic">{t('community.formTypeOrganic')}</option>
+                  <option value="public_space">{t('community.formTypePublicSpace')}</option>
                   <option value="other">{t('community.formTypeOther')}</option>
                 </select>
               </div>
