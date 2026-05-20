@@ -141,7 +141,7 @@ export default function Pilots() {
                 tooltip={t('pilots.energyBadgeTooltip')}
               />
             </div>
-            <p style={{ fontSize: '11px', color: 'var(--ink-400)', fontFamily: 'var(--font-mono)', marginBottom: '12px', letterSpacing: '0.3px', whiteSpace: 'pre-wrap' }}>
+            <p style={{ fontSize: '11px', color: 'var(--ink-400)', fontFamily: 'var(--font-mono)', marginBottom: '12px', whiteSpace: 'pre-wrap', overflowWrap: 'anywhere', wordBreak: 'break-word' }}>
               {t('pilots.energyGenesisMeta')}
             </p>
             <div>
@@ -188,7 +188,7 @@ export default function Pilots() {
                 copyAriaLabel={t('pilots.txHashCopyAriaLabel')}
               />
             </div>
-            <div style={{ marginTop: '16px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <div className="pilot-energy-actions" style={{ marginTop: '16px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <a
                 href="https://bscscan.com/tx/0xb7674a09cf7bf3201ff7046e72d916993f4357024be1230fd56df6c6049c85a8#eventlog"
                 target="_blank"

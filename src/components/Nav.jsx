@@ -57,7 +57,7 @@ export default function Nav() {
           >
             {t('nav.langSwitch')}
           </button>
-          <a href="#community" className="btn btn--primary nav-cta-desktop" style={{ padding: '8px 16px', fontSize: '13px' }}>
+          <a href="#pilot-form" className="btn btn--primary nav-cta-desktop" style={{ padding: '8px 16px', fontSize: '13px' }}>
             {t('nav.pilotNode')}
           </a>
           <button
@@ -90,7 +90,7 @@ export default function Nav() {
               );
             })}
           </ul>
-          <a href="#community" className="btn btn--primary" style={{ width: '100%', justifyContent: 'center' }} onClick={closeMenu}>
+          <a href="#pilot-form" className="btn btn--primary" style={{ width: '100%', justifyContent: 'center' }} onClick={closeMenu}>
             {t('nav.pilotNode')}
           </a>
         </div>

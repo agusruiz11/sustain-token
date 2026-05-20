@@ -105,7 +105,7 @@ export default function Community() {
           </div>
 
           {/* Block B — Join Program */}
-          <div className="community-block" role="region" aria-labelledby="join-title">
+          <div id="pilot-form" className="community-block" role="region" aria-labelledby="join-title">
             <div className="block-label">{t('community.blockBLabel')}</div>
             <h3 id="join-title">{t('community.blockBTitle')}</h3>
             <p>{t('community.blockBDesc')}</p>

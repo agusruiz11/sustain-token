@@ -933,6 +933,7 @@ h4 { font-size: 16px; font-weight: 700; }
 }
 .ses-note { font-family: var(--font-mono); font-size: 10px; color: var(--amber-600); margin-top: 8px; }
 .pilot-form { display: flex; flex-direction: column; gap: 12px; }
+#pilot-form { scroll-margin-top: 96px; }
 .form-field { display: flex; flex-direction: column; gap: 6px; }
 .form-field label { font-size: 12px; color: var(--ink-300); font-weight: 500; }
 .form-field input,
@@ -1309,17 +1310,17 @@ footer {
   /* Pilots */
   .pilots-cta-band { padding: var(--sp-4); }
   .energy-row { flex-direction: column; gap: 4px; align-items: flex-start; }
-  .energy-val, .energy-val--green { font-size: 13px; }
+  .energy-val, .energy-val--green { font-size: 12px; word-break: break-word; overflow-wrap: anywhere; }
 
   /* Dashboard topbar */
   .dashboard-topbar { flex-wrap: wrap; gap: 8px; }
   .dashboard-topbar-label { display: none; }
 
   /* Community */
-  .community-block { padding: var(--sp-4); }
-
-  /* Chip values */
-  .chip-value { font-size: 11px; }
+  .community-block { padding: var(--sp-4); overflow: hidden; }
+  .library-node { overflow: hidden; }
+  .chip { overflow: hidden; }
+  .chip-value { font-size: 11px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   /* Chip tooltip */
   .chip-tooltip { white-space: normal; max-width: 80vw; }
@@ -1332,8 +1333,11 @@ footer {
   .code-block pre { font-size: 11px; }
 
   /* Pilot energy card */
-  .pilot-energy { padding: var(--sp-4); gap: var(--sp-4); }
+  .pilot-energy { padding: var(--sp-2) var(--sp-3); gap: var(--sp-3); overflow: hidden; max-width: 100%; box-sizing: border-box; }
+  .pilot-energy p { overflow-wrap: anywhere; word-break: break-word; max-width: 100%; }
   .energy-title { flex-wrap: wrap; gap: 8px; }
+  .pilot-energy-actions { flex-direction: column; gap: 8px; }
+  .pilot-energy-actions .btn { width: 100%; justify-content: center; text-align: center; box-sizing: border-box; }
 
   /* Dev tabs */
   .dev-tabs { flex-wrap: wrap; gap: 4px; }
