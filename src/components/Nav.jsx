@@ -32,7 +32,7 @@ export default function Nav() {
     <nav role="navigation" aria-label={t('nav.ariaLabel')}>
       <div className="nav-inner">
         <a href="#hero" className="nav-logo" aria-label={t('nav.logoAriaLabel')}>
-          <img src={logoMark} alt="SustainToken logo mark" style={{ height: 48, width: 'auto', display: 'block' }} />
+          <img src={logoMark} alt="Sustain logo mark" style={{ height: 48, width: 'auto', display: 'block' }} />
         </a>
         <ul className="nav-links" role="list">
           {NAV_LINKS.map(({ href, key }) => {

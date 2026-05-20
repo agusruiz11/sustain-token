@@ -1,6 +1,6 @@
 export const USER = {
   name: 'Martín',
-  fullName: 'Martín Cerón',
+  fullName: 'Martín Ceron',
   handle: 'sustainorg.eth',
   avatar: null,
   sesScore: 842,

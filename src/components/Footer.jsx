@@ -19,7 +19,7 @@ export default function Footer() {
       <div className="container">
         <div className="footer-inner">
           <div className="footer-logo">
-            <img src={logo} alt="SustainToken" style={{ height: 40, width: 'auto', display: 'block' }} />
+            <img src={logo} alt="Sustain" style={{ height: 40, width: 'auto', display: 'block' }} />
           </div>
           <ul className="footer-links" role="list">
             {FOOTER_LINKS.map(({ href, key }) => (
