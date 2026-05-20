@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sustain Protocol · AWS Activate Proposal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cyan:   #29DDF5;
+    --green:  #1E9E72;
+    --navy:   #1B365F;
+    --ink:    #03151A;
+    --paper:  #061820;
+    --card:   #0B2030;
+    --line:   rgba(41,221,245,0.12);
+    --text:   #C8D8F0;
+    --muted:  #5A7A9A;
+    --amber:  #D4A017;
+  }
+
+  html { background: var(--ink); }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--paper);
+    color: var(--text);
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 12mm 14mm;
+    font-size: 10.5px;
+    line-height: 1.5;
+  }
+
+  /* ── HEADER ─────────────────────────────── */
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+  }
+  .logo-block { display: flex; align-items: center; gap: 10px; }
+  .logo-circle {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--cyan), var(--green));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 15px; color: var(--ink);
+    flex-shrink: 0;
+  }
+  .logo-name { font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.3px; }
+  .logo-sub  { font-size: 9px; color: var(--muted); font-family: 'JetBrains Mono', monospace; margin-top: 1px; }
+  .header-badge {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .header-badge strong { color: var(--cyan); font-size: 9px; display: block; margin-bottom: 2px; }
+
+  /* ── HERO ────────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, rgba(41,221,245,0.06), rgba(30,158,114,0.04));
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -30px; right: -30px;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(41,221,245,0.08), transparent 70%);
+  }
+  .hero-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--cyan); background: rgba(41,221,245,0.08);
+    border: 1px solid rgba(41,221,245,0.2);
+    border-radius: 4px; padding: 3px 8px; margin-bottom: 8px;
+  }
+  .hero h1 {
+    font-size: 20px; font-weight: 900; color: #fff;
+    line-height: 1.2; letter-spacing: -0.5px; margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--cyan); }
+  .hero p { font-size: 10.5px; color: var(--text); max-width: 480px; line-height: 1.6; }
+
+  /* ── GRID ────────────────────────────────── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+
+  /* ── CARD ────────────────────────────────── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .card-title {
+    font-size: 8px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .card-title::before {
+    content: ''; display: block;
+    width: 14px; height: 2px; border-radius: 1px;
+    background: var(--cyan);
+  }
+
+  /* ── PROBLEM ─────────────────────────────── */
+  .problem-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .problem-list li {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: 10px; color: var(--text); line-height: 1.5;
+  }
+  .problem-list li .icon {
+    width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0;
+    background: rgba(212,160,23,0.12); border: 1px solid rgba(212,160,23,0.2);
+    display: flex; align-items: center; justify-content: center; font-size: 9px; margin-top: 1px;
+  }
+
+  /* ── FLOW ─────────────────────────────────── */
+  .flow {
+    display: flex; align-items: center; gap: 0;
+    margin-bottom: 4px;
+  }
+  .flow-step {
+    flex: 1;
+    background: rgba(41,221,245,0.04);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+  .flow-step .step-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+  .flow-step .step-name { font-size: 8px; font-weight: 700; color: #fff; display: block; }
+  .flow-step .step-sub { font-size: 7.5px; color: var(--muted); font-family: 'JetBrains Mono', monospace; display: block; margin-top: 1px; }
+  .flow-arrow {
+    color: var(--cyan); font-size: 11px; padding: 0 3px; flex-shrink: 0;
+  }
+
+  /* ── AWS SERVICES ─────────────────────────── */
+  .aws-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .aws-item {
+    display: flex; align-items: flex-start; gap: 7px;
+    background: rgba(255,153,0,0.04);
+    border: 1px solid rgba(255,153,0,0.12);
+    border-radius: 6px; padding: 7px 8px;
+  }
+  .aws-item .aws-icon {
+    width: 22px; height: 22px; border-radius: 5px; flex-shrink: 0;
+    background: rgba(255,153,0,0.1);
+    display: flex; align-items: center; justify-content: center; font-size: 11px;
+  }
+  .aws-item .aws-label { font-size: 9px; font-weight: 700; color: #FF9900; display: block; }
+  .aws-item .aws-use   { font-size: 8.5px; color: var(--muted); line-height: 1.4; margin-top: 1px; display: block; }
+
+  /* ── TRACTION ─────────────────────────────── */
+  .pilot-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 0; border-bottom: 1px solid var(--line);
+  }
+  .pilot-row:last-child { border-bottom: none; }
+  .pilot-avatar {
+    width: 26px; height: 26px; border-radius: 6px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 800; font-family: 'JetBrains Mono', monospace;
+  }
+  .pilot-name  { font-size: 9.5px; font-weight: 700; color: #fff; }
+  .pilot-meta  { font-size: 8px; color: var(--muted); font-family: 'JetBrains Mono', monospace; margin-top: 1px; }
+  .pilot-stat  { margin-left: auto; text-align: right; }
+  .pilot-stat .val { font-size: 11px; font-weight: 800; color: var(--cyan); font-family: 'JetBrains Mono', monospace; }
+  .pilot-stat .lbl { font-size: 7.5px; color: var(--muted); }
+
+  .traction-kpis { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 8px; }
+  .tkpi {
+    background: rgba(41,221,245,0.04); border: 1px solid var(--line);
+    border-radius: 6px; padding: 6px 8px; text-align: center;
+  }
+  .tkpi .tval { font-size: 16px; font-weight: 900; color: var(--cyan); font-family: 'JetBrains Mono', monospace; display: block; }
+  .tkpi .tlbl { font-size: 7.5px; color: var(--muted); display: block; margin-top: 1px; }
+
+  /* ── ASK ──────────────────────────────────── */
+  .ask-list { display: flex; flex-direction: column; gap: 6px; }
+  .ask-item {
+    display: flex; align-items: flex-start; gap: 8px;
+    background: rgba(30,158,114,0.05); border: 1px solid rgba(30,158,114,0.15);
+    border-radius: 6px; padding: 7px 10px;
+  }
+  .ask-num {
+    width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(41,221,245,0.12); border: 1px solid rgba(41,221,245,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px; font-weight: 800; color: var(--cyan);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .ask-text strong { display: block; font-size: 9.5px; font-weight: 700; color: #fff; margin-bottom: 1px; }
+  .ask-text span { font-size: 8.5px; color: var(--muted); line-height: 1.4; }
+
+  /* ── FOOTER ───────────────────────────────── */
+  .footer {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-left { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--muted); line-height: 1.7; }
+  .footer-left strong { color: var(--cyan); }
+  .footer-right {
+    background: rgba(41,221,245,0.06); border: 1px solid rgba(41,221,245,0.2);
+    border-radius: 6px; padding: 6px 12px; text-align: center;
+  }
+  .footer-right .fr-label { font-size: 7.5px; color: var(--muted); font-family: 'JetBrains Mono', monospace; display: block; }
+  .footer-right .fr-val   { font-size: 13px; font-weight: 900; color: var(--cyan); display: block; letter-spacing: -0.3px; }
+
+  /* ── PRINT ────────────────────────────────── */
+  @media print {
+    html, body { background: var(--ink) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { margin: 0; padding: 10mm 12mm; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo-block">
+    <div class="logo-circle">S</div>
+    <div>
+      <div class="logo-name">Sustain Protocol</div>
+      <div class="logo-sub">sustainprotocol.io · Genesis Pilot · 2026</div>
+    </div>
+  </div>
+  <div class="header-badge">
+    <strong>AWS Activate — Propuesta de Partnership</strong>
+    Confidencial · Mayo 2026<br>
+    Reunión: Representante AWS Argentina
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">⬡ Impact Infrastructure Protocol</div>
+  <h1>El protocolo que convierte <span>acciones sustentables</span><br>en valor verificable y trazable</h1>
+  <p>
+    Sustain Protocol es la infraestructura que conecta empresas de economía circular con consumidores conscientes,
+    registrando cada acción de impacto ambiental en blockchain para que sea verificable, trazable e incentivada con tokens $SUS.
+  </p>
+</div>
+
+<!-- ROW 1: PROBLEMA + CÓMO FUNCIONA -->
+<div class="grid-2">
+
+  <div class="card">
+    <div class="card-title">El Problema</div>
+    <ul class="problem-list">
+      <li>
+        <div class="icon">⚠</div>
+        <span><strong style="color:#fff">Greenwashing sin consecuencias.</strong> Las empresas declaran impacto sin ningún mecanismo de verificación independiente.</span>
+      </li>
+      <li>
+        <div class="icon">🔗</div>
+        <span><strong style="color:#fff">Cadena de valor invisible.</strong> El consumidor no sabe si su compra generó impacto real o fue solo marketing.</span>
+      </li>
+      <li>
+        <div class="icon">📊</div>
+        <span><strong style="color:#fff">Sin incentivo económico.</strong> Comportarse de forma sustentable no tiene retorno tangible para empresas ni personas.</span>
+      </li>
+      <li>
+        <div class="icon">🏛</div>
+        <span><strong style="color:#fff">Reporting fragmentado.</strong> Cada empresa reporta ODS de forma aislada, sin estándar común ni trazabilidad.</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Cómo Funciona</div>
+    <div class="flow">
+      <div class="flow-step">
+        <span class="step-icon">🏭</span>
+        <span class="step-name">Empresa</span>
+        <span class="step-sub">registra acción</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <span class="step-icon">🧠</span>
+        <span class="step-name">Verificación</span>
+        <span class="step-sub">IA + MRV + OCR</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <span class="step-icon">⛓</span>
+        <span class="step-name">Blockchain</span>
+        <span class="step-sub">registro inmutable</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <span class="step-icon">🛍</span>
+        <span class="step-name">Usuario</span>
+        <span class="step-sub">compra · actúa</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="border-color: rgba(41,221,245,0.3); background: rgba(41,221,245,0.06);">
+        <span class="step-icon">🪙</span>
+        <span class="step-name" style="color:var(--cyan)">$SUS</span>
+        <span class="step-sub">token de impacto</span>
+      </div>
+    </div>
+    <p style="font-size:8.5px; color:var(--muted); margin-top:8px; line-height:1.5;">
+      Cada acción verificada genera un registro con evidencia (foto, factura, sensor), un hash único en Polygon Mainnet
+      y puntos SES que se convierten en tokens $SUS canjeables dentro del ecosistema.
+    </p>
+  </div>
+
+</div>
+
+<!-- ROW 2: AWS + TRACCIÓN -->
+<div class="grid-2">
+
+  <div class="card">
+    <div class="card-title">Por Qué AWS</div>
+    <div class="aws-grid">
+      <div class="aws-item">
+        <div class="aws-icon">📦</div>
+        <div>
+          <span class="aws-label">Amazon S3</span>
+          <span class="aws-use">Almacenamiento de evidencias: fotos, facturas, documentos de verificación</span>
+        </div>
+      </div>
+      <div class="aws-item">
+        <div class="aws-icon">⚡</div>
+        <div>
+          <span class="aws-label">AWS Lambda</span>
+          <span class="aws-use">Lógica serverless de verificación, scoring SES y emisión de tokens</span>
+        </div>
+      </div>
+      <div class="aws-item">
+        <div class="aws-icon">👁</div>
+        <div>
+          <span class="aws-label">Amazon Rekognition</span>
+          <span class="aws-use">Validación de evidencias con IA: OCR de facturas, detección de imágenes</span>
+        </div>
+      </div>
+      <div class="aws-item">
+        <div class="aws-icon">📡</div>
+        <div>
+          <span class="aws-label">AWS IoT Core</span>
+          <span class="aws-use">Integración con sensores físicos para medición automática de impacto</span>
+        </div>
+      </div>
+      <div class="aws-item">
+        <div class="aws-icon">🗄</div>
+        <div>
+          <span class="aws-label">Amazon DynamoDB</span>
+          <span class="aws-use">Base de datos de acciones, scores y registros de usuarios en tiempo real</span>
+        </div>
+      </div>
+      <div class="aws-item">
+        <div class="aws-icon">🌐</div>
+        <div>
+          <span class="aws-label">AWS Amplify</span>
+          <span class="aws-use">Deploy y hosting del panel web, dashboard de empresas y app de usuarios</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Tracción · Genesis Pilot</div>
+
+    <div class="pilot-row">
+      <div class="pilot-avatar" style="background:linear-gradient(135deg,#E8BEE0,#F2D4EF);color:#1B365F">ZZ</div>
+      <div>
+        <div class="pilot-name">ZigZag Patagonia</div>
+        <div class="pilot-meta">Textil circular · San Martín de los Andes</div>
+      </div>
+      <div class="pilot-stat">
+        <div class="val">437</div>
+        <div class="lbl">compradores activos</div>
+      </div>
+    </div>
+
+    <div class="pilot-row">
+      <div class="pilot-avatar" style="background:linear-gradient(135deg,#1E9E72,#29DDF5);color:#fff">ST</div>
+      <div>
+        <div class="pilot-name">Sitopia</div>
+        <div class="pilot-meta">Compostaje · CABA, Argentina</div>
+      </div>
+      <div class="pilot-stat">
+        <div class="val">132</div>
+        <div class="lbl">usuarios activados</div>
+      </div>
+    </div>
+
+    <div class="pilot-row">
+      <div class="pilot-avatar" style="background:linear-gradient(135deg,#B8860B,#D4A017);color:#fff">BP</div>
+      <div>
+        <div class="pilot-name">Biopak Argentina</div>
+        <div class="pilot-meta">Packaging biodegradable · Rosario</div>
+      </div>
+      <div class="pilot-stat">
+        <div class="val">23</div>
+        <div class="lbl">empresas usuarias B2B</div>
+      </div>
+    </div>
+
+    <div class="traction-kpis">
+      <div class="tkpi">
+        <span class="tval">1.8 t</span>
+        <span class="tlbl">CO₂e evitado (piloto)</span>
+      </div>
+      <div class="tkpi">
+        <span class="tval">+200</span>
+        <span class="tlbl">usuarios en waitlist</span>
+      </div>
+      <div class="tkpi">
+        <span class="tval">3</span>
+        <span class="tlbl">industrias cubiertas</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ROW 3: LO QUE PEDIMOS (full width) -->
+<div class="card" style="margin-bottom:0">
+  <div class="card-title">Lo Que Pedimos a AWS</div>
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
+
+    <div class="ask-item">
+      <div class="ask-num">1</div>
+      <div class="ask-text">
+        <strong>Créditos AWS Activate</strong>
+        <span>Infraestructura para escalar el piloto: S3, Lambda, Rekognition, DynamoDB e IoT Core durante los primeros 12 meses de operación.</span>
+      </div>
+    </div>
+
+    <div class="ask-item">
+      <div class="ask-num">2</div>
+      <div class="ask-text">
+        <strong>Soporte Técnico &amp; Arquitectura</strong>
+        <span>Acceso a AWS Solutions Architects para diseñar la infraestructura de verificación, escalabilidad y el pipeline de IA con Rekognition.</span>
+      </div>
+    </div>
+
+    <div class="ask-item">
+      <div class="ask-num">3</div>
+      <div class="ask-text">
+        <strong>Partnership Institucional</strong>
+        <span>Respaldo de AWS como infraestructura oficial del protocolo — validación clave para la próxima ronda de inversión y alianzas corporativas.</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-left">
+    <strong>sustainprotocol.io</strong><br>
+    contacto@sustainprotocol.io · Genesis Pilot 2026<br>
+    Registro en Polygon Mainnet · Contrato: SustainGenesisActionRegistry
+  </div>
+  <div class="footer-right">
+    <span class="fr-label">Impacto Total Piloto</span>
+    <span class="fr-val">1,864.6 kg</span>
+    <span class="fr-label" style="font-size:7px;">material circular verificado</span>
+  </div>
+</footer>
+
+</body>
+</html>

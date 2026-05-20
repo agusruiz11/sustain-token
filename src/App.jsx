@@ -1,3 +1,4 @@
+import { Routes, Route } from 'react-router-dom';
 import Nav from './components/Nav';
 import FloatingBird from './components/FloatingBird';
 import Hero from './components/Hero';
@@ -14,12 +15,15 @@ import Developers from './components/Developers';
 import Resources from './components/Resources';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import DemoHub from './demo/DemoHub';
+import EmpresaDashboard from './demo/EmpresaDashboard';
+import UsuarioFinal from './demo/UsuarioFinal';
 
 function Divider() {
   return <div className="divider" />;
 }
 
-export default function App() {
+function LandingPage() {
   return (
     <>
       <Nav />
@@ -51,5 +55,16 @@ export default function App() {
       <Contact />
       <Footer />
     </>
+  );
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/demo" element={<DemoHub />} />
+      <Route path="/demo/empresa/:slug" element={<EmpresaDashboard />} />
+      <Route path="/demo/usuario" element={<UsuarioFinal />} />
+    </Routes>
   );
 }
