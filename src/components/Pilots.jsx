@@ -108,7 +108,7 @@ export default function Pilots() {
             <h3 id="pilot-cta-title">{t('pilots.ctaHeading')}</h3>
             <p>{t('pilots.ctaSub')}</p>
           </div>
-          <a href="#community" className="btn btn--primary btn--large">
+          <a href="#pilot-form" className="btn btn--primary btn--large">
             {t('pilots.ctaBtn')}
           </a>
         </div>

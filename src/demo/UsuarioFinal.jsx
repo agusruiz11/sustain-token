@@ -127,14 +127,7 @@ export default function UsuarioFinal() {
                       <div className="udash-action-pts">+{a.pts} pts</div>
                     </div>
                     <span className="udash-verified-chip">VERIFICADA</span>
-                    <span style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '10px',
-                      color: 'var(--ink-300)',
-                      marginLeft: '4px',
-                      minWidth: '80px',
-                      textAlign: 'right',
-                    }}>
+                    <span className="udash-action-date">
                       {a.date}
                     </span>
                   </div>

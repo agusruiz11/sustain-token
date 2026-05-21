@@ -5,6 +5,7 @@
   display: flex;
   min-height: 100vh;
   background: var(--bg-0);
+  overflow-x: hidden;
 }
 .dash-layout body::before { display: none; }
 
@@ -1223,6 +1224,17 @@
   border: 1px solid rgba(30,158,114,0.3);
   color: var(--green-600);
   letter-spacing: 0.5px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.udash-action-date {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+  margin-left: 4px;
+  text-align: right;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 /* Impact totals */
@@ -1450,6 +1462,10 @@
 
 /* ── Mobile (≤ 640px) ── */
 @media (max-width: 640px) {
+  /* Overflow control */
+  .dash-main { max-width: 100%; overflow-x: hidden; }
+  .dash-content { padding: 14px 12px 40px; overflow-x: hidden; }
+
   /* Stats */
   .dash-stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
   .dash-stat-card-value { font-size: 22px; }
@@ -1457,18 +1473,34 @@
   /* Tables stack */
   .dash-tables-grid { grid-template-columns: 1fr; }
 
-  /* Content padding */
-  .dash-content { padding: 14px 14px 40px; }
-  .dash-topbar { padding: 0 14px; gap: 8px; }
-  .dash-topbar-company-name { font-size: 13px; }
-  .dash-topbar-company-sub { font-size: 10px; }
+  /* Topbar */
+  .dash-topbar { padding: 0 12px; gap: 8px; }
+  .dash-topbar-left { min-width: 0; flex: 1; overflow: hidden; }
+  .dash-topbar-company-name { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 130px; }
+  .dash-topbar-right { flex-shrink: 0; gap: 8px; }
+  .dash-verified-badge { font-size: 9px; padding: 3px 8px; letter-spacing: 0.5px; }
+
+  /* Section header */
+  .dash-section-header { flex-wrap: nowrap; gap: 8px; }
+  .dash-section-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; flex: 1; }
 
   /* User hero */
-  .udash-hero { flex-direction: column; align-items: flex-start; gap: 14px; padding: 16px 18px; }
-  .udash-hero-meta { flex-wrap: wrap; gap: 10px; }
-  .udash-hero-kpi { min-width: 70px; }
+  .udash-hero { flex-direction: column; align-items: flex-start; gap: 14px; padding: 16px 16px; }
+  .udash-hero-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; width: 100%; }
+  .udash-hero-kpi { min-width: 0; text-align: left; }
+  .udash-hero-kpi-label { font-size: 8px; white-space: normal; line-height: 1.3; }
   .udash-hero-kpi-val { font-size: 20px; }
   .udash-ses-score { font-size: 44px; }
+
+  /* Action rows: hide date on mobile, tighten gaps */
+  .udash-action-row { gap: 8px; }
+  .udash-action-date { display: none; }
+  .udash-verified-chip { font-size: 8px; padding: 2px 5px; }
+  .udash-action-value { font-size: 11px; }
+
+  /* Cards */
+  .dash-card { padding: 16px; }
+  .udash-ses-card { padding: 16px; }
 
   /* Badges */
   .udash-badges-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
@@ -1483,7 +1515,8 @@
 
   /* Audit */
   .dash-audit-key { min-width: 60px; font-size: 8px; }
-  .dash-audit-val { font-size: 10px; }
+  .dash-audit-val { font-size: 10px; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .dash-audit-row { min-width: 0; box-sizing: border-box; }
 
   /* Donut chart center */
   .dash-donut-svg-wrap { width: 140px; height: 140px; }
@@ -1492,4 +1525,6 @@
   /* Footer strip */
   .dash-footer-strip { flex-direction: column; gap: 12px; padding: 14px 16px; }
   .dash-footer-strip > *:last-child { align-self: flex-start; }
+  .dash-footer-item { align-items: flex-start; }
+  .dash-footer-text span { display: none; }
 }
