@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import Nav from './components/Nav';
 import FloatingBird from './components/FloatingBird';
 import Hero from './components/Hero';
@@ -24,6 +25,24 @@ function Divider() {
 }
 
 function LandingPage() {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) return;
+    const id = hash.replace('#', '');
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // Retry once after components finish painting
+      const timer = setTimeout(() => {
+        const elRetry = document.getElementById(id);
+        if (elRetry) elRetry.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [hash]);
+
   return (
     <>
       <Nav />
