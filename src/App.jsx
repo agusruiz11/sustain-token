@@ -18,6 +18,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import DemoHub from './demo/DemoHub';
 import EmpresaDashboard from './demo/EmpresaDashboard';
+import InstitucionDashboard from './demo/InstitucionDashboard';
 import UsuarioFinal from './demo/UsuarioFinal';
 
 function Divider() {
@@ -83,6 +84,7 @@ export default function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/demo" element={<DemoHub />} />
       <Route path="/demo/empresa/:slug" element={<EmpresaDashboard />} />
+      <Route path="/demo/institucion/:slug" element={<InstitucionDashboard />} />
       <Route path="/demo/usuario" element={<UsuarioFinal />} />
     </Routes>
   );

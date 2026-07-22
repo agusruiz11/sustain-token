@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const fs=require\\('fs'\\); const dist=fs.statSync\\('dist/og-image.png'\\); console.log\\('dist:', dist.size, 'bytes'\\);\")",
+      "Bash(winget install *)",
+      "Bash(pip install *)",
+      "Bash(python -c \"import docx\")",
+      "Bash(python \"C:\\\\Users\\\\agusr\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-agusr-Documents-Work-sustain-token\\\\9239ff10-06c8-44a6-a935-ca91a4328b84\\\\scratchpad\\\\docx2txt.py\" \"docu/drive-download-20260722T140945Z-1-001/00_README/README.docx\")",
+      "Read(//c/Program Files/**)",
+      "Read(//c/ProgramData/chocolatey/lib/**)",
+      "Bash(where ffmpeg *)",
+      "Bash(\"/c/Users/agusr/AppData/Local/Microsoft/WinGet/Links/ffmpeg.exe\" -version)",
+      "PowerShell(Get-ChildItem -Path \"$env:LOCALAPPDATA\\\\Microsoft\\\\WinGet\\\\Packages\" -Recurse -Filter ffmpeg.exe -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName)",
+      "Bash(python -m whisper --help)",
+      "Read(//c/Users/agusr/.cache/whisper/**)",
+      "Bash(tasklist)",
+      "Bash(git config *)",
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(disown)",
+      "Bash(timeout 30 bash -c 'until curl -sf http://localhost:5173 >/dev/null 2>&1; do sleep 1; done')",
+      "Read(//tmp/**)",
+      "Bash(git status *)",
+      "Bash(npx --yes playwright --version)",
+      "Bash(npx --yes playwright install chromium)",
+      "Bash(node \"C:\\\\Users\\\\agusr\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-agusr-Documents-Work-sustain-token\\\\9239ff10-06c8-44a6-a935-ca91a4328b84\\\\scratchpad\\\\screenshot.mjs\")",
+      "Read(//c/Users/agusr/.npm/**)",
+      "Bash(npm root *)",
+      "Bash(npm init *)",
+      "Bash(node screenshot.mjs)"
+    ]
+  }
+}

@@ -37,6 +37,34 @@ const EMPRESA_NAV = [
   },
 ];
 
+const INSTITUCION_NAV = [
+  {
+    group: 'GESTIÓN',
+    items: [
+      { icon: '⊞', label: 'Resumen', id: 'resumen' },
+      { icon: '▤', label: 'Módulos', id: 'modulos' },
+      { icon: '✓', label: 'Acciones Verificadas', id: 'acciones' },
+      { icon: '↑', label: 'Subir Evidencia', id: 'evidencia' },
+      { icon: '🗂', label: 'Data Room', id: 'dataroom' },
+    ],
+  },
+  {
+    group: 'IMPACTO',
+    items: [
+      { icon: '◉', label: 'Dashboard de Impacto', id: 'impacto' },
+      { icon: '≡', label: 'Reportes', id: 'reportes' },
+      { icon: '★', label: 'Badges', id: 'badges' },
+    ],
+  },
+  {
+    group: 'CONFIGURACIÓN',
+    items: [
+      { icon: '⬡', label: 'Perfil Institucional', id: 'perfil' },
+      { icon: '⚙', label: 'Ajustes', id: 'ajustes' },
+    ],
+  },
+];
+
 const USUARIO_NAV = [
   {
     group: 'ACCIONES',
@@ -69,7 +97,7 @@ const USUARIO_NAV = [
 ];
 
 export default function DashSidebar({ mode = 'empresa', wallet = '0.00', isOpen = false, onClose }) {
-  const nav = mode === 'empresa' ? EMPRESA_NAV : USUARIO_NAV;
+  const nav = mode === 'empresa' ? EMPRESA_NAV : mode === 'institucion' ? INSTITUCION_NAV : USUARIO_NAV;
 
   return (
     <>
@@ -114,17 +142,29 @@ export default function DashSidebar({ mode = 'empresa', wallet = '0.00', isOpen 
           ))}
         </div>
 
-        <div className="dash-sidebar-wallet">
-          <div className="dash-wallet-label">SUS Wallet</div>
-          <div className="dash-wallet-amount">
-            {wallet}
-            <span className="dash-wallet-currency">$SUS</span>
+        {mode === 'institucion' ? (
+          <div className="dash-sidebar-wallet">
+            <div className="dash-wallet-label">Piloto Genesis</div>
+            <div className="dash-wallet-amount" style={{ fontSize: '20px' }}>
+              Mes 1 <span className="dash-wallet-currency">/ 3</span>
+            </div>
+            <div className="dash-wallet-label" style={{ marginTop: '4px', fontSize: '9px' }}>
+              Centralización de información histórica
+            </div>
           </div>
-          <div className="dash-wallet-label" style={{ marginTop: '4px', fontSize: '9px' }}>
-            Saldo Disponible
+        ) : (
+          <div className="dash-sidebar-wallet">
+            <div className="dash-wallet-label">SUS Wallet</div>
+            <div className="dash-wallet-amount">
+              {wallet}
+              <span className="dash-wallet-currency">$SUS</span>
+            </div>
+            <div className="dash-wallet-label" style={{ marginTop: '4px', fontSize: '9px' }}>
+              Saldo Disponible
+            </div>
+            <a className="dash-wallet-link" href="#">Ver Movimientos →</a>
           </div>
-          <a className="dash-wallet-link" href="#">Ver Movimientos →</a>
-        </div>
+        )}
       </aside>
     </>
   );

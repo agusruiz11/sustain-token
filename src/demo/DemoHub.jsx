@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { COMPANY_LIST, COMPANIES } from './data/companies';
+import { INSTITUTION_LIST, INSTITUTIONS } from './data/institutions';
 import { USER } from './data/user';
 
 import './demo.css';
@@ -37,7 +38,73 @@ export default function DemoHub() {
           </p>
         </div>
 
-        <div className="demo-hub-section-label">Paneles de Empresa · Nodos Circulares</div>
+        <div className="demo-hub-section-label">Paneles de Institución · Piloto Genesis</div>
+        <div className="demo-hub-grid">
+          {INSTITUTION_LIST.map((inst) => {
+            const data = INSTITUTIONS[inst.slug];
+            return (
+              <Link
+                key={inst.slug}
+                to={`/demo/institucion/${inst.slug}`}
+                className="demo-hub-card"
+                style={{
+                  '--card-accent': inst.accentColor,
+                  '--card-accent-bg': data.accentBg,
+                }}
+              >
+                <div className="demo-hub-card-header">
+                  <div
+                    className="demo-hub-card-avatar"
+                    style={data.initialsStyle}
+                  >
+                    {data.initials}
+                  </div>
+                  <div
+                    className="demo-hub-card-tag"
+                    style={{
+                      background: data.accentBg,
+                      border: `1px solid ${inst.accentColor}44`,
+                      color: inst.accentColor,
+                    }}
+                  >
+                    Institución
+                  </div>
+                </div>
+                <div className="demo-hub-card-name">{inst.name}</div>
+                <div className="demo-hub-card-tagline">{data.location} · Piloto desde {data.memberSince}</div>
+                <div className="demo-hub-card-stats">
+                  <div className="demo-hub-card-stat">
+                    <div className="demo-hub-card-stat-val">{data.stats[0].value}</div>
+                    <div className="demo-hub-card-stat-lbl">{data.stats[0].label}</div>
+                  </div>
+                  <div className="demo-hub-card-stat">
+                    <div className="demo-hub-card-stat-val">{data.stats[1].value}</div>
+                    <div className="demo-hub-card-stat-lbl">{data.stats[1].label}</div>
+                  </div>
+                  <div className="demo-hub-card-stat">
+                    <div
+                      className="demo-hub-card-stat-val"
+                      style={{ color: inst.accentColor }}
+                    >
+                      {data.stats[2].value}
+                    </div>
+                    <div className="demo-hub-card-stat-lbl">SES Score</div>
+                  </div>
+                </div>
+                <div className="demo-hub-card-cta">
+                  <div className="demo-hub-card-btn">
+                    Ver Panel →
+                  </div>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--ink-300)' }}>
+                    Piloto Genesis
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+
+        <div className="demo-hub-section-label" style={{ marginTop: '32px' }}>Paneles de Empresa · Nodos Circulares</div>
         <div className="demo-hub-grid">
           {COMPANY_LIST.map((co) => {
             const data = COMPANIES[co.slug];

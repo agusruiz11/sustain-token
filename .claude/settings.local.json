@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npm install *)",
+      "Bash(node -e \"const fs=require\\('fs'\\);const buf=fs.readFileSync\\('public/og-image.png'\\);const w=buf.readUInt32BE\\(16\\);const h=buf.readUInt32BE\\(20\\);console.log\\(w+'x'+h\\);\")",
+      "Bash(node -e \"const fs=require\\('fs'\\); const pub=fs.statSync\\('public/og-image.png'\\); const dist=fs.statSync\\('dist/og-image.png'\\); console.log\\('public:', pub.size, 'bytes, modified:', pub.mtime\\); console.log\\('dist:', dist.size, 'bytes, modified:', dist.mtime\\);\")"
+    ]
+  }
+}
