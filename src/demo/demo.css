@@ -2300,3 +2300,73 @@ body:has(.dash-layout)::before { display: none; }
 .dr-file-ext[data-ext='csv']  { color: var(--green-600); border-color: rgba(30,158,114,0.3); }
 .dr-file-ext[data-ext='xlsx'] { color: var(--ink-300); }
 .dr-anchor-pair { display: inline-flex; align-items: center; gap: 7px; }
+
+/* ============================================================
+   FASE 4 — Instituciones y Reportes
+   ============================================================ */
+
+.org-name { display: flex; align-items: flex-start; gap: 7px; }
+.org-branch { color: var(--line-300); flex-shrink: 0; line-height: 1.35; }
+.org-name-stack { display: flex; flex-direction: column; min-width: 0; }
+.org-name-text { color: #C8D8F0; font-weight: 500; line-height: 1.35; }
+.org-detail { font-size: 10px; color: var(--ink-300); line-height: 1.4; }
+.org-example-chip {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  color: var(--amber-600);
+  background: rgba(184,134,11,0.1);
+  border: 1px solid rgba(184,134,11,0.28);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+
+.rep-exports {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  padding-top: 4px;
+}
+.rep-export {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 14px;
+  text-align: left;
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.rep-export:hover:not(:disabled):not(.rep-export--off) {
+  border-color: rgba(41,221,245,0.35);
+  background: rgba(41,221,245,0.06);
+}
+.rep-export:focus-visible { outline: 2px solid var(--brand-500); outline-offset: 2px; }
+.rep-export:disabled { opacity: 0.45; cursor: not-allowed; }
+.rep-export--off { opacity: 0.5; cursor: default; }
+.rep-export-info { display: block; min-width: 0; }
+.rep-export-name {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #C8D8F0;
+}
+.rep-export-sub {
+  display: block;
+  font-size: 10px;
+  color: var(--ink-300);
+  margin-top: 2px;
+}
+
+@media (max-width: 1100px) {
+  .dr-layout { grid-template-columns: 1fr; }
+  .dr-preview { order: -1; }
+}
+@media (max-width: 640px) {
+  .dr-actionbar { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+  .dr-action-tab { flex-shrink: 0; }
+  .dr-json { font-size: 10px; padding: 10px; }
+  .dr-meta { grid-template-columns: 1fr 1fr; }
+}

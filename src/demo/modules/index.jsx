@@ -8,6 +8,8 @@ import Timeline from './Timeline';
 import Auditoria from './Auditoria';
 import ActionDetail from './ActionDetail';
 import DataRoom from './DataRoom';
+import Instituciones from './Instituciones';
+import Reportes from './Reportes';
 
 /**
  * Registro de módulos.
@@ -31,6 +33,8 @@ const BUILT = {
   timeline: Timeline,
   auditoria: Auditoria,
   dataRoom: DataRoom,
+  instituciones: Instituciones,
+  reportes: Reportes,
 };
 
 /**
