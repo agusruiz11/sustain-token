@@ -12,6 +12,8 @@ import Instituciones from './Instituciones';
 import Reportes from './Reportes';
 import Impacto from './Impacto';
 import Identity from './Identity';
+import Integraciones from './Integraciones';
+import Configuracion from './Configuracion';
 
 /**
  * Registro de módulos.
@@ -29,7 +31,7 @@ const HOME_BY_TYPE = {
   usuario: HomeUsuario,
 };
 
-/** Módulos ya construidos. */
+/** Los 11 módulos del brief, todos construidos. */
 const BUILT = {
   acciones: MisAcciones,
   timeline: Timeline,
@@ -39,6 +41,8 @@ const BUILT = {
   reportes: Reportes,
   impacto: Impacto,
   identity: Identity,
+  integraciones: Integraciones,
+  configuracion: Configuracion,
 };
 
 /**
@@ -70,7 +74,8 @@ export default function ModuleRoute() {
     if (Built) return <Built />;
   }
 
-  // Un módulo declarado en nodeTypes sin componente todavía cae acá.
+  // Los 11 módulos del brief están cubiertos, así que esto sólo aparece si se
+  // declara un módulo nuevo en nodeTypes antes de escribir su componente.
   // Mejor un mensaje explícito que una pantalla en blanco.
   return (
     <div className="dash-card">
