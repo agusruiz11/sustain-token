@@ -7,6 +7,7 @@ import MisAcciones from './MisAcciones';
 import Timeline from './Timeline';
 import Auditoria from './Auditoria';
 import ActionDetail from './ActionDetail';
+import DataRoom from './DataRoom';
 
 /**
  * Registro de módulos.
@@ -29,6 +30,7 @@ const BUILT = {
   acciones: MisAcciones,
   timeline: Timeline,
   auditoria: Auditoria,
+  dataRoom: DataRoom,
 };
 
 /**
