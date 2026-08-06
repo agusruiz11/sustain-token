@@ -7,7 +7,15 @@
   background: var(--bg-0);
   overflow-x: hidden;
 }
-.dash-layout body::before { display: none; }
+/* El landing pinta una textura de grilla sobre todo el viewport
+   (index.css → `body::before`, position:fixed; inset:0; z-index:0). Como está
+   posicionada, se dibuja POR ENCIMA del fondo de .dash-layout, que es estático:
+   la grilla del landing se filtraba en el dashboard.
+
+   La regla original acá era `.dash-layout body::before`, que no puede matchear
+   nunca — pide un <body> descendiente de .dash-layout. Se apaga desde el body,
+   condicionado a que haya un dashboard montado. */
+body:has(.dash-layout)::before { display: none; }
 
 /* ============================================================
    SIDEBAR
@@ -1527,4 +1535,178 @@
   .dash-footer-strip > *:last-child { align-self: flex-start; }
   .dash-footer-item { align-items: flex-start; }
   .dash-footer-text span { display: none; }
+}
+
+/* ============================================================
+   NAVEGACIÓN v2 — breadcrumb + andamio de módulo
+   ============================================================ */
+
+/* ── Aislamiento del landing ──────────────────────────────────
+   index.css estiliza el ELEMENTO nav para la barra del landing:
+
+       nav { position: fixed; top:0; left:0; right:0; z-index:100; ... }
+
+   El dashboard usa markup semántico (el sidebar y el breadcrumb son <nav>),
+   así que esa regla se filtra y los saca del flujo: quedan full-width y por
+   encima del topbar, tapando el contenido.
+
+   Ojo: una clase NO alcanza para ganarle por especificidad. No hay conflicto
+   que resolver, porque .dash-sidebar-nav nunca declara `position`. La regla de
+   elemento se aplica sin oposición y hay que neutralizarla a mano.
+
+   Va acotado a .dash-layout para no tocar el landing. */
+.dash-layout nav {
+  position: static;
+  inset: auto;
+  z-index: auto;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: 0;
+}
+
+/* Los items del sidebar pasaron de <button> a <a> (NavLink). El padding con
+   width:100% necesita border-box, y al ser navegación real ahora merecen un
+   foco visible. */
+.dash-nav-item {
+  box-sizing: border-box;
+}
+.dash-nav-item:focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 2px;
+}
+
+.dash-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-300);
+}
+.dash-breadcrumb a {
+  color: var(--brand-500);
+  text-decoration: none;
+}
+.dash-breadcrumb a:hover {
+  text-decoration: underline;
+}
+.dash-breadcrumb-sep {
+  color: var(--line-300);
+}
+
+.mod-scaffold-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line-200);
+}
+.mod-scaffold-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--brand-300);
+  background: rgba(41,221,245,0.08);
+  border: 1px solid rgba(41,221,245,0.18);
+  border-radius: var(--r-md);
+}
+.mod-scaffold-titles {
+  flex: 1;
+  min-width: 0;
+}
+.mod-scaffold-title {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: #C8D8F0;
+}
+.mod-scaffold-summary {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-300);
+  max-width: 68ch;
+}
+.mod-scaffold-phase {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--amber-600);
+  background: rgba(184,134,11,0.1);
+  border: 1px solid rgba(184,134,11,0.28);
+}
+
+.mod-scaffold-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line-200);
+}
+.mod-scaffold-stat {
+  padding: 12px 14px;
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+}
+.mod-scaffold-stat-value {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--brand-300);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.mod-scaffold-stat-label {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--ink-300);
+}
+
+.mod-scaffold-section {
+  padding-top: 18px;
+}
+.mod-scaffold-list {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mod-scaffold-list li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #C8D8F0;
+}
+.mod-scaffold-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--green-600);
+}
+
+.mod-scaffold-note {
+  margin: 18px 0 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+}
+
+@media (max-width: 640px) {
+  .mod-scaffold-head { flex-wrap: wrap; }
+  .mod-scaffold-phase { order: -1; }
+  .mod-scaffold-title { font-size: 17px; }
 }

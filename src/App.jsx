@@ -17,9 +17,8 @@ import Resources from './components/Resources';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import DemoHub from './demo/DemoHub';
-import EmpresaDashboard from './demo/EmpresaDashboard';
-import InstitucionDashboard from './demo/InstitucionDashboard';
-import UsuarioFinal from './demo/UsuarioFinal';
+import DashShell from './demo/components/DashShell';
+import ModuleRoute from './demo/modules';
 
 function Divider() {
   return <div className="divider" />;
@@ -83,9 +82,23 @@ export default function App() {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/demo" element={<DemoHub />} />
-      <Route path="/demo/empresa/:slug" element={<EmpresaDashboard />} />
-      <Route path="/demo/institucion/:slug" element={<InstitucionDashboard />} />
-      <Route path="/demo/usuario" element={<UsuarioFinal />} />
+
+      {/* Usuario final: nodo único, sin slug. Va declarado antes del patrón
+          genérico, pero además React Router puntúa los segmentos estáticos por
+          encima de los dinámicos, así que /demo/usuario/acciones nunca se
+          confunde con /demo/:tipo/:slug. */}
+      <Route path="/demo/usuario" element={<DashShell nodeTypeId="usuario" />}>
+        <Route index element={<ModuleRoute />} />
+        <Route path=":modulo" element={<ModuleRoute />} />
+      </Route>
+
+      {/* Nodos con colección: empresa, escuela, municipio, universidad, ong.
+          `institucion` sigue funcionando como alias heredado de `escuela`
+          (ver ROUTE_ALIASES en demo/data/nodes.js) para no romper links viejos. */}
+      <Route path="/demo/:tipo/:slug" element={<DashShell />}>
+        <Route index element={<ModuleRoute />} />
+        <Route path=":modulo" element={<ModuleRoute />} />
+      </Route>
     </Routes>
   );
 }
