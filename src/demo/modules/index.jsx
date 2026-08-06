@@ -10,6 +10,8 @@ import ActionDetail from './ActionDetail';
 import DataRoom from './DataRoom';
 import Instituciones from './Instituciones';
 import Reportes from './Reportes';
+import Impacto from './Impacto';
+import Identity from './Identity';
 
 /**
  * Registro de módulos.
@@ -35,6 +37,8 @@ const BUILT = {
   dataRoom: DataRoom,
   instituciones: Instituciones,
   reportes: Reportes,
+  impacto: Impacto,
+  identity: Identity,
 };
 
 /**
