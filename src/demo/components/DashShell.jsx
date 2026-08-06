@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, Link, Navigate, Outlet } from 'react-router-dom';
 import { resolveNode } from '../data/nodes';
 import { moduleByPath, moduleHref, getNodeType } from '../data/nodeTypes';
+import { getAction } from '../data/actions';
 import DashSidebar from './DashSidebar';
 import '../demo.css';
 
@@ -37,6 +38,12 @@ export default function DashShell({ nodeTypeId: fixedType }) {
   }
 
   const isHome = activeModule.id === 'home';
+
+  // Tercer nivel del breadcrumb. El drill-down de la Acción llega a 10 pasos,
+  // así que saber dónde se está parado deja de ser opcional. El shell resuelve
+  // el título en vez de que cada módulo dibuje su propia miga: así el breadcrumb
+  // queda en un solo lugar y no se desincroniza entre pantallas.
+  const detail = params.actionId ? getAction(params.actionId) : null;
 
 
   return (
@@ -98,7 +105,17 @@ export default function DashShell({ nodeTypeId: fixedType }) {
                 {node.name}
               </Link>
               <span className="dash-breadcrumb-sep" aria-hidden="true">/</span>
-              <span aria-current="page">{activeModule.label}</span>
+              {detail ? (
+                <>
+                  <Link to={moduleHref(node.nodeTypeId, node.slug, activeModule.id, tipo)}>
+                    {activeModule.label}
+                  </Link>
+                  <span className="dash-breadcrumb-sep" aria-hidden="true">/</span>
+                  <span aria-current="page">{detail.title}</span>
+                </>
+              ) : (
+                <span aria-current="page">{activeModule.label}</span>
+              )}
             </nav>
           )}
 

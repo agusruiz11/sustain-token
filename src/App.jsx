@@ -90,6 +90,8 @@ export default function App() {
       <Route path="/demo/usuario" element={<DashShell nodeTypeId="usuario" />}>
         <Route index element={<ModuleRoute />} />
         <Route path=":modulo" element={<ModuleRoute />} />
+        {/* Drill-down: la ficha de una acción dentro de su módulo. */}
+        <Route path=":modulo/:actionId" element={<ModuleRoute />} />
       </Route>
 
       {/* Nodos con colección: empresa, escuela, municipio, universidad, ong.
@@ -98,6 +100,8 @@ export default function App() {
       <Route path="/demo/:tipo/:slug" element={<DashShell />}>
         <Route index element={<ModuleRoute />} />
         <Route path=":modulo" element={<ModuleRoute />} />
+        {/* Drill-down: la ficha de una acción dentro de su módulo. */}
+        <Route path=":modulo/:actionId" element={<ModuleRoute />} />
       </Route>
     </Routes>
   );
