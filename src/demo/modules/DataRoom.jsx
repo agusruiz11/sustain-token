@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useNode } from '../components/useNode';
 import { actionsForNode } from '../data/actions';
 import { dashboardKeyOf } from '../data/sustainNodes';
@@ -6,6 +7,10 @@ import { fileTree, filesOf, fileCount, formatBytes } from '../data/dataRoom';
 import { CATEGORIES } from '../data/categories';
 import { useSha256 } from '../components/useSha256';
 import StatusChip from '../components/StatusChip';
+import DataRoomArchive from './DataRoomArchive';
+import { documents as montessoriDocs } from '../data/montessori/index.js';
+
+const ARCHIVE_DOC_COUNT = montessoriDocs.length;
 
 /**
  * § 3 del brief — Data Room.
@@ -14,14 +19,34 @@ import StatusChip from '../components/StatusChip';
  * simulada: los artefactos JSON se generan desde los datos reales de la acción y
  * el navegador calcula su SHA-256 con Web Crypto. Ver la nota de diseño en
  * data/dataRoom.js.
+ *
+ * ── Entregable 3 § 4.3 ──
+ * Se agrega el selector "Acciones Sustain" / "Archivo institucional". Son dos
+ * repositorios de naturaleza distinta y el spec pide que no se mezclen: uno
+ * tiene artefactos del pipeline con integridad criptográfica, el otro
+ * documentación previa a Sustain cuya trazabilidad es documental.
  */
 export default function DataRoom() {
   const { node } = useNode();
+  /* El archivo institucional sólo existe donde hay histórico importado. Un
+     nodo personal no tiene expediente. */
+  const hasArchive = dashboardKeyOf(node) === 'montessori';
   const actions = useMemo(
     () => actionsForNode(node).sort((a, b) => b.date.localeCompare(a.date)),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- ver MisAcciones
     [dashboardKeyOf(node)],
   );
+
+  /* El repositorio activo va en la URL para que se pueda linkear y para que el
+     botón atrás funcione. Por defecto se abre el que tiene contenido: mandar a
+     Montessori a la pestaña de pipeline, que está vacía, teniendo 24
+     documentos en la otra, no ayuda a nadie. */
+  const [params, setParams] = useSearchParams();
+  const defaultMode = actions.length === 0 && hasArchive ? 'archive' : 'sustain';
+  const mode = params.get('repo') === 'archive' ? 'archive'
+    : params.get('repo') === 'sustain' ? 'sustain'
+    : defaultMode;
+  const setMode = (m) => setParams(m === defaultMode ? {} : { repo: m });
 
   const [actionId, setActionId] = useState(actions[0]?.id ?? null);
   const action = actions.find((a) => a.id === actionId) ?? actions[0];
@@ -40,14 +65,60 @@ export default function DataRoom() {
       ?? null;
   }, [action, fileId]);
 
-  if (!action) {
-    return <p className="dash-table-empty">Este nodo todavía no tiene acciones cargadas.</p>;
+  const total = fileCount(actions);
+
+  /* Selector de repositorio. Se pinta antes de cualquier early return: si el
+     nodo no tiene acciones Sustain —el caso de Montessori— igual tiene que
+     poder llegar a su archivo institucional. */
+  const modeSwitch = hasArchive ? (
+    <div className="dash-card">
+      <div className="dr-modebar" role="tablist" aria-label="Repositorio">
+        <button
+          type="button" role="tab" aria-selected={mode === 'sustain'}
+          className={`dr-mode-tab${mode === 'sustain' ? ' active' : ''}`}
+          onClick={() => setMode('sustain')}
+        >
+          Acciones Sustain
+          <span className="dr-mode-count">{total}</span>
+        </button>
+        <button
+          type="button" role="tab" aria-selected={mode === 'archive'}
+          className={`dr-mode-tab${mode === 'archive' ? ' active' : ''}`}
+          onClick={() => setMode('archive')}
+        >
+          Archivo institucional
+          <span className="dr-mode-count">{ARCHIVE_DOC_COUNT}</span>
+        </button>
+      </div>
+    </div>
+  ) : null;
+
+  if (hasArchive && mode === 'archive') {
+    return <>{modeSwitch}<DataRoomArchive /></>;
   }
 
-  const total = fileCount(actions);
+  if (!action) {
+    return (
+      <>
+        {modeSwitch}
+        <div className="dash-card">
+          <div className="inst-empty">
+            <div className="inst-empty-mark" aria-hidden="true">◌</div>
+            <p className="inst-empty-title">Sin artefactos de pipeline</p>
+            <p className="inst-empty-text">
+              Este repositorio guarda lo que produce el pipeline de verificación: evidencia
+              procesada, reportes MRV y hashes. Se llena cuando la institución registre su
+              primera acción Sustain.
+            </p>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
+      {modeSwitch}
       <div className="dash-card">
         <div className="dash-section-header">
           <span className="dash-section-title">Data Room</span>

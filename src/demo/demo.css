@@ -2749,3 +2749,246 @@ body:has(.dash-layout)::before { display: none; }
   color: var(--ink-300);
   font-style: italic;
 }
+
+/* ── Data Room · selector de repositorio ───────────────────
+   "Acciones Sustain" y "Archivo institucional" son dos repositorios de
+   naturaleza distinta (Entregable 3 § 4.3), no dos filtros del mismo. */
+.dr-modebar {
+  display: flex;
+  gap: 8px;
+}
+
+.dr-mode-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-300);
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.dr-mode-tab:hover {
+  color: var(--ink-100);
+}
+
+.dr-mode-tab.active {
+  color: var(--brand-300);
+  background: rgba(41,221,245,0.08);
+  border-color: rgba(41,221,245,0.35);
+}
+
+.dr-mode-count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+}
+
+/* ── Archivo institucional ────────────────────────────────── */
+.arch-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.arch-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line-300);
+}
+
+.arch-item:last-child {
+  border-bottom: none;
+}
+
+.arch-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.arch-item-title {
+  font-size: 13px;
+  color: var(--ink-100);
+}
+
+.arch-item-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+}
+
+.arch-item-tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* La referencia de fuente ocupa el ancho completo debajo: en columna angosta
+   un "PDF p.24-p.27" al lado del título se parte a mitad. */
+.arch-item-source {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+}
+
+.arch-ref::before {
+  content: '↳ ';
+  opacity: 0.6;
+}
+
+.arch-ev {
+  opacity: 0.75;
+}
+
+.arch-access {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: var(--r-sm, 4px);
+  white-space: nowrap;
+}
+
+.arch-access--public {
+  color: #1E9E72;
+  background: rgba(30,158,114,0.12);
+  border: 1px solid rgba(30,158,114,0.3);
+}
+
+.arch-access--institutional {
+  color: #29DDF5;
+  background: rgba(41,221,245,0.1);
+  border: 1px solid rgba(41,221,245,0.28);
+}
+
+.arch-access--audit_restricted {
+  color: #B8860B;
+  background: rgba(184,134,11,0.12);
+  border: 1px solid rgba(184,134,11,0.32);
+}
+
+/* ── Timeline · hitos históricos ───────────────────────────
+   El punto relleno es una acción verificada por Sustain; el hueco, un hito
+   documentado. La diferencia tiene que leerse sin leer el badge. */
+.tl-dot--hollow {
+  background: transparent !important;
+  border: 2px solid currentColor;
+}
+
+.tl-origin {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  padding: 2px 7px;
+  border-radius: var(--r-sm, 4px);
+  white-space: nowrap;
+}
+
+.tl-origin--sustain {
+  color: #1E9E72;
+  background: rgba(30,158,114,0.12);
+  border: 1px solid rgba(30,158,114,0.3);
+}
+
+.tl-origin--hist {
+  color: #8A7BB8;
+  background: rgba(138,123,184,0.12);
+  border: 1px solid rgba(138,123,184,0.3);
+}
+
+/* Un hito histórico no abre ficha con pipeline, así que su título no es link. */
+.tl-title--plain {
+  color: var(--ink-100);
+  cursor: default;
+}
+
+.tl-hist-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+}
+
+.tl-hist-src {
+  opacity: 0.7;
+}
+
+/* Variante botón del link de fila: misma superficie clickeable, sin navegar. */
+.dash-table-rowbtn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+/* ── Instituciones · subsecciones ──────────────────────────
+   Las 7 del Entregable 3 § 4.8. Tabs y no acordeón porque son vistas
+   independientes, no detalle progresivo de una sola. */
+.inst-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.inst-tab {
+  padding: 7px 13px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-300);
+  background: transparent;
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.inst-tab:hover {
+  color: var(--ink-100);
+  border-color: var(--brand-300);
+}
+
+.inst-tab.active {
+  color: #03151A;
+  background: var(--brand-500);
+  border-color: var(--brand-500);
+}
+
+.inst-back {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--brand-300);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.inst-back:hover {
+  text-decoration: underline;
+}

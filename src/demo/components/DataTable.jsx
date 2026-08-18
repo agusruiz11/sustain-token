@@ -9,13 +9,20 @@ import { Link } from 'react-router-dom';
  * look nuevo.
  *
  * columns: [{ key, label, align, width, render(row) }]
- * rowHref: (row) => string | null  — si devuelve una ruta, la fila navega.
+ * rowHref:   (row) => string | null  — si devuelve una ruta, la fila navega.
+ * rowAction: (row) => void           — si se pasa, la fila dispara la acción.
+ *
+ * Los dos son excluyentes: `rowHref` para navegar a otra pantalla, `rowAction`
+ * para cambiar de vista dentro del mismo módulo (el maestro-detalle de
+ * Instituciones, por ejemplo). Ambos usan un elemento interactivo real en la
+ * primera celda para no perder navegación por teclado.
  */
 export default function DataTable({
   columns,
   rows,
   rowKey = (r) => r.id,
   rowHref,
+  rowAction,
   empty = 'Sin registros.',
   caption,
 }) {
@@ -39,8 +46,9 @@ export default function DataTable({
         <tbody>
           {rows.map((row) => {
             const href = rowHref?.(row);
+            const clickable = href || rowAction;
             return (
-              <tr key={rowKey(row)} className={href ? 'dash-table-row--link' : undefined}>
+              <tr key={rowKey(row)} className={clickable ? 'dash-table-row--link' : undefined}>
                 {columns.map((c, i) => {
                   const content = c.render ? c.render(row) : row[c.key];
                   return (
@@ -49,8 +57,18 @@ export default function DataTable({
                           fila vía CSS (::after). Así la fila entera es clickeable
                           sin anidar <a> dentro de cada <td>, que sería inválido y
                           rompería la navegación por teclado. */}
-                      {href && i === 0 ? (
-                        <Link to={href} className="dash-table-rowlink">{content}</Link>
+                      {clickable && i === 0 ? (
+                        href ? (
+                          <Link to={href} className="dash-table-rowlink">{content}</Link>
+                        ) : (
+                          <button
+                            type="button"
+                            className="dash-table-rowlink dash-table-rowbtn"
+                            onClick={() => rowAction(row)}
+                          >
+                            {content}
+                          </button>
+                        )
                       ) : (
                         content
                       )}

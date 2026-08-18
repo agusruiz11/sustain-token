@@ -30,9 +30,9 @@ const CHECKS = [
   ['/demo/institucion/montessori', '168', true, 'mediciones históricas'],
   ['/demo/institucion/montessori', 'Sello Ambiental COA', true, 'COA como framework externo'],
   ['/demo/institucion/montessori/organizacion', 'Turdera', true, 'estructura: sede canónica'],
-  ['/demo/institucion/montessori/organizacion', 'Ciudad Autónoma', false, 'estructura: CABA inventada eliminada'],
-  ['/demo/institucion/montessori/organizacion', 'Sala de 3', false, 'estructura: cursos inventados eliminados'],
-  ['/demo/institucion/montessori/organizacion', 'Nivel Maternal', true, 'estructura: 8 unidades canónicas'],
+  ['/demo/institucion/montessori/organizacion?s=estructura', 'Ciudad Autónoma', false, 'estructura: CABA inventada eliminada'],
+  ['/demo/institucion/montessori/organizacion?s=estructura', 'Sala de 3', false, 'estructura: cursos inventados eliminados'],
+  ['/demo/institucion/montessori/organizacion?s=estructura', 'Nivel Secundario', true, 'estructura: 8 unidades canónicas'],
   ['/demo/institucion/montessori/impacto', 'Histórico documental', true, 'impacto: procedencia histórica visible'],
   ['/demo/usuario/impacto', 'Verificado Sustain', true, 'impacto usuario: energía verificada'],
   ['/demo/usuario/acciones', 'fixtures de demostración', true, 'nota de fixture demo en nodo usuario'],
@@ -45,6 +45,18 @@ const CHECKS = [
   ['/demo/usuario', 'Pendiente de anclaje', true, 'audit trail muestra anclaje pendiente'],
   ['/demo/usuario', 'spn_01ee6583da858ca1fa19323d', true, 'nodo identificado por SPN'],
 
+  // ── Fase 2 · histórico navegable ──
+  ['/demo/institucion/montessori/timeline', 'Bicicleteada solidaria', true, 'timeline: hito histórico de 2019'],
+  ['/demo/institucion/montessori/timeline', 'Timeline ambiental del nodo', true, 'timeline: título del § 4.4'],
+  ['/demo/institucion/montessori/timeline', 'PDF p.21-p.22', true, 'timeline: referencia de expediente visible'],
+  ['/demo/institucion/montessori/timeline', 'tl-milestones', false, 'timeline: histórico sin cadena de hitos MRV'],
+  ['/demo/institucion/montessori/data-room', 'Archivo institucional', true, 'data room: selector de repositorio'],
+  ['/demo/institucion/montessori/data-room', 'Referencia en expediente', true, 'data room: no finge archivo original'],
+  ['/demo/institucion/montessori/data-room', 'Relevamiento de Trayectorias Escolares', false, 'data room: doc audit_restricted oculto a nivel institución'],
+  ['/demo/institucion/montessori/organizacion?s=responsables', 'Alejandro Viola', false, 'responsables: persona restricted no se expone'],
+  ['/demo/institucion/montessori/organizacion?s=indicadores', 'Todas en revisión', true, 'indicadores: gas sin total dice por qué'],
+  ['/demo/institucion/montessori/organizacion?s=programas&prog=prog_solar_energy', 'No genera SES', true, 'ficha de programa: histórico no genera SES'],
+  ['/demo/institucion/montessori/organizacion?s=estructura', 'Nivel Maternal', true, 'estructura: unidad canónica'],
 ];
 
 let fail = 0;

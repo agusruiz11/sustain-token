@@ -150,6 +150,39 @@ export const indicatorTotals = () =>
     .map((i) => indicatorTotal(i.indicator_id))
     .filter(Boolean);
 
+/**
+ * Los 18 indicadores, incluidos los que se quedaron sin total.
+ *
+ * `indicatorTotals()` filtra los que no tienen ninguna medición aceptada, y eso
+ * los hace desaparecer de la pantalla sin explicación. Hoy son dos —consumo de
+ * gas (12 mediciones) y energía inyectada (2)— y no están vacíos: están
+ * completos pero en `needs_review` por las consultas Q05 y Q04.
+ *
+ * Un indicador que se esconde solo es peor que uno que dice por qué no tiene
+ * número. Esta variante los conserva con `total: null` y el motivo.
+ */
+export function indicatorsWithStatus() {
+  return indicatorDefinitions.map((i) => {
+    const total = indicatorTotal(i.indicator_id);
+    const all = measurements.filter((m) => m.indicator_id === i.indicator_id);
+    const excluded = all.filter((m) => m.quality_status !== 'accepted');
+    return {
+      indicatorId: i.indicator_id,
+      name: i.name,
+      category: i.category,
+      unit: i.unit,
+      aggregation: i.aggregation_method,
+      total,
+      measured: all.length,
+      excluded: excluded.length,
+      /* Distingue "no hay mediciones" de "las hay pero ninguna es apta". */
+      reason: total ? null
+        : all.length === 0 ? 'sin_mediciones'
+        : 'todas_en_revision',
+    };
+  });
+}
+
 /* ── Taxonomía ───────────────────────────────────────────────
    El dataset usa sus propias categorías. Se mapean a las 13 del brief sin
    tocar ninguna de las dos: el Entregable 3 § 4.5 pide taxonomía configurable,
@@ -216,16 +249,152 @@ export const evidenceFor = (entityType, entityId) =>
 export const isFileReferenceOnly = (ev) => ev.evidence_type === 'pdf_page_range';
 
 /**
+ * Grupos del archivo institucional — Entregable 3 § 4.3.
+ *
+ * El spec enumera 10 grupos. Se agrega "Movilidad" como 11.º porque existe un
+ * documento de movilidad sostenible y ninguno de los 10 le corresponde;
+ * meterlo a la fuerza en "Gobernanza y planes" sería peor que agregar el grupo.
+ *
+ * El mapeo va por `document_id` y no por `document_type` a propósito:
+ * `maintenance_plan` aparece dos veces, una de energía y otra de agua.
+ */
+export const ARCHIVE_GROUPS = [
+  { id: 'governance', label: 'Gobernanza y planes', docs: ['doc_sustainability_plan_2025', 'doc_project_followup_2025', 'doc_environmental_diagnosis', 'doc_sustainability_survey', 'doc_ambassador_profile'] },
+  { id: 'energy', label: 'Energía', docs: ['doc_energy_maintenance', 'doc_energy_efficiency_inventory'] },
+  { id: 'water', label: 'Agua', docs: ['doc_water_maintenance', 'doc_water_management'] },
+  { id: 'waste', label: 'Residuos', docs: ['doc_waste_procedure', 'doc_waste_commitment'] },
+  { id: 'biodiversity', label: 'Biodiversidad', docs: ['doc_vertical_garden', 'doc_forest_plan'] },
+  { id: 'education', label: 'Educación y sensibilización', docs: ['doc_vma_act', 'doc_sensitization_register'] },
+  { id: 'procurement', label: 'Compras y proveedores', docs: ['doc_supplier_diagnosis', 'doc_supplier_selection', 'doc_product_selection', 'doc_supplier_register'] },
+  { id: 'mobility', label: 'Movilidad', docs: ['doc_mobility_plan'] },
+  { id: 'inclusion', label: 'Inclusión', docs: ['doc_inclusion_trajectories', 'doc_diversity_diagnosis'] },
+  { id: 'communication', label: 'Comunicación', docs: ['doc_communications_register'] },
+  { id: 'certifications', label: 'Certificaciones y reconocimientos', docs: ['doc_commitment_2025'] },
+];
+
+const DOC_TYPE_LABEL = {
+  institutional_commitment: 'Declaración de compromiso',
+  sustainability_plan: 'Plan de sostenibilidad',
+  meeting_record: 'Acta de reunión',
+  maintenance_plan: 'Plan de mantenimiento',
+  asset_inventory: 'Inventario de activos',
+  program_plan: 'Plan de programa',
+  water_management_plan: 'Plan de gestión hídrica',
+  waste_procedure: 'Procedimiento de residuos',
+  binding_agreement: 'Acta vinculante',
+  project_plan: 'Plan de proyecto',
+  forest_plan: 'Plan de forestación',
+  committee_act: 'Acta de comité',
+  environmental_assessment: 'Diagnóstico ambiental',
+  procurement_diagnosis: 'Diagnóstico de compras',
+  procurement_procedure: 'Procedimiento de compras',
+  supplier_register: 'Registro de proveedores',
+  social_sustainability_assessment: 'Relevamiento social',
+  diversity_assessment: 'Diagnóstico de diversidad',
+  communication_plan: 'Plan de comunicación',
+  engagement_register: 'Registro de sensibilización',
+  survey_instrument: 'Instrumento de encuesta',
+  leadership_profile: 'Perfil de liderazgo',
+};
+
+export const docTypeLabel = (t) => DOC_TYPE_LABEL[t] ?? t;
+
+/**
+ * Archivo institucional agrupado y listo para pintar.
+ * Cada documento llega con su evidencia resuelta: el § 4.3 pide mostrar
+ * título, tipo, fecha, procedencia, nivel de acceso, estado y referencia.
+ */
+export function institutionalArchive({ viewerLevel = 'institutional' } = {}) {
+  const byId = new Map(documents.map((d) => [d.document_id, d]));
+  const assigned = new Set();
+
+  const groups = ARCHIVE_GROUPS.map((g) => {
+    const docs = g.docs
+      .map((id) => {
+        assigned.add(id);
+        const doc = byId.get(id);
+        if (!doc) return null;
+        const evs = evidenceFor('document', id);
+        return {
+          ...doc,
+          typeLabel: docTypeLabel(doc.document_type),
+          accessLabel: accessLabel(doc.access_level),
+          evidence: evs,
+          /* Cuando la única evidencia es un rango de páginas del expediente
+             compilado, no existe archivo suelto que descargar. */
+          referenceOnly: evs.length > 0 && evs.every(isFileReferenceOnly),
+        };
+      })
+      .filter(Boolean);
+    return { ...g, docs: visibleAt(docs, viewerLevel) };
+  }).filter((g) => g.docs.length > 0);
+
+  /* Si el paquete suma un documento nuevo y nadie actualiza ARCHIVE_GROUPS,
+     conviene que aparezca en vez de desaparecer sin aviso. */
+  const orphans = documents.filter((d) => !assigned.has(d.document_id));
+  if (orphans.length) {
+    groups.push({
+      id: 'unclassified',
+      label: 'Sin clasificar',
+      docs: visibleAt(orphans.map((d) => ({ ...d, typeLabel: docTypeLabel(d.document_type), accessLabel: accessLabel(d.access_level), evidence: evidenceFor('document', d.document_id), referenceOnly: true })), viewerLevel),
+    });
+  }
+  return groups;
+}
+
+/**
  * Filtro por nivel de acceso. `public` es el más restrictivo de mostrar.
  * IR-009: PII, firmas, cuentas y medidores van a acceso restringido, y el
  * § 11 prohíbe exponer nombres o imágenes de menores.
  */
-const ACCESS_ORDER = { public: 0, institutional: 1, audit_restricted: 2 };
+const ACCESS_ORDER = { public: 0, institutional: 1, audit_restricted: 2, restricted: 3 };
+
+/* Un nivel desconocido se trata como el MÁS restrictivo, nunca como público.
+   No es teórico: people.json usa `restricted`, que no está en el catálogo de
+   config/status_catalogs.json. Con un `?? 0` ese registro —el representante
+   legal de la escuela— se habría publicado como dato abierto. Ante un valor
+   que no entendemos, la respuesta segura es ocultar. */
+const MOST_RESTRICTIVE = Math.max(...Object.values(ACCESS_ORDER));
+const levelOf = (v) => ACCESS_ORDER[v] ?? MOST_RESTRICTIVE;
 
 export const visibleAt = (records, viewerLevel = 'institutional') => {
-  const max = ACCESS_ORDER[viewerLevel] ?? 0;
-  return records.filter((r) => (ACCESS_ORDER[r.access_level] ?? 0) <= max);
+  const max = levelOf(viewerLevel);
+  return records.filter((r) => levelOf(r.access_level) <= max);
 };
+
+/* ── Personas y roles ─────────────────────────────────────────
+   § 11: no exponer nombres sin autorización. Q09 pregunta justamente qué
+   responsables se pueden mostrar y sigue sin respuesta, así que la lista se
+   filtra por access_level y se informa cuántos quedaron fuera. */
+
+const ROLE_LABEL = {
+  legal_representative: 'Representante legal',
+  environmental_coordinator: 'Coordinación ambiental',
+  program_coordinator: 'Coordinación de programa',
+  maintenance_lead: 'Responsable de mantenimiento',
+  communication_lead: 'Responsable de comunicación',
+  teacher: 'Docente',
+};
+
+export const roleLabel = (r) => ROLE_LABEL[r] ?? r;
+
+/** Responsables con sus roles resueltos, respetando el nivel de acceso. */
+export function responsibles({ viewerLevel = 'institutional' } = {}) {
+  const visiblePeople = visibleAt(people, viewerLevel);
+  const list = visiblePeople.map((p) => ({
+    ...p,
+    roles: roleAssignments
+      .filter((r) => r.person_id === p.person_id && r.status === 'active')
+      .map((r) => ({
+        ...r,
+        label: roleLabel(r.role_type),
+        scopeName: r.scope_type === 'program'
+          ? programs.find((x) => x.program_id === r.scope_id)?.name ?? r.scope_id
+          : institution.display_name,
+      })),
+  }));
+  return { list, hidden: people.length - visiblePeople.length };
+}
 
 /* ── Línea de tiempo ─────────────────────────────────────────
    Entregable 3 § 4.4: la cronología une acciones, proyectos, documentos y
