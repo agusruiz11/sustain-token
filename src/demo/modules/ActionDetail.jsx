@@ -1,6 +1,7 @@
 import { useParams, Navigate } from 'react-router-dom';
 import { useNode } from '../components/useNode';
 import { getAction, buildTraceability, STEP_STATUS } from '../data/actions';
+import { dashboardKeyOf } from '../data/sustainNodes';
 import { CATEGORIES } from '../data/categories';
 import { moduleHref } from '../data/nodeTypes';
 import StatusChip, { SesDelta, DeltaPct } from '../components/StatusChip';
@@ -24,7 +25,9 @@ export default function ActionDetail() {
   const { actionId } = useParams();
   const action = getAction(actionId);
 
-  if (!action || action.nodeSlug !== node.slug) {
+  // El guard evita que /demo/escuela/montessori/acciones/act_martin_energia_01
+  // abra una acción que pertenece a otro nodo.
+  if (!action || action.nodeKey !== dashboardKeyOf(node)) {
     return <Navigate to={moduleHref(node.nodeTypeId, node.slug, 'acciones', routeSegment)} replace />;
   }
 

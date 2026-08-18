@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNode } from '../components/useNode';
-import { actionsByNode } from '../data/actions';
+import { actionsForNode } from '../data/actions';
+import { dashboardKeyOf } from '../data/sustainNodes';
 import { fileTree, filesOf, fileCount, formatBytes } from '../data/dataRoom';
 import { CATEGORIES } from '../data/categories';
 import { useSha256 } from '../components/useSha256';
@@ -17,8 +18,9 @@ import StatusChip from '../components/StatusChip';
 export default function DataRoom() {
   const { node } = useNode();
   const actions = useMemo(
-    () => actionsByNode(node.slug).sort((a, b) => b.date.localeCompare(a.date)),
-    [node.slug],
+    () => actionsForNode(node).sort((a, b) => b.date.localeCompare(a.date)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- ver MisAcciones
+    [dashboardKeyOf(node)],
   );
 
   const [actionId, setActionId] = useState(actions[0]?.id ?? null);

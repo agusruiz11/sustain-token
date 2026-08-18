@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useNode } from '../components/useNode';
 import { categoryCoverage, coverageSummary, unmappedPilotModules, COVERAGE, COVERAGE_STYLE } from '../data/impact';
+import { dashboardKeyOf } from '../data/sustainNodes';
 import { MEASUREMENT } from '../data/categories';
 import Sparkline from '../components/Sparkline';
 
@@ -13,9 +14,11 @@ import Sparkline from '../components/Sparkline';
  */
 export default function Impacto() {
   const { node } = useNode();
-  const rows = useMemo(() => categoryCoverage(node.slug), [node.slug]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- la clave del nodo es estable; `node` se recrea en cada render
+  const rows = useMemo(() => categoryCoverage(node), [dashboardKeyOf(node)]);
   const summary = useMemo(() => coverageSummary(rows), [rows]);
-  const unmapped = useMemo(() => unmappedPilotModules(node.slug), [node.slug]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- ídem
+  const unmapped = useMemo(() => unmappedPilotModules(node), [dashboardKeyOf(node)]);
 
   return (
     <>

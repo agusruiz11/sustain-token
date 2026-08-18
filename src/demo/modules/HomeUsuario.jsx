@@ -27,10 +27,13 @@ export default function HomeUsuario() {
             <div className="udash-hero-kpi-val">{u.sesScore}</div>
             <div className="udash-hero-kpi-sub">Puntos</div>
           </div>
+          {/* Posición global y racha salieron del hero: no existen en la
+              fuente canónica y mostrarlas obligaba a inventarlas. En su lugar
+              van dos datos que sí están en node_state.json. */}
           <div className="udash-hero-kpi">
-            <div className="udash-hero-kpi-label">Posición Global</div>
-            <div className="udash-hero-kpi-val" style={{ fontSize: '18px' }}>{u.globalRank}</div>
-            <div className="udash-hero-kpi-sub">{u.globalRankNum}</div>
+            <div className="udash-hero-kpi-label">Nivel</div>
+            <div className="udash-hero-kpi-val" style={{ fontSize: '18px' }}>{u.sesLevelName}</div>
+            <div className="udash-hero-kpi-sub">Level {u.sesLevelNum}</div>
           </div>
           <div className="udash-hero-kpi">
             <div className="udash-hero-kpi-label">Acciones Verificadas</div>
@@ -38,12 +41,9 @@ export default function HomeUsuario() {
             <div className="udash-hero-kpi-sub">Total</div>
           </div>
           <div className="udash-hero-kpi">
-            <div className="udash-hero-kpi-label">Racha Activa</div>
-            <div className="udash-hero-kpi-val">
-              {u.activeStreak}
-              <span className="udash-hero-kpi-fire">🔥</span>
-            </div>
-            <div className="udash-hero-kpi-sub">días</div>
+            <div className="udash-hero-kpi-label">Verificado desde</div>
+            <div className="udash-hero-kpi-val" style={{ fontSize: '18px' }}>Nov 2025</div>
+            <div className="udash-hero-kpi-sub">{u.verifiedSince}</div>
           </div>
         </div>
       </div>
@@ -66,7 +66,7 @@ export default function HomeUsuario() {
                 </div>
                 <div className="udash-action-right">
                   <div className="udash-action-value">{a.value}</div>
-                  <div className="udash-action-pts">+{a.pts} pts</div>
+                  <div className="udash-action-pts">{a.pts > 0 ? '+' : ''}{a.pts} pts</div>
                 </div>
                 <span className="udash-verified-chip">VERIFICADA</span>
                 <span className="udash-action-date">{a.date}</span>
@@ -84,8 +84,8 @@ export default function HomeUsuario() {
             <ChartLine
               series={u.chartLine.series}
               months={u.chartLine.months}
-              yMax={1000}
-              yLabel="pts/L/kg"
+              yMax={u.chartLine.yMax}
+              yLabel="SES"
               height={180}
             />
           </div>
@@ -105,20 +105,27 @@ export default function HomeUsuario() {
             </div>
             <div className="udash-ses-score">{u.sesScore}</div>
             <div className="udash-ses-level">● {u.sesLevel}</div>
+            {/* La barra medía contra un "próximo nivel" de 1000 pts que no
+                existe: los umbrales de nivel no están en la fuente canónica.
+                Se mide contra la escala real del SES (0-1000 acumulativo) y
+                no se promete un salto de nivel que no podemos ubicar. */}
             <div style={{
               fontFamily: 'var(--font-mono)',
               fontSize: '10px',
               color: 'var(--ink-300)',
               marginBottom: '8px',
             }}>
-              Nivel {u.sesLevelNum} de {u.sesLevelMax}
+              {u.sesMode === 'score_only' ? 'Modo score_only · sin recompensa' : u.sesMode}
             </div>
             <div className="udash-ses-progress-bar">
-              <div className="udash-ses-progress-fill" style={{ width: `${u.sesProgress}%` }} />
+              <div
+                className="udash-ses-progress-fill"
+                style={{ width: `${(u.sesScore / u.sesScaleMax) * 100}%` }}
+              />
             </div>
             <div className="udash-ses-progress-meta">
-              <span>{u.sesProgress}%</span>
-              <span>Próximo nivel: {u.sesNextLevel} pts</span>
+              <span>{u.sesScore} / {u.sesScaleMax}</span>
+              <span>{u.sesLastDelta > 0 ? '+' : ''}{u.sesLastDelta} en la última acción</span>
             </div>
             <a
               href="#"
@@ -191,70 +198,35 @@ export default function HomeUsuario() {
           </div>
         </div>
 
+        {/* La tarjeta "Impacto en la Comunidad" (37 personas inspiradas) y el
+            saldo de wallet (178.45 $SUS) se retiraron: ninguna de las dos
+            métricas existe en la fuente canónica y el nodo corre en
+            reward_enabled: false / mode: score_only — no hay tokens que mostrar.
+            Vuelven cuando el protocolo las emita de verdad. */}
         <div className="dash-card">
-          <div className="dash-card-title">Impacto en la Comunidad</div>
-          <div className="udash-community-card">
-            <div className="udash-community-label">Tu impacto inspira a otros</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-              <div style={{ display: 'flex' }}>
-                {u.communityAvatars.map((letter, i) => (
-                  <div key={i} className="udash-comm-avatar" style={{ zIndex: 5 - i }}>
-                    {letter}
-                  </div>
-                ))}
-              </div>
-              <span className="udash-community-count">+ {u.communityInspired} personas</span>
-            </div>
-            <p className="udash-community-text">han sido inspiradas por tus acciones</p>
-            <a
-              href="#"
-              style={{
-                display: 'inline-block',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                color: 'var(--brand-500)',
-                textDecoration: 'none',
-              }}
-            >
-              Ver comunidad →
-            </a>
-          </div>
-
-          <div style={{
-            marginTop: '14px',
-            padding: '14px',
-            background: 'var(--bg-200)',
-            border: '1px solid var(--line-300)',
-            borderRadius: 'var(--r-md)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
+          <div className="dash-card-title">Identidad del nodo</div>
+          <dl className="udash-node-facts">
             <div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--ink-300)', marginBottom: '4px' }}>
-                SUS Wallet
-              </div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '20px', fontWeight: 600, color: 'var(--brand-300)' }}>
-                {u.wallet} <span style={{ fontSize: '12px', color: 'var(--ink-300)' }}>$SUS</span>
-              </div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', color: 'var(--ink-300)', marginTop: '2px' }}>
-                Disponible
-              </div>
+              <dt>Node ID</dt>
+              <dd className="udash-node-mono">{u.nodeId}</dd>
             </div>
-            <a href="#" style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '11px',
-              fontWeight: 700,
-              color: 'var(--brand-300)',
-              padding: '7px 12px',
-              background: 'rgba(41,221,245,0.08)',
-              border: '1px solid rgba(41,221,245,0.2)',
-              borderRadius: 'var(--r-md)',
-              textDecoration: 'none',
-            }}>
-              Ver →
-            </a>
-          </div>
+            <div>
+              <dt>Tipo</dt>
+              <dd>Individual · nodo personal</dd>
+            </div>
+            <div>
+              <dt>Identidad ambiental</dt>
+              <dd>{u.sesLevel}</dd>
+            </div>
+            <div>
+              <dt>Política SES</dt>
+              <dd className="udash-node-mono">{u.sesPolicy}</dd>
+            </div>
+            <div>
+              <dt>Recompensa</dt>
+              <dd>Deshabilitada · modo score_only</dd>
+            </div>
+          </dl>
         </div>
       </div>
 

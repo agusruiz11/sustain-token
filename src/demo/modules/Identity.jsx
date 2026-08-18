@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { useNode } from '../components/useNode';
 import { sesHistory } from '../data/impact';
-import { actionsByNode } from '../data/actions';
+import { actionsForNode } from '../data/actions';
+import { dashboardKeyOf } from '../data/sustainNodes';
 import Sparkline from '../components/Sparkline';
 import StatusChip from '../components/StatusChip';
 import { STEP_STATUS } from '../data/actions';
@@ -27,8 +28,10 @@ export default function Identity() {
   const { node } = useNode();
   const data = node.data;
 
-  const history = useMemo(() => sesHistory(node.slug), [node.slug]);
-  const actions = useMemo(() => actionsByNode(node.slug), [node.slug]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- ídem
+  const history = useMemo(() => sesHistory(node), [dashboardKeyOf(node)]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- ver MisAcciones
+  const actions = useMemo(() => actionsForNode(node), [dashboardKeyOf(node)]);
 
   const declared = declaredScore(data);
   const known = history.filter((h) => h.known);

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNode } from '../components/useNode';
-import { actionsByNode, buildTraceability } from '../data/actions';
+import { actionsForNode, buildTraceability } from '../data/actions';
+import { dashboardKeyOf } from '../data/sustainNodes';
 import { CATEGORIES } from '../data/categories';
 import DataTable from '../components/DataTable';
 import { DeltaPct, SesDelta } from '../components/StatusChip';
@@ -42,8 +43,9 @@ export default function Reportes() {
   const [categoria, setCategoria] = useState('todas');
 
   const all = useMemo(
-    () => actionsByNode(node.slug).sort((a, b) => b.date.localeCompare(a.date)),
-    [node.slug],
+    () => actionsForNode(node).sort((a, b) => b.date.localeCompare(a.date)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- ver MisAcciones
+    [dashboardKeyOf(node)],
   );
 
   const rows = useMemo(() => {

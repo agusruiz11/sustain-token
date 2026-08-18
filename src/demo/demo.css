@@ -2600,3 +2600,152 @@ body:has(.dash-layout)::before { display: none; }
   background: rgba(41,221,245,0.1);
   border-color: rgba(41,221,245,0.35);
 }
+
+/* ── Identidad del nodo (HomeUsuario) ──────────────────────
+   Reemplaza a la tarjeta de comunidad y al saldo de wallet, que mostraban
+   métricas sin respaldo en la fuente canónica. */
+.udash-node-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+}
+
+.udash-node-facts > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line-300);
+}
+
+.udash-node-facts > div:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.udash-node-facts dt {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink-300);
+  flex-shrink: 0;
+}
+
+.udash-node-facts dd {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-100);
+  text-align: right;
+}
+
+/* El SPN es largo: monoespaciada y con corte para que no desborde la tarjeta. */
+.udash-node-mono {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--brand-300);
+  overflow-wrap: anywhere;
+}
+
+/* ── Trayectoria institucional vs. acciones verificadas ────
+   Entregable 3 § 4.1: las dos naturalezas de dato tienen que distinguirse a
+   simple vista. El violeta marca "histórico documentado"; el verde/cian de la
+   paleta sigue reservado para lo verificado por Sustain. */
+.inst-origin-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #8A7BB8;
+  background: rgba(138,123,184,0.12);
+  border: 1px solid rgba(138,123,184,0.3);
+  border-radius: var(--r-sm, 4px);
+  padding: 3px 8px;
+}
+
+.inst-trajectory-lead {
+  margin: 0 0 14px;
+  font-size: 12px;
+  color: var(--ink-300);
+}
+
+.inst-trajectory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 0;
+}
+
+.inst-trajectory-grid > div {
+  padding: 10px;
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+}
+
+.inst-trajectory-grid dt {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink-300);
+  margin-bottom: 4px;
+}
+
+.inst-trajectory-grid dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: #C8B8E8;
+}
+
+.inst-trajectory-note {
+  margin: 14px 0 0;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--ink-300);
+}
+
+.inst-framework-chip {
+  background: rgba(138,123,184,0.12);
+  border: 1px solid rgba(138,123,184,0.3);
+  color: #8A7BB8;
+}
+
+/* Cero acciones verificadas es un estado legítimo del producto, no un error:
+   se presenta como tal y explica por qué. */
+.inst-empty {
+  padding: 22px 16px;
+  text-align: center;
+}
+
+.inst-empty-mark {
+  font-size: 34px;
+  line-height: 1;
+  color: var(--line-300);
+  margin-bottom: 10px;
+}
+
+.inst-empty-title {
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-100);
+}
+
+.inst-empty-text {
+  margin: 0 auto;
+  max-width: 40ch;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--ink-300);
+}
+
+/* Anclaje pendiente: es un estado real del piloto, no un dato faltante. */
+.dash-audit-val--pending {
+  color: var(--ink-300);
+  font-style: italic;
+}

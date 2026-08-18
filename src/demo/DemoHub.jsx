@@ -195,9 +195,11 @@ export default function DemoHub() {
               <span className="demo-hub-user-stat-val">{USER.verifiedActions}</span>
               <span className="demo-hub-user-stat-lbl">Acciones</span>
             </div>
+            {/* El saldo $SUS se retiró: el nodo corre con reward_enabled: false
+                (modo score_only) y los 178.45 que había eran inventados. */}
             <div className="demo-hub-user-stat">
-              <span className="demo-hub-user-stat-val">{USER.wallet}</span>
-              <span className="demo-hub-user-stat-lbl">$SUS</span>
+              <span className="demo-hub-user-stat-val">{USER.sesLevelNum}</span>
+              <span className="demo-hub-user-stat-lbl">Nivel</span>
             </div>
             <div
               className="demo-hub-card-btn"

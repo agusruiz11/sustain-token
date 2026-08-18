@@ -1,7 +1,8 @@
 import { useNode } from '../components/useNode';
 import { getNodeType } from '../data/nodeTypes';
 import { getOrganization, flattenUnits, countUnits, meteredUnits, ORG_EXAMPLE_NOTICE } from '../data/organization';
-import { actionsByNode, totalSavings } from '../data/actions';
+import { dashboardKeyOf } from '../data/sustainNodes';
+import { actionsForNode, totalSavings } from '../data/actions';
 import DataTable from '../components/DataTable';
 import StatusChip from '../components/StatusChip';
 import { STEP_STATUS } from '../data/actions';
@@ -20,7 +21,7 @@ import { STEP_STATUS } from '../data/actions';
 export default function Instituciones() {
   const { node } = useNode();
   const type = getNodeType(node.nodeTypeId);
-  const org = getOrganization(node.slug);
+  const org = getOrganization(dashboardKeyOf(node));
 
   if (!org) {
     return (
@@ -32,7 +33,7 @@ export default function Instituciones() {
     );
   }
 
-  const actions = actionsByNode(node.slug);
+  const actions = actionsForNode(node);
   const savings = totalSavings(actions);
   const rows = flattenUnits(org.units);
   const conMedicion = meteredUnits(org.units).length;
@@ -109,7 +110,9 @@ export default function Instituciones() {
       <div className="dash-card">
         <div className="dash-section-header">
           <span className="dash-section-title">Estructura</span>
-          {org.isExample && <span className="org-example-chip">Datos de ejemplo</span>}
+          {org.isExample
+            ? <span className="org-example-chip">Datos de ejemplo</span>
+            : <span className="inst-origin-badge">Histórico documentado</span>}
         </div>
         <DataTable
           columns={columns}
@@ -123,9 +126,9 @@ export default function Instituciones() {
         <div className="dash-nav-group-label">Qué falta para tener KPIs por unidad</div>
         <ul className="mod-scaffold-list">
           <li>
-            La medición actual viene de la factura de la distribuidora, que cubre el edificio
-            completo con un solo medidor. Por eso {countUnits(org.units) - conMedicion} de{' '}
-            {countUnits(org.units)} unidades no tienen consumo propio.
+            Los medidores de la institución son de edificio, no por unidad organizativa.
+            Por eso {countUnits(org.units) - conMedicion} de {countUnits(org.units)} unidades
+            no tienen consumo propio.
           </li>
           <li>
             Para desagregar hay dos caminos: <strong>submedición</strong> (un medidor por sector)
@@ -137,7 +140,7 @@ export default function Instituciones() {
             medidor muestran su estado real en lugar de un número estimado.
           </li>
         </ul>
-        {org.isExample && <p className="mod-scaffold-note">{ORG_EXAMPLE_NOTICE}</p>}
+        <p className="mod-scaffold-note">{ORG_EXAMPLE_NOTICE}</p>
       </div>
     </>
   );

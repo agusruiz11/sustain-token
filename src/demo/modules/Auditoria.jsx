@@ -1,5 +1,5 @@
 import { useNode } from '../components/useNode';
-import { actionsByNode, STEP_STATUS } from '../data/actions';
+import { actionsForNode, STEP_STATUS } from '../data/actions';
 import { moduleHref } from '../data/nodeTypes';
 import DataTable from '../components/DataTable';
 import StatusChip from '../components/StatusChip';
@@ -15,7 +15,7 @@ import AuditTrail from '../components/AuditTrail';
  */
 export default function Auditoria() {
   const { node, routeSegment } = useNode();
-  const actions = actionsByNode(node.slug).sort((a, b) => b.date.localeCompare(a.date));
+  const actions = actionsForNode(node).sort((a, b) => b.date.localeCompare(a.date));
   const base = moduleHref(node.nodeTypeId, node.slug, 'acciones', routeSegment);
 
   const conHash = actions.filter((a) => a.anchor.hash).length;

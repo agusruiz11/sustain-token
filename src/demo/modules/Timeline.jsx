@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useNode } from '../components/useNode';
-import { actionsByNode, buildTimeline, STEP_STATUS } from '../data/actions';
+import { actionsForNode, buildTimeline, STEP_STATUS } from '../data/actions';
 import { CATEGORIES } from '../data/categories';
 import { moduleHref } from '../data/nodeTypes';
 import { SesDelta } from '../components/StatusChip';
@@ -15,7 +15,7 @@ import { stepStyle } from '../components/stepStyle';
  */
 export default function Timeline() {
   const { node, routeSegment } = useNode();
-  const actions = actionsByNode(node.slug).sort((a, b) => b.date.localeCompare(a.date));
+  const actions = actionsForNode(node).sort((a, b) => b.date.localeCompare(a.date));
   const base = moduleHref(node.nodeTypeId, node.slug, 'acciones', routeSegment);
 
   const pendientes = actions.filter((a) => a.anchor.chainStatus !== STEP_STATUS.COMPLETE).length;
