@@ -1,0 +1,62 @@
+[
+  {
+    "role_assignment_id": "role_alejandro_rl",
+    "person_id": "person_alejandro_viola",
+    "role_type": "legal_representative",
+    "scope_type": "institution",
+    "scope_id": "inst_montessori_ar",
+    "start_date": null,
+    "status": "active",
+    "source_reference": "PDF p.1"
+  },
+  {
+    "role_assignment_id": "role_walter_environment",
+    "person_id": "person_walter_musicco",
+    "role_type": "environmental_coordinator",
+    "scope_type": "institution",
+    "scope_id": "inst_montessori_ar",
+    "start_date": null,
+    "status": "active",
+    "source_reference": "PDF p.1, p.104"
+  },
+  {
+    "role_assignment_id": "role_walter_vma",
+    "person_id": "person_walter_musicco",
+    "role_type": "program_coordinator",
+    "scope_type": "program",
+    "scope_id": "prog_vma",
+    "start_date": "2025-05-07",
+    "status": "active",
+    "source_reference": "PDF p.71"
+  },
+  {
+    "role_assignment_id": "role_luciana_director",
+    "person_id": "person_luciana_de_bartolis",
+    "role_type": "secondary_director",
+    "scope_type": "organizational_unit",
+    "scope_id": "unit_secundario",
+    "start_date": null,
+    "status": "active",
+    "source_reference": "PDF p.71"
+  },
+  {
+    "role_assignment_id": "role_fernanda_vice",
+    "person_id": "person_fernanda_asmetto",
+    "role_type": "secondary_vice_director",
+    "scope_type": "organizational_unit",
+    "scope_id": "unit_secundario",
+    "start_date": null,
+    "status": "active",
+    "source_reference": "PDF p.71"
+  },
+  {
+    "role_assignment_id": "role_candelaria_vma",
+    "person_id": "person_candelaria_garza",
+    "role_type": "program_teacher",
+    "scope_type": "program",
+    "scope_id": "prog_vma",
+    "start_date": "2025-05-07",
+    "status": "active",
+    "source_reference": "PDF p.71"
+  }
+]

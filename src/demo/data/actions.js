@@ -14,11 +14,30 @@
      Blockchain → Reportes
 
    ------------------------------------------------------------
+   ⚠ ATRIBUCIÓN — CORREGIDO 18 ago 2026
+   ------------------------------------------------------------
+   Estas 8 acciones NO son de Montessori School. Pertenecen al nodo personal
+   de Martín Ceron (spn_01ee6583da858ca1fa19323d, node_type: individual,
+   founder_wallet) y son FIXTURES DE DEMO: facturas de él y de familiares que
+   pasó para construir y probar el flujo.
+
+   Lo aclaró tres veces —"son para mi dashboard, son mías"— y lo formalizó el
+   Implementation Package en config/demo_data_policy.json:
+
+     "Las 8 facturas EDESUR utilizadas en el demo no constituyen consumos
+      reales de Montessori."
+
+   Por eso llevan `dataMode: DATA_MODE.DEMO` y viven en /demo/usuario.
+   No deben alimentar: mediciones históricas institucionales, SES oficial,
+   auditorías oficiales, reportes oficiales, evidencia de certificación ni
+   anclajes de producción.
+
+   Ver src/demo/data/sustainNodes.js para la identidad del nodo.
+
+   ------------------------------------------------------------
    PROCEDENCIA DE LOS DATOS  ⚠ LEER ANTES DE MODIFICAR
    ------------------------------------------------------------
-   Estas 8 acciones son el piloto REAL de Montessori School
-   (nodo spn_01ee6583da858ca1fa19323d): 8 facturas EDESUR verificadas.
-   No son datos inventados. Cada valor está marcado con su origen:
+   Los valores no son inventados. Cada uno está marcado con su origen:
 
      'source'   → tomado literal de src/demo/data/institutions.js, que a su vez
                   se calculó 1:1 desde los baseline_report.json / ses_score.json
@@ -46,12 +65,20 @@
      · Los ses_score.json / baseline_report.json NO están versionados en el repo.
        Conviene incorporarlos a drive-files/ para poder regenerar esto.
 
-   ⚠ ANCLAJE: en el piloto real IPFS, transacción y blockchain están
-   "Pendiente de anclaje" (institutions.js § audit). Solo la acción del 22 Jun
-   tiene hash calculado. Esto NO es un hueco del mock: es el estado real.
+   ⚠ ANCLAJE: IPFS, transacción y blockchain están "Pendiente de anclaje".
+   Solo la acción del 22 Jun tiene hash calculado. Esto NO es un hueco del
+   mock: es el estado real. Verificado el 18 ago 2026 sobre todo el material
+   entregado — no existe un solo CID ni tx hash real en ningún archivo. El
+   AGENCY_IMPLEMENTATION_BRIEF.md lo prohíbe explícitamente:
+
+     "Do NOT invent or hardcode fake CIDs or transaction hashes and present
+      them as real."
+
    Las vistas de Timeline, Data Room y Auditoría tienen que renderizar el
    estado 'pending' como caso de primera clase, no como error.
    ============================================================ */
+
+import { DATA_MODE, dashboardKeyOf } from './sustainNodes.js';
 
 export const ACTION_STATUS = {
   VERIFIED: 'verified',
@@ -118,7 +145,8 @@ function energyAction({
   return {
     id,
     nodeId: NODE,
-    nodeSlug: 'montessori',
+    /** Dashboard donde se muestra. El nodo de Martín es /demo/usuario. */
+    nodeKey: 'usuario',
     categoryId: 'energia',
     sequence: n,
     title: `Factura EDESUR · Período liquidado ${period}`,
@@ -126,6 +154,12 @@ function energyAction({
     dateLabel,
     status: ACTION_STATUS.VERIFIED,
     provenance,
+
+    /* Fixture de demo, no consumo institucional real.
+       config/demo_data_policy.json del Implementation Package. */
+    dataMode: DATA_MODE.DEMO,
+    owner: 'demo_fixture',
+    institutionAttribution: 'simulated',
 
     // ── Paso 1 · Factura (evidencia original)
     evidence: {
@@ -199,54 +233,81 @@ function energyAction({
 
 export const ACTIONS = [
   energyAction({
-    n: 1, id: 'act_mont_energia_01', date: '2025-11-14', dateLabel: '14 Nov 2025', period: 1,
+    n: 1, id: 'act_martin_energia_01', date: '2025-11-14', dateLabel: '14 Nov 2025', period: 1,
     consumption: 9.96, baseline: 9.96, deltaPct: 0,
     sesDelta: 0, sesBand: 'baseline_established',
     provenance: { consumption: 'derived', baseline: 'derived', deltaPct: 'derived', ses: 'inferred' },
   }),
   energyAction({
-    n: 2, id: 'act_mont_energia_02', date: '2025-12-18', dateLabel: '18 Dic 2025', period: 2,
+    n: 2, id: 'act_martin_energia_02', date: '2025-12-18', dateLabel: '18 Dic 2025', period: 2,
     consumption: 8.80, baseline: 9.96, deltaPct: -11.6,
     sesDelta: null, sesBand: 'significant_reduction',
     provenance: { consumption: 'derived', baseline: 'derived', deltaPct: 'derived', ses: null },
   }),
   energyAction({
-    n: 3, id: 'act_mont_energia_03', date: '2026-01-20', dateLabel: '20 Ene 2026', period: 3,
+    n: 3, id: 'act_martin_energia_03', date: '2026-01-20', dateLabel: '20 Ene 2026', period: 3,
     consumption: 16.03, baseline: 11.55, deltaPct: 38.8,
     sesDelta: null, sesBand: 'moderate_increase',
     provenance: { consumption: 'derived', baseline: 'derived', deltaPct: 'derived', ses: null },
   }),
   energyAction({
-    n: 4, id: 'act_mont_energia_04', date: '2026-02-20', dateLabel: '20 Feb 2026', period: 4,
+    n: 4, id: 'act_martin_energia_04', date: '2026-02-20', dateLabel: '20 Feb 2026', period: 4,
     consumption: 8.88, baseline: 11.55, deltaPct: -23.1,
     sesDelta: 40, sesBand: 'exceptional_reduction',
     provenance: { consumption: 'derived', baseline: 'derived', deltaPct: 'source', ses: 'inferred' },
   }),
   energyAction({
-    n: 5, id: 'act_mont_energia_05', date: '2026-03-19', dateLabel: '19 Mar 2026', period: 5,
+    n: 5, id: 'act_martin_energia_05', date: '2026-03-19', dateLabel: '19 Mar 2026', period: 5,
     consumption: 9.09, baseline: 11.55, deltaPct: -21.3,
     sesDelta: 40, sesBand: 'exceptional_reduction',
     provenance: { consumption: 'derived', baseline: 'derived', deltaPct: 'source', ses: 'source' },
   }),
   energyAction({
-    n: 6, id: 'act_mont_energia_06', date: '2026-04-21', dateLabel: '21 Abr 2026', period: 6,
+    n: 6, id: 'act_martin_energia_06', date: '2026-04-21', dateLabel: '21 Abr 2026', period: 6,
     consumption: 9.73, baseline: 11.55, deltaPct: -15.8,
     sesDelta: 30, sesBand: 'outstanding_reduction',
     provenance: { consumption: 'derived', baseline: 'derived', deltaPct: 'source', ses: 'source' },
   }),
   energyAction({
-    n: 7, id: 'act_mont_energia_07', date: '2026-05-19', dateLabel: '19 May 2026', period: 7,
+    n: 7, id: 'act_martin_energia_07', date: '2026-05-19', dateLabel: '19 May 2026', period: 7,
     consumption: 16.47, baseline: 10.39, deltaPct: 58.4,
     sesDelta: -30, sesBand: 'major_increase',
     provenance: { consumption: 'derived', baseline: 'derived', deltaPct: 'source', ses: 'source' },
   }),
   energyAction({
-    n: 8, id: 'act_mont_energia_08', date: '2026-06-22', dateLabel: '22 Jun 2026', period: 8,
+    n: 8, id: 'act_martin_energia_08', date: '2026-06-22', dateLabel: '22 Jun 2026', period: 8,
     consumption: 19.94, baseline: 11.55, deltaPct: 72.5,
     sesDelta: -30, sesBand: 'major_increase',
     hash: '39f6dade1763705ec3b59146efb14b1bfc43374372deaa87683511d57d43f47f',
     provenance: { consumption: 'source', baseline: 'source', deltaPct: 'source', ses: 'source', hash: 'source' },
   }),
+];
+
+/* ============================================================
+   ACCIONES CONOCIDAS SIN PAQUETE — no inventar
+   ============================================================
+   node_state.json declara 14 acciones verificadas en el nodo de Martín:
+   8 de energía + 1 de recuperación de plástico + 5 de movilidad.
+
+   De la de plástico sabemos que existe y su métrica agregada
+   (love_bottles_prepared: 1, plastic_prepared_kg: 0.3), pero NO llegó su
+   paquete: no tenemos action_id, fecha, evidencia ni hash.
+
+   La regla 6 del implementation_manifest.json es "No inventar datos
+   faltantes", así que no se fabrica una ficha. Se declara el hueco para que
+   la UI pueda decir "1 acción sin detalle disponible" en vez de mentir o de
+   mostrar un total que no cierra.
+   ============================================================ */
+export const MISSING_ACTION_PACKAGES = [
+  {
+    module: 'plastic_recovery',
+    nodeId: NODE,
+    nodeKey: 'usuario',
+    count: 1,
+    knownMetrics: { loveBottlesPrepared: 1, plasticPreparedKg: 0.3 },
+    missing: ['action_id', 'action_date', 'evidence', 'hash', 'ses_delta'],
+    request: 'Pedir a Martín el paquete de la acción de recuperación de plástico.',
+  },
 ];
 
 /* ============================================================
@@ -287,7 +348,21 @@ export function buildTimeline(action) {
 
 export const getAction = (id) => ACTIONS.find((a) => a.id === id) ?? null;
 
-export const actionsByNode = (slug) => ACTIONS.filter((a) => a.nodeSlug === slug);
+/**
+ * Acciones Sustain de un nodo del dashboard.
+ *
+ * Recibe el nodo entero y no un slug porque el usuario final no tiene slug
+ * (es un solo nodo, no una colección) — `dashboardKeyOf` resuelve ese caso.
+ * Antes esto se llamaba `actionsByNode(node.slug)` y devolvía las 8 facturas
+ * para Montessori, que era justamente la atribución equivocada.
+ *
+ * Un nodo sin acciones Sustain devuelve `[]`, que es un estado legítimo y no
+ * un error: hoy es el caso de Montessori, que sólo tiene histórico documental.
+ */
+export const actionsForNode = (node) => {
+  const key = dashboardKeyOf(node);
+  return key ? ACTIONS.filter((a) => a.nodeKey === key) : [];
+};
 
 export const actionsByCategory = (categoryId) => ACTIONS.filter((a) => a.categoryId === categoryId);
 
@@ -298,18 +373,22 @@ export const recentActions = (limit = 4) =>
 /**
  * Ahorro acumulado en los períodos de reducción, en kWh/día.
  * Devuelve null en kWh totales hasta que se carguen los periodDays reales.
- * Referencia declarada en institutions.js: 211.2 kWh acumulados.
+ * Referencia canónica (node_state.json): 211.190949 kWh acumulados.
+ *
+ * Sólo mira acciones de energía: desde que el nodo tiene movilidad y plástico,
+ * `ACTIONS` ya no es homogéneo y `a.result` no existe en todas.
  */
 export function totalSavings(actions = ACTIONS) {
-  const perDay = actions
+  const energy = actions.filter((a) => a.categoryId === 'energia');
+  const perDay = energy
     .filter((a) => a.result.direction === 'reduction')
     .reduce((sum, a) => sum + a.result.savedPerDay, 0);
-  const hasAllDays = actions.every((a) => a.consumption.periodDays !== null);
+  const hasAllDays = energy.every((a) => a.consumption.periodDays !== null);
   return {
     perDay: Number(perDay.toFixed(2)),
     totalKwh: hasAllDays
-      ? actions.reduce((s, a) => s + Math.max(0, a.result.savedPerDay) * a.consumption.periodDays, 0)
+      ? energy.reduce((s, a) => s + Math.max(0, a.result.savedPerDay) * a.consumption.periodDays, 0)
       : null,
-    declaredTotalKwh: 211.2,
+    declaredTotalKwh: 211.190949,
   };
 }

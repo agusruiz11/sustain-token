@@ -1,0 +1,47 @@
+[
+  {
+    "meter_id": "meter_electricity_1",
+    "utility_account_id": "util_electricity_1",
+    "meter_type": "electricity_standard",
+    "display_name": "Medidor eléctrico 1",
+    "external_meter_ref": "masked",
+    "status": "active",
+    "source_reference": "PDF p.9-p.12"
+  },
+  {
+    "meter_id": "meter_electricity_2",
+    "utility_account_id": "util_electricity_2",
+    "meter_type": "electricity_standard",
+    "display_name": "Medidor eléctrico 2",
+    "external_meter_ref": "masked",
+    "status": "active",
+    "source_reference": "PDF p.9-p.12"
+  },
+  {
+    "meter_id": "meter_electricity_bi",
+    "utility_account_id": "util_electricity_bi",
+    "meter_type": "electricity_bidirectional",
+    "display_name": "Medidor eléctrico bidireccional",
+    "external_meter_ref": "masked",
+    "status": "active",
+    "source_reference": "PDF p.9-p.12"
+  },
+  {
+    "meter_id": "meter_gas",
+    "utility_account_id": "util_gas",
+    "meter_type": "gas_standard",
+    "display_name": "Medidor de gas",
+    "external_meter_ref": "masked",
+    "status": "active",
+    "source_reference": "PDF p.9-p.12"
+  },
+  {
+    "meter_id": "meter_water",
+    "utility_account_id": "util_water",
+    "meter_type": "water_billing_account",
+    "display_name": "Suministro de agua",
+    "external_meter_ref": "masked",
+    "status": "active",
+    "source_reference": "PDF p.28-p.29"
+  }
+]

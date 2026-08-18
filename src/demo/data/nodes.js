@@ -37,7 +37,10 @@ const FOOTER_BY_TYPE = {
     { icon: '📦', title: 'Privacidad por Diseño', text: 'Sin exponer datos personales, medidores ni códigos de pago' },
   ],
   standard: [
-    { icon: '🔒', title: 'Registro Inmutable', text: 'Todas las acciones están respaldadas en blockchain' },
+    /* Decía "Todas las acciones están respaldadas en blockchain", que
+       contradice al audit trail de la misma pantalla: ninguna está anclada
+       todavía. Se afirma lo que sí es cierto — la integridad SHA-256. */
+    { icon: '🔒', title: 'Integridad Verificable', text: 'Cada evidencia tiene su hash SHA-256; el anclaje on-chain queda pendiente' },
     FOOTER_COMMON.mrv,
     { icon: '📦', title: 'Transparencia Total', text: 'Trazabilidad, integridad y evidencia pública' },
   ],
@@ -102,11 +105,23 @@ function fromUser(u) {
       },
     },
     badge: 'VERIFICADO',
+    /* La racha y el ranking global salieron: no existen en node_state.json y
+       con los campos en null la topbar mostraba "Racha: null días · null".
+       Se reemplazan por el nivel de identidad ambiental, que sí es canónico. */
     meta: [
-      monoMeta(`🔥 Racha: ${u.activeStreak} días`, 'var(--amber-600)'),
-      monoMeta(`${u.globalRank} · ${u.globalRankNum}`, 'var(--brand-300)'),
+      monoMeta(`${u.sesLevel}`, 'var(--brand-300)'),
+      monoMeta(`SES ${u.sesScore} / ${u.sesScaleMax}`, 'var(--ink-300)'),
     ],
-    sidebarPanel: { kind: 'wallet', amount: u.wallet },
+    /* reward_enabled: false — el nodo está en modo score_only. El panel de
+       wallet mostraba "0.00 $SUS · saldo disponible", que sugiere una billetera
+       vacía cuando en realidad el token todavía no se emite. */
+    sidebarPanel: {
+      kind: 'pilot',
+      title: 'Sustain Score',
+      value: String(u.sesScore),
+      total: `/ ${u.sesScaleMax}`,
+      note: 'Modo score_only · sin recompensa',
+    },
     footer: FOOTER_BY_TYPE.standard,
     audit: u.audit,
     data: u,

@@ -14,6 +14,7 @@ import Impacto from './Impacto';
 import Identity from './Identity';
 import Integraciones from './Integraciones';
 import Configuracion from './Configuracion';
+import Movilidad from './Movilidad';
 
 /**
  * Registro de módulos.
@@ -43,6 +44,7 @@ const BUILT = {
   identity: Identity,
   integraciones: Integraciones,
   configuracion: Configuracion,
+  movilidad: Movilidad,
 };
 
 /**

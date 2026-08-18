@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNode } from '../components/useNode';
-import { actionsByNode } from '../data/actions';
+import { actionsForNode } from '../data/actions';
+import { dashboardKeyOf, DATA_MODE } from '../data/sustainNodes';
 import { CATEGORIES } from '../data/categories';
 import { moduleHref } from '../data/nodeTypes';
 import DataTable from '../components/DataTable';
@@ -17,9 +18,12 @@ export default function MisAcciones() {
   const [categoria, setCategoria] = useState('todas');
   const [resultado, setResultado] = useState('todos');
 
+  const nodeKey = dashboardKeyOf(node);
+
   const all = useMemo(
-    () => actionsByNode(node.slug).sort((a, b) => b.date.localeCompare(a.date)),
-    [node.slug],
+    () => actionsForNode(node).sort((a, b) => b.date.localeCompare(a.date)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- nodeKey identifica al nodo; `node` se recrea en cada render
+    [nodeKey],
   );
 
   const rows = useMemo(
@@ -34,6 +38,11 @@ export default function MisAcciones() {
   // un filtro con 13 opciones donde 12 no dan resultados no ayuda a nadie.
   const cats = useMemo(
     () => [...new Set(all.map((a) => a.categoryId))].map((id) => CATEGORIES[id]),
+    [all],
+  );
+
+  const demoFixtures = useMemo(
+    () => all.filter((a) => a.dataMode === DATA_MODE.DEMO).length,
     [all],
   );
 
@@ -112,14 +121,29 @@ export default function MisAcciones() {
           rows={rows}
           rowHref={(a) => `${base}/${a.id}`}
           caption="Acciones verificadas del nodo"
-          empty="Ninguna acción coincide con los filtros."
+          // Un nodo sin acciones y un filtro sin resultados son dos cosas
+          // distintas. Montessori entra al piloto con histórico documentado y
+          // cero acciones verificadas: decir "no coincide con los filtros"
+          // sugeriría que hay algo escondido detrás de un filtro.
+          empty={
+            all.length === 0
+              ? 'Este nodo todavía no tiene acciones verificadas por Sustain.'
+              : 'Ninguna acción coincide con los filtros.'
+          }
         />
       </div>
 
-      <p className="mod-scaffold-note">
-        Las 8 acciones son las facturas EDESUR reales del piloto. Los valores marcados como
-        pendientes no están cargados todavía y no se completaron con datos inventados.
-      </p>
+      {/* La nota depende de qué nodo se está mirando: antes afirmaba en todos
+          que "las 8 acciones son las facturas EDESUR reales del piloto", lo
+          que era doblemente falso en Montessori — ni son suyas ni son reales
+          suyas. */}
+      {all.length > 0 && demoFixtures > 0 && (
+        <p className="mod-scaffold-note">
+          {demoFixtures} de estas acciones son fixtures de demostración cargadas para
+          construir y probar el flujo. Los valores marcados como pendientes no están
+          cargados todavía y no se completaron con datos inventados.
+        </p>
+      )}
     </>
   );
 }

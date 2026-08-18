@@ -1,0 +1,128 @@
+[
+  {
+    "indicator_id": "waste_love_bottles_kg",
+    "name": "Botellas de Amor recuperadas",
+    "category": "waste_circularity",
+    "unit": "kg",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "waste_batteries_kg",
+    "name": "Pilas recuperadas",
+    "category": "waste_circularity",
+    "unit": "kg",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "waste_caps_kg",
+    "name": "Tapitas recuperadas",
+    "category": "waste_circularity",
+    "unit": "kg",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "waste_paper_kg",
+    "name": "Papel recuperado",
+    "category": "waste_circularity",
+    "unit": "kg",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "waste_toner_kg",
+    "name": "Cartuchos de tóner recuperados",
+    "category": "waste_circularity",
+    "unit": "kg",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "waste_e_waste_kg",
+    "name": "RAEE recuperados",
+    "category": "waste_circularity",
+    "unit": "kg",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "trees_planted_count",
+    "name": "Árboles plantados",
+    "category": "biodiversity",
+    "unit": "count",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "waste_plastic_bottles_kg",
+    "name": "Botellas plásticas recuperadas",
+    "category": "waste_circularity",
+    "unit": "kg",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "waste_aluminum_cans_kg",
+    "name": "Latas de aluminio recuperadas",
+    "category": "waste_circularity",
+    "unit": "kg",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "waste_tetrabrick_kg",
+    "name": "Tetra Brik recuperado",
+    "category": "waste_circularity",
+    "unit": "kg",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "electricity_consumption_kwh",
+    "name": "Consumo eléctrico",
+    "category": "energy",
+    "unit": "kWh",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "electricity_injected_kwh",
+    "name": "Energía inyectada a red",
+    "category": "energy",
+    "unit": "kWh",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "gas_consumption_m3",
+    "name": "Consumo de gas",
+    "category": "gas",
+    "unit": "m3",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "water_consumption_m3",
+    "name": "Consumo de agua",
+    "category": "water",
+    "unit": "m3",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "solar_capacity_kwp",
+    "name": "Capacidad fotovoltaica instalada",
+    "category": "energy",
+    "unit": "kWp",
+    "aggregation_method": "latest"
+  },
+  {
+    "indicator_id": "communication_views",
+    "name": "Visualizaciones de campañas",
+    "category": "education_engagement",
+    "unit": "count",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "communication_likes",
+    "name": "Me gusta de campañas",
+    "category": "education_engagement",
+    "unit": "count",
+    "aggregation_method": "sum"
+  },
+  {
+    "indicator_id": "communication_shares",
+    "name": "Compartidos de campañas",
+    "category": "education_engagement",
+    "unit": "count",
+    "aggregation_method": "sum"
+  }
+]

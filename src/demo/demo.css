@@ -2600,3 +2600,757 @@ body:has(.dash-layout)::before { display: none; }
   background: rgba(41,221,245,0.1);
   border-color: rgba(41,221,245,0.35);
 }
+
+/* ── Identidad del nodo (HomeUsuario) ──────────────────────
+   Reemplaza a la tarjeta de comunidad y al saldo de wallet, que mostraban
+   métricas sin respaldo en la fuente canónica. */
+.udash-node-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+}
+
+.udash-node-facts > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line-300);
+}
+
+.udash-node-facts > div:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.udash-node-facts dt {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink-300);
+  flex-shrink: 0;
+}
+
+.udash-node-facts dd {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-100);
+  text-align: right;
+}
+
+/* El SPN es largo: monoespaciada y con corte para que no desborde la tarjeta. */
+.udash-node-mono {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--brand-300);
+  overflow-wrap: anywhere;
+}
+
+/* ── Trayectoria institucional vs. acciones verificadas ────
+   Entregable 3 § 4.1: las dos naturalezas de dato tienen que distinguirse a
+   simple vista. El violeta marca "histórico documentado"; el verde/cian de la
+   paleta sigue reservado para lo verificado por Sustain. */
+.inst-origin-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #8A7BB8;
+  background: rgba(138,123,184,0.12);
+  border: 1px solid rgba(138,123,184,0.3);
+  border-radius: var(--r-sm, 4px);
+  padding: 3px 8px;
+}
+
+.inst-trajectory-lead {
+  margin: 0 0 14px;
+  font-size: 12px;
+  color: var(--ink-300);
+}
+
+.inst-trajectory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 0;
+}
+
+.inst-trajectory-grid > div {
+  padding: 10px;
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+}
+
+.inst-trajectory-grid dt {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink-300);
+  margin-bottom: 4px;
+}
+
+.inst-trajectory-grid dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: #C8B8E8;
+}
+
+.inst-trajectory-note {
+  margin: 14px 0 0;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--ink-300);
+}
+
+.inst-framework-chip {
+  background: rgba(138,123,184,0.12);
+  border: 1px solid rgba(138,123,184,0.3);
+  color: #8A7BB8;
+}
+
+/* Cero acciones verificadas es un estado legítimo del producto, no un error:
+   se presenta como tal y explica por qué. */
+.inst-empty {
+  padding: 22px 16px;
+  text-align: center;
+}
+
+.inst-empty-mark {
+  font-size: 34px;
+  line-height: 1;
+  color: var(--line-300);
+  margin-bottom: 10px;
+}
+
+.inst-empty-title {
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-100);
+}
+
+.inst-empty-text {
+  margin: 0 auto;
+  max-width: 40ch;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--ink-300);
+}
+
+/* Anclaje pendiente: es un estado real del piloto, no un dato faltante. */
+.dash-audit-val--pending {
+  color: var(--ink-300);
+  font-style: italic;
+}
+
+/* ── Data Room · selector de repositorio ───────────────────
+   "Acciones Sustain" y "Archivo institucional" son dos repositorios de
+   naturaleza distinta (Entregable 3 § 4.3), no dos filtros del mismo. */
+.dr-modebar {
+  display: flex;
+  gap: 8px;
+}
+
+.dr-mode-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-300);
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.dr-mode-tab:hover {
+  color: var(--ink-100);
+}
+
+.dr-mode-tab.active {
+  color: var(--brand-300);
+  background: rgba(41,221,245,0.08);
+  border-color: rgba(41,221,245,0.35);
+}
+
+.dr-mode-count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+}
+
+/* ── Archivo institucional ────────────────────────────────── */
+.arch-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.arch-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line-300);
+}
+
+.arch-item:last-child {
+  border-bottom: none;
+}
+
+.arch-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.arch-item-title {
+  font-size: 13px;
+  color: var(--ink-100);
+}
+
+.arch-item-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+}
+
+.arch-item-tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* La referencia de fuente ocupa el ancho completo debajo: en columna angosta
+   un "PDF p.24-p.27" al lado del título se parte a mitad. */
+.arch-item-source {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+}
+
+.arch-ref::before {
+  content: '↳ ';
+  opacity: 0.6;
+}
+
+.arch-ev {
+  opacity: 0.75;
+}
+
+.arch-access {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: var(--r-sm, 4px);
+  white-space: nowrap;
+}
+
+.arch-access--public {
+  color: #1E9E72;
+  background: rgba(30,158,114,0.12);
+  border: 1px solid rgba(30,158,114,0.3);
+}
+
+.arch-access--institutional {
+  color: #29DDF5;
+  background: rgba(41,221,245,0.1);
+  border: 1px solid rgba(41,221,245,0.28);
+}
+
+.arch-access--audit_restricted {
+  color: #B8860B;
+  background: rgba(184,134,11,0.12);
+  border: 1px solid rgba(184,134,11,0.32);
+}
+
+/* ── Timeline · hitos históricos ───────────────────────────
+   El punto relleno es una acción verificada por Sustain; el hueco, un hito
+   documentado. La diferencia tiene que leerse sin leer el badge. */
+.tl-dot--hollow {
+  background: transparent !important;
+  border: 2px solid currentColor;
+}
+
+.tl-origin {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  padding: 2px 7px;
+  border-radius: var(--r-sm, 4px);
+  white-space: nowrap;
+}
+
+.tl-origin--sustain {
+  color: #1E9E72;
+  background: rgba(30,158,114,0.12);
+  border: 1px solid rgba(30,158,114,0.3);
+}
+
+.tl-origin--hist {
+  color: #8A7BB8;
+  background: rgba(138,123,184,0.12);
+  border: 1px solid rgba(138,123,184,0.3);
+}
+
+/* Un hito histórico no abre ficha con pipeline, así que su título no es link. */
+.tl-title--plain {
+  color: var(--ink-100);
+  cursor: default;
+}
+
+.tl-hist-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+}
+
+.tl-hist-src {
+  opacity: 0.7;
+}
+
+/* Variante botón del link de fila: misma superficie clickeable, sin navegar. */
+.dash-table-rowbtn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+/* ── Instituciones · subsecciones ──────────────────────────
+   Las 7 del Entregable 3 § 4.8. Tabs y no acordeón porque son vistas
+   independientes, no detalle progresivo de una sola. */
+.inst-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.inst-tab {
+  padding: 7px 13px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-300);
+  background: transparent;
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.inst-tab:hover {
+  color: var(--ink-100);
+  border-color: var(--brand-300);
+}
+
+.inst-tab.active {
+  color: #03151A;
+  background: var(--brand-500);
+  border-color: var(--brand-500);
+}
+
+.inst-back {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--brand-300);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.inst-back:hover {
+  text-decoration: underline;
+}
+
+/* ── Impact Dashboard · indicadores con procedencia ────────
+   Entregable 3 § 4.5: un total del expediente y uno que pasó el pipeline no
+   pueden verse igual aunque los dos tengan número. */
+.imp-ind-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.imp-ind {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 0;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--line-300);
+  cursor: pointer;
+}
+
+.imp-ind:hover .imp-ind-name {
+  color: var(--brand-300);
+}
+
+.imp-ind-main {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.imp-ind-name {
+  font-size: 12px;
+  color: var(--ink-100);
+}
+
+.imp-ind-prov {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.imp-prov-chip {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.3px;
+  padding: 2px 6px;
+  border-radius: var(--r-sm, 4px);
+  white-space: nowrap;
+}
+
+.imp-ind-value {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-100);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.imp-ind-value small {
+  font-size: 10px;
+  color: var(--ink-300);
+}
+
+/* Las mediciones excluidas se nombran; no se descuentan en silencio. */
+.imp-ind-excl {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--amber-600, #B8860B);
+}
+
+/* ── Auditoría documental ──────────────────────────────────
+   Lo que no aplica al histórico se afirma una vez arriba de la tabla, no como
+   columnas vacías repetidas en cada fila. */
+.aud-hist-rule {
+  margin: 0 0 14px;
+  padding: 9px 12px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--ink-300);
+  background: rgba(138,123,184,0.07);
+  border: 1px solid rgba(138,123,184,0.22);
+  border-radius: var(--r-md);
+}
+
+.aud-hist-rule strong {
+  color: #C8B8E8;
+  font-weight: 600;
+}
+
+.aud-kind {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+}
+
+.aud-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--brand-300);
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.aud-more:hover {
+  border-color: var(--brand-300);
+}
+
+.aud-more-count {
+  color: var(--ink-300);
+}
+
+/* ── Trayectoria: accesos al histórico ─────────────────────
+   § 4.1 y § 4.9: desde el resumen se llega al detalle sin buscar en el menú. */
+.idt-traj-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.idt-traj-link {
+  padding: 7px 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #C8B8E8;
+  background: rgba(138,123,184,0.1);
+  border: 1px solid rgba(138,123,184,0.28);
+  border-radius: var(--r-md);
+  text-decoration: none;
+}
+
+.idt-traj-link:hover {
+  border-color: #8A7BB8;
+  color: #E0D6F5;
+}
+
+/* El bloque de trayectoria se separa del de SES con su propio borde: son dos
+   naturalezas distintas y el § 4.9 pide que se distingan a simple vista. */
+.idt-trajectory {
+  border-left: 3px solid rgba(138,123,184,0.5);
+}
+
+/* ── Configuración · acceso de auditor externo ─────────────
+   Adenda de Martín: la institución habilita a un tercero por plazo acotado en
+   vez de rearmar carpetas de evidencia. Es andamiaje real, no maqueta: el
+   alcance se calcula con las mismas funciones de acceso que el resto. */
+.cfg-grant {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.cfg-fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+}
+
+.cfg-fieldset legend {
+  padding: 0 6px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink-300);
+}
+
+.cfg-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cfg-chip {
+  padding: 6px 11px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-300);
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.cfg-chip:hover {
+  color: var(--ink-100);
+}
+
+.cfg-chip.on {
+  color: var(--brand-300);
+  background: rgba(41,221,245,0.1);
+  border-color: rgba(41,221,245,0.4);
+}
+
+.cfg-hint {
+  margin: 8px 0 0;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--ink-300);
+}
+
+.cfg-fieldset input[type="date"] {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-100);
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-sm, 4px);
+  padding: 5px 7px;
+  color-scheme: dark;
+}
+
+.cfg-emit {
+  margin-top: 14px;
+  padding: 10px 18px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  color: #03151A;
+  background: var(--brand-500);
+  border: none;
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.cfg-emit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cfg-invite {
+  margin-top: 16px;
+  padding: 14px;
+  background: var(--bg-200);
+  border: 1px solid rgba(41,221,245,0.28);
+  border-radius: var(--r-md);
+}
+
+/* Chip de taxonomía: lleva ícono + nombre, así que no puede reusar
+   .cfg-modchip, que es una celda fija de 22px para íconos sueltos. */
+.cfg-taxchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 11px;
+  font-size: 11px;
+  color: var(--ink-300);
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+  white-space: nowrap;
+}
+
+.cfg-taxchip.on {
+  color: var(--ink-100);
+  border-color: rgba(41,221,245,0.3);
+}
+
+/* ── Módulo Movilidad ──────────────────────────────────────
+   El anclaje se muestra como DEMO explícito, con color de advertencia: es la
+   diferencia entre "todavía no pasó" y "pasó". */
+.mob-demo {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 3px 8px;
+  color: #B8860B;
+  background: rgba(184,134,11,0.12);
+  border: 1px solid rgba(184,134,11,0.35);
+  border-radius: var(--r-sm, 4px);
+}
+
+.mob-mrv,
+.mob-provider {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+}
+
+.mob-genesis {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #8A7BB8;
+}
+
+.mob-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 780px) {
+  .mob-detail { grid-template-columns: 1fr; }
+}
+
+.mob-evidence-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 8px;
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+}
+
+.mob-evidence-meta {
+  margin: 8px 0 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+}
+
+.mob-checks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.mob-checks li {
+  font-size: 12px;
+  color: var(--ink-100);
+}
+
+.mob-checks li span {
+  display: inline-block;
+  width: 16px;
+  font-family: var(--font-mono);
+}
+
+.mob-checks li.ok span { color: var(--green-600, #1E9E72); }
+
+/* Un control no cumplido no se esconde: es lo que separa MRV-M1 de un nivel
+   superior de verificación. */
+.mob-checks li.no {
+  color: var(--ink-300);
+}
+
+.mob-checks li.no span { color: #B8860B; }
+
+.mob-limits { margin-top: 16px; }

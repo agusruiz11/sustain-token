@@ -1,0 +1,37 @@
+[
+  {
+    "person_id": "person_alejandro_viola",
+    "display_name": "Alejandro Viola",
+    "person_type": "staff",
+    "access_level": "restricted",
+    "source_reference": "PDF p.1"
+  },
+  {
+    "person_id": "person_walter_musicco",
+    "display_name": "Walter Musicco",
+    "person_type": "staff",
+    "access_level": "institutional",
+    "source_reference": "PDF p.1, p.71, p.104"
+  },
+  {
+    "person_id": "person_luciana_de_bartolis",
+    "display_name": "Luciana De Bartolis",
+    "person_type": "staff",
+    "access_level": "institutional",
+    "source_reference": "PDF p.71"
+  },
+  {
+    "person_id": "person_fernanda_asmetto",
+    "display_name": "Fernanda Asmetto",
+    "person_type": "staff",
+    "access_level": "institutional",
+    "source_reference": "PDF p.71"
+  },
+  {
+    "person_id": "person_candelaria_garza",
+    "display_name": "Candelaria Garza",
+    "person_type": "staff",
+    "access_level": "institutional",
+    "source_reference": "PDF p.71"
+  }
+]

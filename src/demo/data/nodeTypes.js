@@ -35,17 +35,26 @@ export const MODULES = {
   reportes:       { id: 'reportes',       label: 'Reportes',              icon: '≡', path: 'reportes',      brief: 9 },
   auditoria:      { id: 'auditoria',      label: 'Auditoría',             icon: '◈', path: 'auditoria',     brief: 10 },
   configuracion:  { id: 'configuracion',  label: 'Configuración',         icon: '⚙', path: 'configuracion', brief: 11 },
+  /* Movilidad no es un 12.º módulo del brief: es una vista del módulo de
+     acciones para los nodos que tienen actividad de movilidad cargada. Se
+     declara acá para que el sidebar lo resuelva como cualquier otro, y sólo
+     se habilita en los tipos de nodo que corresponde. */
+  movilidad:      { id: 'movilidad',      label: 'Movilidad',             icon: '⚲', path: 'movilidad',     brief: null },
 };
 
 /** Agrupación del sidebar. Mantiene el patrón de grupos ya existente. */
 export const MODULE_GROUPS = [
-  { group: 'ACTIVIDAD',     modules: ['home', 'acciones', 'dataRoom', 'timeline'] },
+  { group: 'ACTIVIDAD',     modules: ['home', 'acciones', 'movilidad', 'dataRoom', 'timeline'] },
   { group: 'ANÁLISIS',      modules: ['impacto', 'reportes', 'auditoria'] },
   { group: 'ORGANIZACIÓN',  modules: ['instituciones', 'identity'] },
   { group: 'SISTEMA',       modules: ['integraciones', 'configuracion'] },
 ];
 
 const ALL_MODULES = Object.keys(MODULES);
+
+/* Módulos que dependen de tener datos de esa naturaleza. Un nodo institucional
+   sin viajes cargados no muestra Movilidad vacía. */
+const INSTITUTIONAL_MODULES = ALL_MODULES.filter((m) => m !== 'movilidad');
 
 /**
  * Tipos de nodo. Los cinco institucionales salen del brief § 8
@@ -62,7 +71,7 @@ export const NODE_TYPES = {
     label: 'Escuela',
     plural: 'Escuelas',
     routeSegment: 'escuela',
-    modules: ALL_MODULES,
+    modules: INSTITUTIONAL_MODULES,
     categories: CATEGORY_ORDER,
     hierarchy: ['Sede', 'Nivel', 'Curso'],
     memberLabel: 'Responsable',
@@ -73,7 +82,7 @@ export const NODE_TYPES = {
     label: 'Empresa',
     plural: 'Empresas',
     routeSegment: 'empresa',
-    modules: ALL_MODULES,
+    modules: INSTITUTIONAL_MODULES,
     categories: CATEGORY_ORDER,
     hierarchy: ['Sede', 'Área', 'Equipo'],
     memberLabel: 'Responsable',
@@ -84,7 +93,7 @@ export const NODE_TYPES = {
     label: 'Municipio',
     plural: 'Municipios',
     routeSegment: 'municipio',
-    modules: ALL_MODULES,
+    modules: INSTITUTIONAL_MODULES,
     categories: CATEGORY_ORDER,
     hierarchy: ['Secretaría', 'Dirección', 'Barrio'],
     memberLabel: 'Responsable',
@@ -95,7 +104,7 @@ export const NODE_TYPES = {
     label: 'Universidad',
     plural: 'Universidades',
     routeSegment: 'universidad',
-    modules: ALL_MODULES,
+    modules: INSTITUTIONAL_MODULES,
     categories: CATEGORY_ORDER,
     hierarchy: ['Campus', 'Facultad', 'Departamento'],
     memberLabel: 'Responsable',
@@ -106,7 +115,7 @@ export const NODE_TYPES = {
     label: 'ONG',
     plural: 'ONGs',
     routeSegment: 'ong',
-    modules: ALL_MODULES,
+    modules: INSTITUTIONAL_MODULES,
     categories: CATEGORY_ORDER,
     hierarchy: ['Sede', 'Programa', 'Proyecto'],
     memberLabel: 'Coordinador',

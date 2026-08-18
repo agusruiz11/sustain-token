@@ -1,0 +1,13 @@
+[
+  {
+    "site_id": "site_montessori_turdera",
+    "institution_id": "inst_montessori_ar",
+    "name": "Sede Turdera",
+    "site_type": "campus",
+    "address_private": "Segurola 935, Turdera, Lomas de Zamora, Buenos Aires",
+    "address_public": "Turdera, Lomas de Zamora, Buenos Aires",
+    "access_level": "institutional",
+    "record_origin": "historical_import",
+    "source_reference": "PDF p.1"
+  }
+]

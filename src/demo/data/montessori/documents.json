@@ -1,0 +1,218 @@
+[
+  {
+    "document_id": "doc_commitment_2025",
+    "document_type": "institutional_commitment",
+    "title": "Declaración de compromiso para aplicar al Sello Ambiental COA",
+    "effective_date": "2025-06-12",
+    "status": "archived_active",
+    "access_level": "audit_restricted",
+    "source_reference": "PDF p.1-p.2"
+  },
+  {
+    "document_id": "doc_sustainability_plan_2025",
+    "document_type": "sustainability_plan",
+    "title": "Plan de Sostenibilidad del Colegio María Montessori",
+    "effective_date": "2025-01-01",
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.3"
+  },
+  {
+    "document_id": "doc_project_followup_2025",
+    "document_type": "meeting_record",
+    "title": "Acta de seguimiento de proyectos y actividades",
+    "effective_date": "2025-04-01",
+    "status": "active",
+    "access_level": "audit_restricted",
+    "source_reference": "PDF p.4-p.8"
+  },
+  {
+    "document_id": "doc_energy_maintenance",
+    "document_type": "maintenance_plan",
+    "title": "Plan de mantenimiento de equipos y ahorro de energía/gas",
+    "effective_date": "2025-01-01",
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.13-p.15"
+  },
+  {
+    "document_id": "doc_energy_efficiency_inventory",
+    "document_type": "asset_inventory",
+    "title": "Verificador de eficiencia energética de equipos",
+    "effective_date": "2025-01-01",
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.16"
+  },
+  {
+    "document_id": "doc_mobility_plan",
+    "document_type": "program_plan",
+    "title": "Proyecto de movilidad sostenible",
+    "effective_date": null,
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.21-p.22"
+  },
+  {
+    "document_id": "doc_water_maintenance",
+    "document_type": "maintenance_plan",
+    "title": "Plan de mantenimiento preventivo del consumo del agua",
+    "effective_date": "2025-01-01",
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.31-p.40"
+  },
+  {
+    "document_id": "doc_water_management",
+    "document_type": "water_management_plan",
+    "title": "Plan de reutilización y recuperación de agua no potable",
+    "effective_date": null,
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.41-p.50"
+  },
+  {
+    "document_id": "doc_waste_procedure",
+    "document_type": "waste_procedure",
+    "title": "Procedimiento de disposición y tratamiento de residuos",
+    "effective_date": null,
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.53-p.57"
+  },
+  {
+    "document_id": "doc_waste_commitment",
+    "document_type": "binding_agreement",
+    "title": "Acta vinculante por tema residuos",
+    "effective_date": null,
+    "status": "active",
+    "access_level": "audit_restricted",
+    "source_reference": "PDF p.58-p.60"
+  },
+  {
+    "document_id": "doc_vertical_garden",
+    "document_type": "project_plan",
+    "title": "Proyecto de jardín vertical",
+    "effective_date": "2024-01-01",
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.63-p.65"
+  },
+  {
+    "document_id": "doc_forest_plan",
+    "document_type": "forest_plan",
+    "title": "Plan de forestación",
+    "effective_date": null,
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.66-p.68"
+  },
+  {
+    "document_id": "doc_vma_act",
+    "document_type": "committee_act",
+    "title": "Acta de Voluntarios Montessori en Acción",
+    "effective_date": "2025-05-07",
+    "status": "active",
+    "access_level": "audit_restricted",
+    "source_reference": "PDF p.71-p.73"
+  },
+  {
+    "document_id": "doc_environmental_diagnosis",
+    "document_type": "environmental_assessment",
+    "title": "Diagnóstico preliminar del área y evaluación de impactos potenciales",
+    "effective_date": null,
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.74"
+  },
+  {
+    "document_id": "doc_supplier_diagnosis",
+    "document_type": "procurement_diagnosis",
+    "title": "Diagnóstico de proveedores y productos",
+    "effective_date": null,
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.75-p.80"
+  },
+  {
+    "document_id": "doc_supplier_selection",
+    "document_type": "procurement_procedure",
+    "title": "Procedimiento de selección de proveedores y evaluación periódica",
+    "effective_date": null,
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.81-p.82"
+  },
+  {
+    "document_id": "doc_product_selection",
+    "document_type": "procurement_procedure",
+    "title": "Procedimiento de selección de productos sostenibles",
+    "effective_date": null,
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.83-p.84"
+  },
+  {
+    "document_id": "doc_supplier_register",
+    "document_type": "supplier_register",
+    "title": "Registro de proveedores",
+    "effective_date": null,
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.85-p.87"
+  },
+  {
+    "document_id": "doc_inclusion_trajectories",
+    "document_type": "social_sustainability_assessment",
+    "title": "Relevamiento de Trayectorias Escolares",
+    "effective_date": null,
+    "status": "active",
+    "access_level": "audit_restricted",
+    "source_reference": "PDF p.90"
+  },
+  {
+    "document_id": "doc_diversity_diagnosis",
+    "document_type": "diversity_assessment",
+    "title": "Diagnóstico de igualdad y diversidad",
+    "effective_date": null,
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.91"
+  },
+  {
+    "document_id": "doc_communications_register",
+    "document_type": "communication_plan",
+    "title": "Registro de comunicación interna y externa",
+    "effective_date": null,
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.92-p.97"
+  },
+  {
+    "document_id": "doc_sensitization_register",
+    "document_type": "engagement_register",
+    "title": "Registro de actividades de sensibilización",
+    "effective_date": null,
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.98-p.99"
+  },
+  {
+    "document_id": "doc_sustainability_survey",
+    "document_type": "survey_instrument",
+    "title": "Encuesta de gestión sostenible",
+    "effective_date": "2025-12-01",
+    "status": "planned_or_draft",
+    "access_level": "institutional",
+    "source_reference": "PDF p.100-p.103"
+  },
+  {
+    "document_id": "doc_ambassador_profile",
+    "document_type": "leadership_profile",
+    "title": "Presentación del líder ambiental",
+    "effective_date": null,
+    "status": "active",
+    "access_level": "institutional",
+    "source_reference": "PDF p.104-p.109"
+  }
+]

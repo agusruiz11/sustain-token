@@ -1,0 +1,10 @@
+[
+  {
+    "framework_id": "framework_coa_environmental_seal",
+    "name": "Sello Ambiental COA",
+    "framework_type": "environmental_certification",
+    "version": "Expediente 2025",
+    "status": "configured_pilot",
+    "source_reference": "PDF completo"
+  }
+]

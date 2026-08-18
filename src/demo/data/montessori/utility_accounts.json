@@ -1,0 +1,47 @@
+[
+  {
+    "utility_account_id": "util_electricity_1",
+    "institution_id": "inst_montessori_ar",
+    "utility_type": "electricity",
+    "provider_name": "Edesur",
+    "external_account_ref": "restricted",
+    "status": "active",
+    "source_reference": "PDF p.9-p.12"
+  },
+  {
+    "utility_account_id": "util_electricity_2",
+    "institution_id": "inst_montessori_ar",
+    "utility_type": "electricity",
+    "provider_name": "Edesur",
+    "external_account_ref": "restricted",
+    "status": "active",
+    "source_reference": "PDF p.9-p.12"
+  },
+  {
+    "utility_account_id": "util_electricity_bi",
+    "institution_id": "inst_montessori_ar",
+    "utility_type": "electricity",
+    "provider_name": "Edesur",
+    "external_account_ref": "restricted",
+    "status": "active",
+    "source_reference": "PDF p.9-p.12"
+  },
+  {
+    "utility_account_id": "util_gas",
+    "institution_id": "inst_montessori_ar",
+    "utility_type": "gas",
+    "provider_name": "No identificado en el expediente",
+    "external_account_ref": "restricted",
+    "status": "active",
+    "source_reference": "PDF p.9-p.14"
+  },
+  {
+    "utility_account_id": "util_water",
+    "institution_id": "inst_montessori_ar",
+    "utility_type": "water",
+    "provider_name": "AySA",
+    "external_account_ref": "restricted",
+    "status": "active",
+    "source_reference": "PDF p.28-p.29"
+  }
+]

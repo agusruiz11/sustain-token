@@ -1,18 +1,28 @@
 import { useMemo } from 'react';
 import { useNode } from '../components/useNode';
 import { sesHistory } from '../data/impact';
-import { actionsByNode } from '../data/actions';
+import { actionsForNode } from '../data/actions';
+import { dashboardKeyOf } from '../data/sustainNodes';
 import Sparkline from '../components/Sparkline';
 import StatusChip from '../components/StatusChip';
 import { STEP_STATUS } from '../data/actions';
+import { moduleHref } from '../data/nodeTypes';
+import { Link } from 'react-router-dom';
+import * as M from '../data/montessori/index.js';
 
 /**
- * § 6 del brief — Environmental Identity.
+ * § 6 del brief + Entregable 3 § 4.9 — Environmental Identity.
  *
  * Perfil ambiental del nodo: score SES con su historial, badges e identidad
  * verificable. Lo más útil del módulo es la reconciliación del score: expone la
  * diferencia entre lo declarado y lo que suman las acciones cargadas, que es
  * justamente lo que hay que cerrar con el dato real.
+ *
+ * El § 4.9 pide separar visualmente dos cosas que se parecen y no son lo mismo:
+ * la **identidad verificable Sustain** (SES, badges, anclaje) y la
+ * **trayectoria documentada** de la institución. Importar historia previa no
+ * otorga SES, así que las dos no pueden compartir el mismo bloque ni sumar
+ * al mismo número.
  */
 
 /** El score declarado vive en distintos lugares según el tipo de nodo. */
@@ -24,11 +34,15 @@ function declaredScore(data) {
 }
 
 export default function Identity() {
-  const { node } = useNode();
+  const { node, routeSegment } = useNode();
   const data = node.data;
+  const nodeKey = dashboardKeyOf(node);
+  const hasHistory = nodeKey === 'montessori';
 
-  const history = useMemo(() => sesHistory(node.slug), [node.slug]);
-  const actions = useMemo(() => actionsByNode(node.slug), [node.slug]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- ídem
+  const history = useMemo(() => sesHistory(node), [dashboardKeyOf(node)]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- ver MisAcciones
+  const actions = useMemo(() => actionsForNode(node), [dashboardKeyOf(node)]);
 
   const declared = declaredScore(data);
   const known = history.filter((h) => h.known);
@@ -110,6 +124,8 @@ export default function Identity() {
         </div>
       )}
 
+      {hasHistory && <InstitutionalTrajectory node={node} routeSegment={routeSegment} />}
+
       <div className="idt-grid">
         <div className="dash-card">
           <div className="dash-section-header">
@@ -177,5 +193,64 @@ export default function Identity() {
         </p>
       </div>
     </>
+  );
+}
+
+/**
+ * Trayectoria documentada de la institución — § 4.9.
+ *
+ * Va aparte del bloque de SES y lo dice explícitamente: nada de esto otorga
+ * puntaje. Es antigüedad, programas, categorías con actividad, indicadores,
+ * evidencias y frameworks — la historia que la escuela trae de antes de
+ * Sustain.
+ */
+function InstitutionalTrajectory({ node, routeSegment }) {
+  const t = node.data.trajectory;
+  const desde = node.data.historicalDataStart?.slice(0, 4);
+  const anios = desde ? new Date().getFullYear() - Number(desde) : null;
+
+  const categorias = useMemo(() => {
+    const set = new Set();
+    for (const i of M.indicatorDefinitions) {
+      if (M.indicatorTotal(i.indicator_id)) set.add(i.category);
+    }
+    return [...set];
+  }, []);
+
+  const orgHref = moduleHref(node.nodeTypeId, node.slug, 'instituciones', routeSegment);
+  const tlHref = moduleHref(node.nodeTypeId, node.slug, 'timeline', routeSegment);
+
+  return (
+    <div className="dash-card idt-trajectory">
+      <div className="dash-section-header">
+        <span className="dash-section-title">Trayectoria institucional documentada</span>
+        <span className="inst-origin-badge">No otorga SES</span>
+      </div>
+
+      <p className="inst-trajectory-lead">
+        {anios !== null && `${anios} años de actividad ambiental registrada. `}
+        Información incorporada desde el expediente institucional, anterior a Sustain.
+      </p>
+
+      <dl className="inst-trajectory-grid">
+        <div><dt>Antigüedad</dt><dd>{desde ?? '—'}</dd></div>
+        <div><dt>Programas</dt><dd>{t.programs}</dd></div>
+        <div><dt>Categorías activas</dt><dd>{categorias.length}</dd></div>
+        <div><dt>Indicadores</dt><dd>{t.indicators}</dd></div>
+        <div><dt>Evidencias</dt><dd>{t.evidence}</dd></div>
+        <div><dt>Frameworks</dt><dd>{t.frameworks}</dd></div>
+      </dl>
+
+      <div className="idt-traj-links">
+        {tlHref && <Link to={tlHref} className="idt-traj-link">Ver cronología →</Link>}
+        {orgHref && <Link to={orgHref} className="idt-traj-link">Ver perfil institucional →</Link>}
+      </div>
+
+      <p className="mod-scaffold-note">
+        Importar la historia previa de la institución no modifica su puntaje SES. El score
+        de arriba mide sólo acciones que pasaron el pipeline de verificación; esto mide
+        cuánto viene haciendo la escuela desde antes.
+      </p>
+    </div>
   );
 }

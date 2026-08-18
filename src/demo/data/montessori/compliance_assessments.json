@@ -1,0 +1,142 @@
+[
+  {
+    "assessment_id": "assess_req_governance_plan",
+    "requirement_id": "req_governance_plan",
+    "institution_id": "inst_montessori_ar",
+    "assessment_period": "2025",
+    "status": "documented",
+    "supporting_entities": "doc_sustainability_plan_2025",
+    "assessor": "historical_import",
+    "source_reference": "PDF relevant sections"
+  },
+  {
+    "assessment_id": "assess_req_energy_consumption",
+    "requirement_id": "req_energy_consumption",
+    "institution_id": "inst_montessori_ar",
+    "assessment_period": "2025",
+    "status": "documented",
+    "supporting_entities": "electricity_consumption_kwh; gas_consumption_m3",
+    "assessor": "historical_import",
+    "source_reference": "PDF relevant sections"
+  },
+  {
+    "assessment_id": "assess_req_energy_maintenance",
+    "requirement_id": "req_energy_maintenance",
+    "institution_id": "inst_montessori_ar",
+    "assessment_period": "2025",
+    "status": "documented",
+    "supporting_entities": "doc_energy_maintenance",
+    "assessor": "historical_import",
+    "source_reference": "PDF relevant sections"
+  },
+  {
+    "assessment_id": "assess_req_renewable_energy",
+    "requirement_id": "req_renewable_energy",
+    "institution_id": "inst_montessori_ar",
+    "assessment_period": "2025",
+    "status": "documented",
+    "supporting_entities": "asset_solar_array",
+    "assessor": "historical_import",
+    "source_reference": "PDF relevant sections"
+  },
+  {
+    "assessment_id": "assess_req_water_consumption",
+    "requirement_id": "req_water_consumption",
+    "institution_id": "inst_montessori_ar",
+    "assessment_period": "2025",
+    "status": "documented",
+    "supporting_entities": "water_consumption_m3",
+    "assessor": "historical_import",
+    "source_reference": "PDF relevant sections"
+  },
+  {
+    "assessment_id": "assess_req_water_management",
+    "requirement_id": "req_water_management",
+    "institution_id": "inst_montessori_ar",
+    "assessment_period": "2025",
+    "status": "documented",
+    "supporting_entities": "doc_water_management",
+    "assessor": "historical_import",
+    "source_reference": "PDF relevant sections"
+  },
+  {
+    "assessment_id": "assess_req_waste_register",
+    "requirement_id": "req_waste_register",
+    "institution_id": "inst_montessori_ar",
+    "assessment_period": "2025",
+    "status": "documented",
+    "supporting_entities": "waste_*",
+    "assessor": "historical_import",
+    "source_reference": "PDF relevant sections"
+  },
+  {
+    "assessment_id": "assess_req_waste_procedure",
+    "requirement_id": "req_waste_procedure",
+    "institution_id": "inst_montessori_ar",
+    "assessment_period": "2025",
+    "status": "documented",
+    "supporting_entities": "doc_waste_procedure",
+    "assessor": "historical_import",
+    "source_reference": "PDF relevant sections"
+  },
+  {
+    "assessment_id": "assess_req_biodiversity",
+    "requirement_id": "req_biodiversity",
+    "institution_id": "inst_montessori_ar",
+    "assessment_period": "2025",
+    "status": "documented",
+    "supporting_entities": "proj_vertical_garden; proj_tree_planting",
+    "assessor": "historical_import",
+    "source_reference": "PDF relevant sections"
+  },
+  {
+    "assessment_id": "assess_req_committee",
+    "requirement_id": "req_committee",
+    "institution_id": "inst_montessori_ar",
+    "assessment_period": "2025",
+    "status": "documented",
+    "supporting_entities": "doc_vma_act",
+    "assessor": "historical_import",
+    "source_reference": "PDF relevant sections"
+  },
+  {
+    "assessment_id": "assess_req_procurement",
+    "requirement_id": "req_procurement",
+    "institution_id": "inst_montessori_ar",
+    "assessment_period": "2025",
+    "status": "documented",
+    "supporting_entities": "doc_supplier_diagnosis; doc_supplier_selection",
+    "assessor": "historical_import",
+    "source_reference": "PDF relevant sections"
+  },
+  {
+    "assessment_id": "assess_req_inclusion",
+    "requirement_id": "req_inclusion",
+    "institution_id": "inst_montessori_ar",
+    "assessment_period": "2025",
+    "status": "documented",
+    "supporting_entities": "doc_inclusion_trajectories; doc_diversity_diagnosis",
+    "assessor": "historical_import",
+    "source_reference": "PDF relevant sections"
+  },
+  {
+    "assessment_id": "assess_req_communication",
+    "requirement_id": "req_communication",
+    "institution_id": "inst_montessori_ar",
+    "assessment_period": "2025",
+    "status": "documented",
+    "supporting_entities": "doc_communications_register; doc_sensitization_register",
+    "assessor": "historical_import",
+    "source_reference": "PDF relevant sections"
+  },
+  {
+    "assessment_id": "assess_req_ambassador",
+    "requirement_id": "req_ambassador",
+    "institution_id": "inst_montessori_ar",
+    "assessment_period": "2025",
+    "status": "documented",
+    "supporting_entities": "doc_ambassador_profile",
+    "assessor": "historical_import",
+    "source_reference": "PDF relevant sections"
+  }
+]
