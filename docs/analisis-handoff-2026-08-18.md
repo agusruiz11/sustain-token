@@ -318,8 +318,7 @@ una capa de acceso que aplica IR-004 / IR-006 / IR-007 / IR-009 en un solo lugar
 **✅ Fase 2 · Instituciones + Timeline + Data Room — HECHA (18 ago)** — ver §9
 **✅ Fase 3 · Impacto + indicadores — HECHA (18 ago)** — ver §10
 **✅ Fase 4 · Auditoría + Reportes — HECHA (18 ago)** — ver §11
-**Fase 5 · Home + Identity (1 día)** — resumen ejecutivo
-**Fase 6 · Configuración + auditor externo (1 día)** — scaffolding read-only
+**✅ Fases 5 y 6 · Home/Identity y Configuración — HECHAS (18 ago)** — ver §12
 
 **Fase 7 · Movilidad (1-1.5 días)** ← *despriorizado por pedido explícito de Martín*
 Copiar los 5 JPEG a `public/evidence/mobility/`. Crear `src/demo/data/mobility.js` con
@@ -679,3 +678,60 @@ npm run verify:canonical     # 42/42 invariantes
 
 Fases 5-7: Home + Environmental Identity, Configuración con el scaffolding de auditor
 externo, y Movilidad al final por pedido de Martín.
+
+---
+
+## 12. Fases 5 y 6 — identidad y configuración (18 ago)
+
+### Environmental Identity (§ 4.9)
+
+El bloque **Trayectoria institucional documentada** va aparte del de SES, con su propio
+borde, y lo dice explícitamente: *no otorga SES*. Muestra antigüedad, programas, categorías
+con actividad, indicadores, evidencias y frameworks, con accesos directos a la cronología y
+al perfil.
+
+La reconciliación del puntaje que ya existía sigue: expone la diferencia entre el SES
+declarado y lo que suman las acciones con delta conocido. Es una restricción verificable —
+cuando lleguen los `ses_score.json` reales, los valores deberían cumplirla.
+
+### Home (§ 4.1)
+
+Se agregan los accesos "Ver histórico institucional" y "Ver perfil institucional" desde el
+bloque de trayectoria, que era lo único que faltaba del § 4.1.
+
+### Configuración (§ 4.11)
+
+Cuatro secciones nuevas: taxonomía ambiental configurable, catálogo de fuentes de datos
+(factura / sensor / carga manual / archivo histórico / integración / proveedor / tercero,
+marcando cuáles usa el nodo de verdad), frameworks externos con estado y versión, y los
+tres niveles de publicación con el conteo de documentos en cada uno.
+
+### Acceso temporal de auditor externo — la adenda de Martín
+
+> *"La institución debería poder generar una invitación/acceso temporal, por ejemplo por
+> 7, 15 o 30 días, y definir qué información puede consultar ese auditor... No hace falta
+> desarrollar toda esta funcionalidad ahora, pero sí quiero que la arquitectura y el
+> diseño queden preparados."*
+
+Está construido como **andamiaje real, no como maqueta**. La invitación se arma de verdad —
+vigencia, módulos habilitados, framework, período— y el alcance se calcula sobre el dataset
+con las mismas funciones de acceso que ya filtran el Data Room y la Auditoría.
+
+Por eso el panel muestra el conteo exacto antes de emitir: **24 documentos (5 de acceso
+restringido), 219 registros auditables, 32 evidencias**. Son 24 y no 19 porque el alcance de
+auditoría levanta los `audit_restricted` — la diferencia sale del dato, no de un número
+escrito a mano.
+
+Configuración no es delegable: el auditor consulta, no administra.
+
+Lo único que falta para que sea productivo es persistencia y un backend que emita el token.
+La lógica de *qué ve* el auditor ya está y es la misma que usa el resto del producto, así
+que conectar la autenticación no obliga a rehacerla.
+
+### Verificación
+
+```
+npm run smoke                # 37/37 rutas
+npm run verify:attribution   # 70/70
+npm run verify:canonical     # 42/42 invariantes
+```

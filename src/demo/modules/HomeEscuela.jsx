@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
 import { useNode } from '../components/useNode';
 import { actionsForNode } from '../data/actions';
+import { moduleHref } from '../data/nodeTypes';
 
 const MODULE_STATUS_STYLE = {
   active: { color: '#1E9E72' },
@@ -24,7 +26,7 @@ const MODULE_STATUS_STYLE = {
  * importar historia no genera SES ni cuenta como verificación.
  */
 export default function HomeEscuela() {
-  const { node } = useNode();
+  const { node, routeSegment } = useNode();
   const inst = node.data;
   const verified = actionsForNode(node);
   const t = inst.trajectory;
@@ -99,6 +101,23 @@ export default function HomeEscuela() {
           <p className="inst-trajectory-note">
             No suma al contador de acciones verificadas ni modifica el SES.
           </p>
+
+          {/* § 4.1: acceso al histórico. Timeline entra directamente filtrado
+              por origen, así el click no aterriza en una vista mezclada. */}
+          <div className="idt-traj-links">
+            <Link
+              to={`${moduleHref(node.nodeTypeId, node.slug, 'timeline', routeSegment)}`}
+              className="idt-traj-link"
+            >
+              Ver histórico institucional →
+            </Link>
+            <Link
+              to={moduleHref(node.nodeTypeId, node.slug, 'instituciones', routeSegment)}
+              className="idt-traj-link"
+            >
+              Ver perfil institucional →
+            </Link>
+          </div>
         </div>
       </div>
 

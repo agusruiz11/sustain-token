@@ -80,6 +80,17 @@ const CHECKS = [
   ['/demo/institucion/montessori/reportes', 'Histórico institucional', true, 'reportes: los 6 tipos'],
   ['/demo/institucion/montessori/reportes', 'record origin', true, 'reportes: procedencia en la vista previa'],
   ['/demo/institucion/montessori/reportes', 'verification status', true, 'reportes: verificación en la vista previa'],
+
+  // ── Fases 5-6 · identidad y configuración ──
+  ['/demo/institucion/montessori/identidad', 'Trayectoria institucional documentada', true, 'identity: trayectoria separada del SES'],
+  ['/demo/institucion/montessori/identidad', 'No otorga SES', true, 'identity: el histórico no da puntaje'],
+  ['/demo/institucion/montessori', 'Ver histórico institucional', true, 'home: acceso al histórico'],
+  ['/demo/institucion/montessori/configuracion', 'Acceso temporal de auditor externo', true, 'config: scaffolding de auditor'],
+  ['/demo/institucion/montessori/configuracion', 'Revocable en cualquier momento', true, 'config: invitación revocable con plazo'],
+  ['/demo/institucion/montessori/configuracion', 'Taxonomía ambiental', true, 'config: taxonomía configurable'],
+  ['/demo/institucion/montessori/configuracion', 'Archivo histórico', true, 'config: catálogo de fuentes'],
+  ['/demo/institucion/montessori/configuracion', 'Permisos de publicación', true, 'config: niveles de publicación'],
+  ['/demo/usuario/configuracion', 'Acceso temporal de auditor externo', false, 'config usuario: sin auditoría institucional'],
 ];
 
 let fail = 0;

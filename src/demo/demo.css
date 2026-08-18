@@ -3118,3 +3118,153 @@ body:has(.dash-layout)::before { display: none; }
 .aud-more-count {
   color: var(--ink-300);
 }
+
+/* ── Trayectoria: accesos al histórico ─────────────────────
+   § 4.1 y § 4.9: desde el resumen se llega al detalle sin buscar en el menú. */
+.idt-traj-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.idt-traj-link {
+  padding: 7px 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #C8B8E8;
+  background: rgba(138,123,184,0.1);
+  border: 1px solid rgba(138,123,184,0.28);
+  border-radius: var(--r-md);
+  text-decoration: none;
+}
+
+.idt-traj-link:hover {
+  border-color: #8A7BB8;
+  color: #E0D6F5;
+}
+
+/* El bloque de trayectoria se separa del de SES con su propio borde: son dos
+   naturalezas distintas y el § 4.9 pide que se distingan a simple vista. */
+.idt-trajectory {
+  border-left: 3px solid rgba(138,123,184,0.5);
+}
+
+/* ── Configuración · acceso de auditor externo ─────────────
+   Adenda de Martín: la institución habilita a un tercero por plazo acotado en
+   vez de rearmar carpetas de evidencia. Es andamiaje real, no maqueta: el
+   alcance se calcula con las mismas funciones de acceso que el resto. */
+.cfg-grant {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.cfg-fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+}
+
+.cfg-fieldset legend {
+  padding: 0 6px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink-300);
+}
+
+.cfg-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cfg-chip {
+  padding: 6px 11px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-300);
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.cfg-chip:hover {
+  color: var(--ink-100);
+}
+
+.cfg-chip.on {
+  color: var(--brand-300);
+  background: rgba(41,221,245,0.1);
+  border-color: rgba(41,221,245,0.4);
+}
+
+.cfg-hint {
+  margin: 8px 0 0;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--ink-300);
+}
+
+.cfg-fieldset input[type="date"] {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-100);
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-sm, 4px);
+  padding: 5px 7px;
+  color-scheme: dark;
+}
+
+.cfg-emit {
+  margin-top: 14px;
+  padding: 10px 18px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  color: #03151A;
+  background: var(--brand-500);
+  border: none;
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.cfg-emit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cfg-invite {
+  margin-top: 16px;
+  padding: 14px;
+  background: var(--bg-200);
+  border: 1px solid rgba(41,221,245,0.28);
+  border-radius: var(--r-md);
+}
+
+/* Chip de taxonomía: lleva ícono + nombre, así que no puede reusar
+   .cfg-modchip, que es una celda fija de 22px para íconos sueltos. */
+.cfg-taxchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 11px;
+  font-size: 11px;
+  color: var(--ink-300);
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+  white-space: nowrap;
+}
+
+.cfg-taxchip.on {
+  color: var(--ink-100);
+  border-color: rgba(41,221,245,0.3);
+}
