@@ -1,0 +1,17 @@
+[
+  {
+    "institution_id": "inst_montessori_ar",
+    "legal_name": "Colegio María Montessori",
+    "display_name": "Montessori School",
+    "institution_type": "school",
+    "country_code": "AR",
+    "province": "Buenos Aires",
+    "city": "Turdera, Lomas de Zamora",
+    "status": "pilot_approved",
+    "onboarding_date": null,
+    "historical_data_start": "2018-01-01",
+    "record_origin": "historical_import",
+    "verification_status": "documented",
+    "source_reference": "PDF p.1; Excel general"
+  }
+]

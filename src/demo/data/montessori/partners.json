@@ -1,0 +1,166 @@
+[
+  {
+    "partner_id": "partner_coa",
+    "name": "Comité Olímpico Argentino",
+    "partner_type": "certification_body",
+    "relationship_status": "active",
+    "source_reference": "PDF p.1, p.104"
+  },
+  {
+    "partner_id": "partner_ecohouse",
+    "name": "Eco House",
+    "partner_type": "ngo_training",
+    "relationship_status": "active",
+    "source_reference": "PDF p.17-p.20, p.49, p.69, p.104"
+  },
+  {
+    "partner_id": "partner_ceamse",
+    "name": "CEAMSE",
+    "partner_type": "public_environmental_operator",
+    "relationship_status": "active",
+    "source_reference": "PDF p.43, p.61, p.68, p.82, p.104"
+  },
+  {
+    "partner_id": "partner_muni_alte_brown",
+    "name": "Municipio de Almirante Brown - Política Ambiental",
+    "partner_type": "municipality",
+    "relationship_status": "active",
+    "source_reference": "PDF p.53-p.57, p.104"
+  },
+  {
+    "partner_id": "partner_muni_lomas",
+    "name": "Municipio de Lomas de Zamora",
+    "partner_type": "municipality",
+    "relationship_status": "active",
+    "source_reference": "PDF p.53, p.82, p.104"
+  },
+  {
+    "partner_id": "partner_coop_lomas",
+    "name": "Cooperativa de Recicladores Urbanos de Lomas de Zamora",
+    "partner_type": "waste_operator",
+    "relationship_status": "active",
+    "source_reference": "PDF p.53-p.57"
+  },
+  {
+    "partner_id": "partner_tapiclaje",
+    "name": "Tapiclaje",
+    "partner_type": "waste_transformer",
+    "relationship_status": "active",
+    "source_reference": "PDF p.53"
+  },
+  {
+    "partner_id": "partner_vital_water",
+    "name": "Vital Water",
+    "partner_type": "water_equipment_provider",
+    "relationship_status": "active",
+    "source_reference": "PDF p.34-p.40"
+  },
+  {
+    "partner_id": "partner_solution_srl",
+    "name": "SOLUTION SRL",
+    "partner_type": "solar_installer",
+    "relationship_status": "historical",
+    "source_reference": "PDF p.27"
+  },
+  {
+    "partner_id": "partner_grupo_sustentable",
+    "name": "Grupo Sustentable",
+    "partner_type": "solar_provider",
+    "relationship_status": "historical",
+    "source_reference": "PDF p.26-p.27"
+  },
+  {
+    "partner_id": "partner_eco_school",
+    "name": "Eco School Argentina",
+    "partner_type": "ngo_network",
+    "relationship_status": "planned_or_active",
+    "source_reference": "PDF p.104"
+  },
+  {
+    "partner_id": "partner_hospital_onativia",
+    "name": "Hospital Oñativia",
+    "partner_type": "social_partner",
+    "relationship_status": "active",
+    "source_reference": "PDF p.104"
+  },
+  {
+    "partner_id": "supplier_mercado_rafael_calzada",
+    "name": "Mercado mayorista Rafael Calzada",
+    "partner_type": "food_supplier",
+    "relationship_status": "active",
+    "source_reference": "PDF p.85",
+    "notes": "Productos: Frutas y verduras. Aprox. 3 km; productores locales."
+  },
+  {
+    "partner_id": "supplier_frigorifico_morres",
+    "name": "Frigorífico Morres",
+    "partner_type": "food_supplier",
+    "relationship_status": "active",
+    "source_reference": "PDF p.85",
+    "notes": "Productos: Carne vacuna y cerdo. Mayorista; cercano."
+  },
+  {
+    "partner_id": "supplier_el_emporio",
+    "name": "El Emporio / Interlogística Sur",
+    "partner_type": "food_supplier",
+    "relationship_status": "active",
+    "source_reference": "PDF p.85",
+    "notes": "Productos: Almacén y fiambrería. Mayorista; cercano."
+  },
+  {
+    "partner_id": "supplier_taller_4",
+    "name": "Taller 4",
+    "partner_type": "printing_supplier",
+    "relationship_status": "active",
+    "source_reference": "PDF p.85",
+    "notes": "Productos: Banners, cartelería y folletería. Cercano."
+  },
+  {
+    "partner_id": "supplier_coca_cola",
+    "name": "Coca-Cola",
+    "partner_type": "beverage_supplier",
+    "relationship_status": "active",
+    "source_reference": "PDF p.85",
+    "notes": "Productos: Gaseosas, aguas y jugos. Mayorista; cercano."
+  },
+  {
+    "partner_id": "supplier_makro",
+    "name": "Makro",
+    "partner_type": "food_supplier",
+    "relationship_status": "active",
+    "source_reference": "PDF p.85",
+    "notes": "Productos: Lácteos y embutidos. Mayorista; cercano."
+  },
+  {
+    "partner_id": "supplier_cloro_turdera",
+    "name": "Cloro Turdera",
+    "partner_type": "cleaning_supplier",
+    "relationship_status": "active",
+    "source_reference": "PDF p.85",
+    "notes": "Productos: Cloro, lavandina, limpiadores y detergentes. Mayorista; cercano."
+  },
+  {
+    "partner_id": "supplier_nueva_bolsa",
+    "name": "Papelera Nueva Bolsa",
+    "partner_type": "cleaning_stationery_supplier",
+    "relationship_status": "active",
+    "source_reference": "PDF p.85",
+    "notes": "Productos: Guantes, aluminio, papel manteca y bolsas. Mayorista; cercano."
+  },
+  {
+    "partner_id": "supplier_huevo_rico",
+    "name": "Huevo Rico",
+    "partner_type": "food_supplier",
+    "relationship_status": "active",
+    "source_reference": "PDF p.85",
+    "notes": "Productos: Huevos y pollo. Mayorista; cercano."
+  },
+  {
+    "partner_id": "supplier_distrifoot",
+    "name": "Distrifoot",
+    "partner_type": "food_supplier",
+    "relationship_status": "active",
+    "source_reference": "PDF p.85",
+    "notes": "Productos: Pescado y verduras congeladas. Mayorista; cercano."
+  }
+]

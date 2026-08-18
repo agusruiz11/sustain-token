@@ -1,0 +1,35 @@
+{
+  "record_origin": {
+    "native_sustain": "Nativo Sustain",
+    "historical_import": "Histórico importado",
+    "connector_import": "Importado por integración",
+    "manual_entry": "Carga manual"
+  },
+  "verification_status": {
+    "unreviewed": "Sin revisar",
+    "imported_historical": "Histórico",
+    "documented": "Documentado",
+    "third_party_supported": "Soporte de tercero",
+    "sustain_verified": "Verificado Sustain",
+    "anchored": "Anclado",
+    "rejected": "Rechazado"
+  },
+  "quality_status": {
+    "accepted": "Aceptado",
+    "needs_review": "Requiere revisión",
+    "rejected": "Rechazado"
+  },
+  "access_level": {
+    "public": "Público",
+    "institutional": "Institucional",
+    "audit_restricted": "Auditoría restringida"
+  },
+  "integration_status": {
+    "active": "Activo",
+    "proof_of_concept": "Prueba de concepto",
+    "planned": "Planificado",
+    "requires_configuration": "Requiere configuración",
+    "alternative_mechanism": "Requiere mecanismo alternativo",
+    "unavailable": "No disponible actualmente"
+  }
+}

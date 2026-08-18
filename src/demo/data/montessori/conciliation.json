@@ -1,0 +1,65 @@
+[
+  {
+    "domain": "Residuos",
+    "excel_status": "Detalle mensual y totales",
+    "pdf_status": "Procedimientos, responsables, destinos y evidencias",
+    "result": "Complementarios",
+    "rule": "Excel es fuente primaria de mediciones; PDF aporta contexto y evidencia."
+  },
+  {
+    "domain": "Electricidad",
+    "excel_status": "Hoja vacía",
+    "pdf_status": "Tabla 2024-2025, facturas y medidores",
+    "result": "PDF prevalece provisionalmente",
+    "rule": "Importar valores documentados y solicitar facturas originales."
+  },
+  {
+    "domain": "Gas",
+    "excel_status": "Hoja vacía",
+    "pdf_status": "Serie de consumos/lecturas 2024-2025",
+    "result": "PDF prevalece provisionalmente",
+    "rule": "Importar needs_review hasta validar períodos y junio 2025."
+  },
+  {
+    "domain": "Agua",
+    "excel_status": "Hoja vacía",
+    "pdf_status": "Consumos y facturas 2024-2025",
+    "result": "PDF prevalece",
+    "rule": "Importar períodos bimestrales documentados; confirmar fechas."
+  },
+  {
+    "domain": "Compras sostenibles",
+    "excel_status": "Hoja vacía",
+    "pdf_status": "Diagnóstico, procedimientos y proveedores",
+    "result": "PDF prevalece",
+    "rule": "Importar como documentos y partners; no inventar mediciones de compras."
+  },
+  {
+    "domain": "Mantenimiento",
+    "excel_status": "Hoja vacía",
+    "pdf_status": "Planes y procedimientos",
+    "result": "PDF prevalece",
+    "rule": "Importar planes/activos; acciones futuras se registrarán desde Sustain."
+  },
+  {
+    "domain": "Programas",
+    "excel_status": "Categorías implícitas",
+    "pdf_status": "Objetivos y nombres institucionales",
+    "result": "PDF prevalece",
+    "rule": "Usar nombres del plan y mapear mediciones Excel."
+  },
+  {
+    "domain": "Acumulados",
+    "excel_status": "DATOS GENERALES con diferencias",
+    "pdf_status": "Cifras históricas resumidas",
+    "result": "Detalle anual prevalece",
+    "rule": "Recalcular acumulados; bloquear discrepancias."
+  },
+  {
+    "domain": "Certificación",
+    "excel_status": "No aplica",
+    "pdf_status": "Expediente COA completo",
+    "result": "PDF única fuente",
+    "rule": "Configurar como framework externo, no como núcleo del modelo."
+  }
+]

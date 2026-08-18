@@ -1,0 +1,98 @@
+[
+  {
+    "query_id": "Q01",
+    "priority": "Alta",
+    "topic": "Botellas de Amor 2021",
+    "question": "¿Cuál es el valor correcto de Botellas de Amor para 2021? Los meses visibles suman 307 kg, pero el total anual del Excel indica 1.257 kg.",
+    "why_needed": "Afecta acumulados históricos y gráficos.",
+    "requested_evidence": "Planilla fuente o comprobantes de entregas 2021."
+  },
+  {
+    "query_id": "Q02",
+    "priority": "Alta",
+    "topic": "Acumulados generales",
+    "question": "¿La hoja DATOS GENERALES fue actualizada manualmente? Hay diferencias en Botellas de Amor, Tapitas y Papel frente al detalle anual.",
+    "why_needed": "Definir la fuente oficial y corregir acumulados.",
+    "requested_evidence": "Confirmación del responsable y versión de la planilla utilizada en la auditoría."
+  },
+  {
+    "query_id": "Q03",
+    "priority": "Alta",
+    "topic": "Electricidad",
+    "question": "¿Pueden compartir las facturas o exportaciones originales de los tres medidores eléctricos para 2023-2026? La hoja ENERGÍA entregada está vacía.",
+    "why_needed": "Completar series, períodos exactos y baselines.",
+    "requested_evidence": "PDFs de facturas o exportación CSV/Excel."
+  },
+  {
+    "query_id": "Q04",
+    "priority": "Alta",
+    "topic": "Medidor bidireccional",
+    "question": "En la tabla del PDF, ¿los valores adicionales de 880 y 480 kWh corresponden a energía inyectada, generada o a otro concepto?",
+    "why_needed": "No mezclar consumo, generación e inyección.",
+    "requested_evidence": "Captura/exportación de la app solar y explicación del responsable."
+  },
+  {
+    "query_id": "Q05",
+    "priority": "Alta",
+    "topic": "Gas",
+    "question": "¿Cuál es el consumo correcto de junio de 2025: 3.732 o 3.733 m³? ¿Cuál es el proveedor de gas y cuáles son los períodos exactos de facturación?",
+    "why_needed": "Resolver inconsistencia y completar cuenta de servicio.",
+    "requested_evidence": "Factura de junio 2025 y facturas históricas."
+  },
+  {
+    "query_id": "Q06",
+    "priority": "Media",
+    "topic": "Agua",
+    "question": "¿Los valores de agua del expediente corresponden a períodos bimestrales? Confirmar fechas exactas de inicio y fin de cada consumo.",
+    "why_needed": "Normalizar correctamente períodos y consumo diario.",
+    "requested_evidence": "Facturas AySA originales."
+  },
+  {
+    "query_id": "Q07",
+    "priority": "Media",
+    "topic": "Estructura institucional",
+    "question": "¿El domicilio Segurola 935 concentra los cuatro niveles o existen otras sedes que deban tener nodos/sitios separados?",
+    "why_needed": "Definir Sites y segmentación del dashboard.",
+    "requested_evidence": "Listado oficial de sedes y niveles por sede."
+  },
+  {
+    "query_id": "Q08",
+    "priority": "Media",
+    "topic": "Programas oficiales",
+    "question": "Validar los nombres y fechas de inicio de los programas propuestos en el dataset (residuos externos/internos, energía, agua, compostaje, VMA, etc.).",
+    "why_needed": "Evitar usar nombres inferidos en la interfaz definitiva.",
+    "requested_evidence": "Aprobación del responsable ambiental."
+  },
+  {
+    "query_id": "Q09",
+    "priority": "Media",
+    "topic": "Privacidad y publicación",
+    "question": "¿Qué fotografías, nombres de responsables, documentos y métricas autorizan a mostrar en el perfil público?",
+    "why_needed": "Configurar permisos del Data Room y perfil público.",
+    "requested_evidence": "Autorización institucional y criterio sobre imágenes de menores."
+  },
+  {
+    "query_id": "Q10",
+    "priority": "Media",
+    "topic": "Evidencias originales",
+    "question": "¿Pueden compartir los archivos originales referenciados dentro del expediente (informes, PPT, videos, certificados y documentos enlazados), no solo el PDF compilado?",
+    "why_needed": "Crear un Data Room granular con hashes y metadatos por archivo.",
+    "requested_evidence": "Carpeta Drive o exportación organizada."
+  },
+  {
+    "query_id": "Q11",
+    "priority": "Baja",
+    "topic": "Compras sostenibles",
+    "question": "¿Existe un registro de compras con fechas, importes, cantidades y productos, además del listado de proveedores del expediente?",
+    "why_needed": "Convertir la política de compras en indicadores operativos.",
+    "requested_evidence": "Planilla o reporte de compras sostenibles."
+  },
+  {
+    "query_id": "Q12",
+    "priority": "Baja",
+    "topic": "Mantenimiento",
+    "question": "¿Existe una bitácora de mantenimiento con fechas, activos, tareas, responsables y resultados?",
+    "why_needed": "Transformar planes narrativos en acciones de mantenimiento trazables.",
+    "requested_evidence": "Planilla, órdenes de trabajo o registros del equipo."
+  }
+]

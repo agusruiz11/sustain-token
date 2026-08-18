@@ -1,0 +1,100 @@
+[
+  {
+    "requirement_id": "req_governance_plan",
+    "framework_id": "framework_coa_environmental_seal",
+    "description": "Gestión institucional y plan de sostenibilidad",
+    "category": "governance",
+    "status": "active"
+  },
+  {
+    "requirement_id": "req_energy_consumption",
+    "framework_id": "framework_coa_environmental_seal",
+    "description": "Registro de consumos de electricidad y gas",
+    "category": "energy",
+    "status": "active"
+  },
+  {
+    "requirement_id": "req_energy_maintenance",
+    "framework_id": "framework_coa_environmental_seal",
+    "description": "Plan de mantenimiento energético",
+    "category": "energy",
+    "status": "active"
+  },
+  {
+    "requirement_id": "req_renewable_energy",
+    "framework_id": "framework_coa_environmental_seal",
+    "description": "Energía renovable",
+    "category": "energy",
+    "status": "active"
+  },
+  {
+    "requirement_id": "req_water_consumption",
+    "framework_id": "framework_coa_environmental_seal",
+    "description": "Control del consumo de agua",
+    "category": "water",
+    "status": "active"
+  },
+  {
+    "requirement_id": "req_water_management",
+    "framework_id": "framework_coa_environmental_seal",
+    "description": "Gestión y reutilización de agua",
+    "category": "water",
+    "status": "active"
+  },
+  {
+    "requirement_id": "req_waste_register",
+    "framework_id": "framework_coa_environmental_seal",
+    "description": "Registro y gestión de residuos",
+    "category": "waste_circularity",
+    "status": "active"
+  },
+  {
+    "requirement_id": "req_waste_procedure",
+    "framework_id": "framework_coa_environmental_seal",
+    "description": "Procedimiento y destino final de residuos",
+    "category": "waste_circularity",
+    "status": "active"
+  },
+  {
+    "requirement_id": "req_biodiversity",
+    "framework_id": "framework_coa_environmental_seal",
+    "description": "Forestación y jardines verticales",
+    "category": "biodiversity",
+    "status": "active"
+  },
+  {
+    "requirement_id": "req_committee",
+    "framework_id": "framework_coa_environmental_seal",
+    "description": "Comité o comisión de sostenibilidad",
+    "category": "governance",
+    "status": "active"
+  },
+  {
+    "requirement_id": "req_procurement",
+    "framework_id": "framework_coa_environmental_seal",
+    "description": "Compras y proveedores sostenibles",
+    "category": "procurement",
+    "status": "active"
+  },
+  {
+    "requirement_id": "req_inclusion",
+    "framework_id": "framework_coa_environmental_seal",
+    "description": "Accesibilidad, igualdad y diversidad",
+    "category": "social_sustainability",
+    "status": "active"
+  },
+  {
+    "requirement_id": "req_communication",
+    "framework_id": "framework_coa_environmental_seal",
+    "description": "Comunicación y sensibilización",
+    "category": "education_engagement",
+    "status": "active"
+  },
+  {
+    "requirement_id": "req_ambassador",
+    "framework_id": "framework_coa_environmental_seal",
+    "description": "Liderazgo ambiental",
+    "category": "governance",
+    "status": "active"
+  }
+]

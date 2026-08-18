@@ -18,33 +18,37 @@
 
      historical_import ≠ sustain_verified
 
-   Los valores de abajo salen de
-   drive-files/Sustain_Montessori_Implementation_Package_v1.0/canonical/.
-   La Fase 1 importa los 21 datasets completos; acá va sólo el perfil del nodo.
+   Los 21 datasets canónicos viven en src/demo/data/montessori/ y se leen a
+   través de su capa de acceso. Acá va sólo el perfil de presentación del nodo;
+   los contadores se derivan del dato, no se escriben a mano.
    ============================================================ */
+
+import { trajectorySummary, institution as mont, site as montSite } from './montessori/index.js';
+
+const T = trajectorySummary();
 
 export const INSTITUTIONS = {
   montessori: {
     slug: 'montessori',
-    institutionId: 'inst_montessori_ar',
-    name: 'Montessori School',
-    legalName: 'Colegio María Montessori',
+    institutionId: mont.institution_id,
+    name: mont.display_name,
+    legalName: mont.legal_name,
     tagline: 'Institución Educativa · Piloto Genesis',
     type: 'Escuela · Histórico documentado',
     institutionType: 'school',
 
     /* address_public de sites.json. El domicilio exacto (Segurola 935) tiene
        access_level: institutional — no se expone en la UI pública. */
-    location: 'Turdera, Lomas de Zamora, Buenos Aires',
+    location: montSite.address_public,
     country: 'AR',
     memberSince: 'Jul 2026',
-    historicalDataStart: '2018-01-01',
-    status: 'pilot_approved',
+    historicalDataStart: mont.historical_data_start,
+    status: mont.status,
 
     /* Procedencia del nodo entero. Ningún KPI de acá alimenta SES. */
-    recordOrigin: 'historical_import',
-    verificationStatus: 'documented',
-    sourceReference: 'PDF p.1; Excel general',
+    recordOrigin: mont.record_origin,
+    verificationStatus: mont.verification_status,
+    sourceReference: mont.source_reference,
 
     accentColor: '#1E9E72',
     accentBg: 'rgba(30,158,114,0.08)',
@@ -67,27 +71,13 @@ export const INSTITUTIONS = {
        Estos son los KPI que reemplazan a los de energía. Cuentan historia
        documentada, no verificación. */
     stats: [
-      { label: 'Programas Registrados', value: '13', icon: '▦', delta: 'Histórico documentado · desde 2018', deltaUp: null },
-      { label: 'Mediciones Históricas', value: '168', icon: '◉', delta: '18 indicadores definidos', deltaUp: null },
-      { label: 'Evidencias y Documentos', value: '56', icon: '▤', delta: '24 documentos · 32 evidencias', deltaUp: null },
-      { label: 'Acciones Verificadas Sustain', value: '0', icon: '✓', delta: 'El histórico no genera verificación', deltaUp: null },
+      { label: 'Programas Registrados', value: String(T.programs), icon: '▦', delta: `Histórico documentado · desde ${T.periodStart.slice(0, 4)}`, deltaUp: null },
+      { label: 'Mediciones Históricas', value: String(T.measurements), icon: '◉', delta: `${T.indicators} indicadores · ${T.measurementsNeedsReview} por revisar`, deltaUp: null },
+      { label: 'Evidencias y Documentos', value: String(T.documents + T.evidence), icon: '▤', delta: `${T.documents} documentos · ${T.evidence} evidencias`, deltaUp: null },
+      { label: 'Acciones Verificadas Sustain', value: String(T.sustainVerified), icon: '✓', delta: 'El histórico no genera verificación', deltaUp: null },
     ],
 
-    trajectory: {
-      programs: 13,
-      projects: 10,
-      actions: 13,
-      indicators: 18,
-      measurements: 168,
-      documents: 24,
-      evidence: 32,
-      partners: 22,
-      assets: 16,
-      organizationalUnits: 8,
-      frameworkRequirements: 14,
-      complianceAssessments: 14,
-      openQueries: 12,
-    },
+    trajectory: T,
 
     /* COA es un framework EXTERNO asociado al nodo, no taxonomía core de
        Sustain (regla IR-010). El mismo sistema tiene que servir mañana para

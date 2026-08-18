@@ -1,0 +1,92 @@
+[
+  {
+    "project_id": "proj_solar_installation",
+    "program_id": "prog_solar_energy",
+    "name": "Instalación del sistema fotovoltaico",
+    "status": "completed",
+    "start_date": null,
+    "end_date": "2022-12-21",
+    "source_reference": "PDF p.24-p.27"
+  },
+  {
+    "project_id": "proj_vertical_garden",
+    "program_id": "prog_biodiversity",
+    "name": "Jardín vertical de 3.º año",
+    "status": "active",
+    "start_date": "2024-01-01",
+    "end_date": null,
+    "source_reference": "PDF p.63-p.65"
+  },
+  {
+    "project_id": "proj_tree_planting",
+    "program_id": "prog_biodiversity",
+    "name": "Plantación de árboles en actividades en la naturaleza",
+    "status": "active",
+    "start_date": null,
+    "end_date": null,
+    "source_reference": "PDF p.66-p.68"
+  },
+  {
+    "project_id": "proj_love_bottles",
+    "program_id": "prog_waste_external",
+    "name": "Botellas de Amor",
+    "status": "active",
+    "start_date": "2020-01-01",
+    "end_date": null,
+    "source_reference": "Excel DATOS POR AÑO; PDF p.53"
+  },
+  {
+    "project_id": "proj_caps_challenge",
+    "program_id": "prog_waste_external",
+    "name": "Desafío de Tapitas",
+    "status": "active",
+    "start_date": null,
+    "end_date": null,
+    "source_reference": "PDF p.4"
+  },
+  {
+    "project_id": "proj_minds_green",
+    "program_id": "prog_environmental_education",
+    "name": "Mentes en Verde",
+    "status": "active",
+    "start_date": null,
+    "end_date": null,
+    "source_reference": "PDF p.4"
+  },
+  {
+    "project_id": "proj_earth_week",
+    "program_id": "prog_environmental_education",
+    "name": "Semana del Día de la Tierra",
+    "status": "recurring",
+    "start_date": null,
+    "end_date": null,
+    "source_reference": "PDF p.4, p.45"
+  },
+  {
+    "project_id": "proj_environment_week",
+    "program_id": "prog_environmental_education",
+    "name": "Semana del Día del Ambiente",
+    "status": "recurring",
+    "start_date": null,
+    "end_date": null,
+    "source_reference": "PDF p.4"
+  },
+  {
+    "project_id": "proj_water_reuse",
+    "program_id": "prog_water",
+    "name": "Recuperación de agua de aires acondicionados",
+    "status": "active",
+    "start_date": null,
+    "end_date": null,
+    "source_reference": "PDF p.41-p.45"
+  },
+  {
+    "project_id": "proj_coa_2025",
+    "program_id": "prog_environmental_education",
+    "name": "Postulación al Sello Ambiental COA 2025",
+    "status": "completed",
+    "start_date": "2025-06-12",
+    "end_date": null,
+    "source_reference": "PDF p.1, p.104"
+  }
+]

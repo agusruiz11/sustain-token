@@ -1,0 +1,145 @@
+[
+  {
+    "program_id": "prog_waste_external",
+    "institution_id": "inst_montessori_ar",
+    "name": "Gestión de residuos reciclables y recuperables externos",
+    "category": "waste_circularity",
+    "status": "active",
+    "objective": "Separación en origen en hogares, acopio diferenciado y entrega a municipio u operador.",
+    "start_date": null,
+    "record_origin": "historical_import",
+    "source_reference": "PDF p.3"
+  },
+  {
+    "program_id": "prog_waste_internal",
+    "institution_id": "inst_montessori_ar",
+    "name": "Gestión de residuos internos",
+    "category": "waste_circularity",
+    "status": "active",
+    "objective": "Separación sectorizada, diferenciación de tachos y entrega a recicladores urbanos.",
+    "start_date": null,
+    "record_origin": "historical_import",
+    "source_reference": "PDF p.3"
+  },
+  {
+    "program_id": "prog_solar_energy",
+    "institution_id": "inst_montessori_ar",
+    "name": "Energía solar y eficiencia energética",
+    "category": "energy",
+    "status": "active",
+    "objective": "Generar energía renovable, monitorear consumos y reducir impacto energético.",
+    "start_date": "2022-12-21",
+    "record_origin": "historical_import",
+    "source_reference": "PDF p.3, p.24-p.27"
+  },
+  {
+    "program_id": "prog_compost",
+    "institution_id": "inst_montessori_ar",
+    "name": "Compostaje institucional",
+    "category": "waste_circularity",
+    "status": "active",
+    "objective": "Gestionar residuos orgánicos del comedor y producir compost para huerta, canteros y jardines.",
+    "start_date": null,
+    "record_origin": "historical_import",
+    "source_reference": "PDF p.3, p.53"
+  },
+  {
+    "program_id": "prog_water",
+    "institution_id": "inst_montessori_ar",
+    "name": "Gestión hídrica y eficiencia del agua",
+    "category": "water",
+    "status": "active",
+    "objective": "Controlar consumos, mantener infraestructura, monitorear calidad y reutilizar agua no potable.",
+    "start_date": null,
+    "record_origin": "historical_import",
+    "source_reference": "PDF p.28-p.50"
+  },
+  {
+    "program_id": "prog_biodiversity",
+    "institution_id": "inst_montessori_ar",
+    "name": "Biodiversidad, forestación y espacios verdes",
+    "category": "biodiversity",
+    "status": "active",
+    "objective": "Forestar, mantener jardines verticales y sensibilizar sobre ecosistemas.",
+    "start_date": null,
+    "record_origin": "historical_import",
+    "source_reference": "PDF p.63-p.69"
+  },
+  {
+    "program_id": "prog_mobility",
+    "institution_id": "inst_montessori_ar",
+    "name": "Movilidad sostenible",
+    "category": "mobility",
+    "status": "active",
+    "objective": "Promover bicicleta, hábitos saludables y reducción de emisiones asociadas al transporte.",
+    "start_date": "2019-01-01",
+    "record_origin": "historical_import",
+    "source_reference": "PDF p.21-p.22"
+  },
+  {
+    "program_id": "prog_vma",
+    "institution_id": "inst_montessori_ar",
+    "name": "Voluntarios Montessori en Acción (VMA)",
+    "category": "education_engagement",
+    "status": "active",
+    "objective": "Organizar voluntarios y delegados ambientales del nivel secundario para planificar y ejecutar proyectos.",
+    "start_date": "2025-05-07",
+    "record_origin": "historical_import",
+    "source_reference": "PDF p.71-p.72"
+  },
+  {
+    "program_id": "prog_environmental_education",
+    "institution_id": "inst_montessori_ar",
+    "name": "Educación y sensibilización ambiental",
+    "category": "education_engagement",
+    "status": "active",
+    "objective": "Capacitar y sensibilizar a estudiantes, docentes, familias y comunidad.",
+    "start_date": null,
+    "record_origin": "historical_import",
+    "source_reference": "PDF p.17-p.20, p.49-p.50, p.61, p.69, p.92-p.103"
+  },
+  {
+    "program_id": "prog_procurement",
+    "institution_id": "inst_montessori_ar",
+    "name": "Compras y proveedores sostenibles",
+    "category": "procurement",
+    "status": "active",
+    "objective": "Incorporar criterios socioambientales, cercanía, eficiencia, circularidad y evaluación periódica.",
+    "start_date": null,
+    "record_origin": "historical_import",
+    "source_reference": "PDF p.75, p.81-p.87"
+  },
+  {
+    "program_id": "prog_maintenance",
+    "institution_id": "inst_montessori_ar",
+    "name": "Mantenimiento preventivo de recursos e infraestructura",
+    "category": "governance",
+    "status": "active",
+    "objective": "Mantener equipos e instalaciones de energía, gas y agua mediante registros, inspecciones y acciones preventivas.",
+    "start_date": null,
+    "record_origin": "historical_import",
+    "source_reference": "PDF p.13-p.16, p.31-p.40"
+  },
+  {
+    "program_id": "prog_social_inclusion",
+    "institution_id": "inst_montessori_ar",
+    "name": "Accesibilidad, inclusión y diversidad",
+    "category": "social_sustainability",
+    "status": "active",
+    "objective": "Promover inclusión educativa, igualdad, diversidad y sensibilización.",
+    "start_date": null,
+    "record_origin": "historical_import",
+    "source_reference": "PDF p.88-p.91"
+  },
+  {
+    "program_id": "prog_communications",
+    "institution_id": "inst_montessori_ar",
+    "name": "Comunicación de sostenibilidad",
+    "category": "education_engagement",
+    "status": "active",
+    "objective": "Comunicar proyectos, hitos, resultados y actividades ambientales por canales internos y externos.",
+    "start_date": null,
+    "record_origin": "historical_import",
+    "source_reference": "PDF p.92-p.103"
+  }
+]

@@ -1,0 +1,66 @@
+[
+  {
+    "unit_id": "unit_maternal",
+    "site_id": "site_montessori_turdera",
+    "name": "Nivel Maternal",
+    "unit_type": "education_level",
+    "status": "active",
+    "source_reference": "PDF p.4"
+  },
+  {
+    "unit_id": "unit_inicial",
+    "site_id": "site_montessori_turdera",
+    "name": "Nivel Inicial / Jardín",
+    "unit_type": "education_level",
+    "status": "active",
+    "source_reference": "PDF p.4"
+  },
+  {
+    "unit_id": "unit_primario",
+    "site_id": "site_montessori_turdera",
+    "name": "Nivel Primario",
+    "unit_type": "education_level",
+    "status": "active",
+    "source_reference": "PDF p.1, p.4"
+  },
+  {
+    "unit_id": "unit_secundario",
+    "site_id": "site_montessori_turdera",
+    "name": "Nivel Secundario",
+    "unit_type": "education_level",
+    "status": "active",
+    "source_reference": "PDF p.4"
+  },
+  {
+    "unit_id": "unit_mantenimiento",
+    "site_id": "site_montessori_turdera",
+    "name": "Mantenimiento",
+    "unit_type": "operational_area",
+    "status": "active",
+    "source_reference": "PDF p.13, p.31"
+  },
+  {
+    "unit_id": "unit_maestranza",
+    "site_id": "site_montessori_turdera",
+    "name": "Maestranza",
+    "unit_type": "operational_area",
+    "status": "active",
+    "source_reference": "PDF p.3, p.13"
+  },
+  {
+    "unit_id": "unit_comedor",
+    "site_id": "site_montessori_turdera",
+    "name": "Comedor",
+    "unit_type": "operational_area",
+    "status": "active",
+    "source_reference": "PDF p.3"
+  },
+  {
+    "unit_id": "unit_comunicacion",
+    "site_id": "site_montessori_turdera",
+    "name": "Comunicación",
+    "unit_type": "operational_area",
+    "status": "active",
+    "source_reference": "PDF p.92"
+  }
+]
