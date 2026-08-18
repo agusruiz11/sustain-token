@@ -91,6 +91,18 @@ const CHECKS = [
   ['/demo/institucion/montessori/configuracion', 'Archivo histórico', true, 'config: catálogo de fuentes'],
   ['/demo/institucion/montessori/configuracion', 'Permisos de publicación', true, 'config: niveles de publicación'],
   ['/demo/usuario/configuracion', 'Acceso temporal de auditor externo', false, 'config usuario: sin auditoría institucional'],
+
+  // ── Fase 7 · movilidad ──
+  ['/demo/usuario/movilidad', '44.87 km', true, 'movilidad: distancia canónica'],
+  ['/demo/usuario/movilidad', '1.687112 kg', true, 'movilidad: CO2e canónico sin recalcular'],
+  ['/demo/usuario/movilidad', 'Genesis', true, 'movilidad: el primer viaje es baseline'],
+  ['/demo/usuario/movilidad', 'DEMO', true, 'movilidad: anclaje marcado como demo'],
+  ['/demo/usuario/movilidad', '0,0376', true, 'movilidad: factor ADEME'],
+  ['/demo/usuario/movilidad', 'no medición', true, 'movilidad: CO2e declarado como estimación'],
+  ['/demo/usuario/movilidad?trip=spa_192f38f6fc7dc2ef7126e968', 'f204e3b493586a90c71c14ca962f11a83ad9ae53f31a0a6e57f5fd2ea3375fb4', true, 'detalle: hash real de la evidencia'],
+  ['/demo/usuario/movilidad?trip=spa_192f38f6fc7dc2ef7126e968', '/evidence/mobility/trip03.jpeg', true, 'detalle: evidencia real del paquete'],
+  ['/demo/usuario/movilidad?trip=spa_192f38f6fc7dc2ef7126e968', 'Verificación directa contra la API', true, 'detalle: declara lo que no se verificó'],
+  ['/demo/institucion/montessori/movilidad', '44.87', false, 'movilidad no se habilita en el nodo institucional'],
 ];
 
 let fail = 0;

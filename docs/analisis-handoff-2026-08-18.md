@@ -735,3 +735,88 @@ npm run smoke                # 37/37 rutas
 npm run verify:attribution   # 70/70
 npm run verify:canonical     # 42/42 invariantes
 ```
+
+---
+
+## 13. Fase 7 — módulo Movilidad (18 ago)
+
+Última fase. Martín pidió como mínimo "Mobility Overview + las 5 acciones + detalle de
+acción"; está eso y los paneles de metodología y estado del piloto.
+
+### Los cinco viajes
+
+Overview con los totales canónicos —44,87 km, 5 acciones, 1,687112 kg CO₂e, SES 23→35— y
+la tabla con fecha, fuente, modo, distancia, duración, MRV, CO₂e y SES. El primer viaje
+aparece como **Genesis · 0**: crea el baseline de la categoría, por eso no suma puntaje.
+
+Ninguno de esos números se calcula en el frontend. Están copiados literal del
+`dashboard_sync.json`, como pide el brief.
+
+### Detalle con evidencia real
+
+Los cinco JPEG del paquete están en `public/evidence/mobility/`. La ficha muestra la
+captura junto a los datos, y **todo lo que dice la ficha se puede contrastar con lo que se
+ve en la imagen**: 12,81 km, 46:09, 16,7 km/h media, 39,0 km/h máxima, 37 m de desnivel.
+
+Los cinco hashes se verificaron con `sha256sum` contra los archivos copiados y coinciden
+con lo que declara el `action_report` de cada paquete. La integridad que muestra la ficha
+es comprobable, no decorativa.
+
+### Lo que el módulo declara que NO hizo
+
+Los controles de validación muestran 6 de 7 en verde y **uno en negativo a propósito**:
+*"Verificación directa contra la API del proveedor"*. Eso es exactamente lo que separa
+MRV-M1 (evidencia respaldada) de un nivel superior. Ocultarlo sería vender más verificación
+de la que hay.
+
+Igual con el anclaje: CID y transacción dicen "Pendiente de anclaje" con el chip **DEMO**.
+La red y el contrato son reales; el anchor no se ejecutó. No hay identificadores fabricados
+en ninguna pantalla.
+
+### Metodología de carbono
+
+La tabla ADEME completa con los seis factores, la fórmula, la regla anti-inflación
+(*el usuario no elige contra qué vehículo se compara*) y las tres limitaciones declaradas
+textuales del `action_report`. El campo de metodología institucional existe y está
+deshabilitado, como exige el contrato: nunca sobrescribe el resultado canónico.
+
+### Agnóstico al proveedor
+
+`sourceProvider` es un campo del dato, no una condición en el código. No hay una sola rama
+`if (provider === 'Strava')` en el módulo: la vista consume distancia, duración, modo y
+hash de evidencia normalizados, así que Garmin, Apple Health, un GPX o una API
+institucional entran sin tocar UI.
+
+Movilidad **no es un módulo 12**: se declara en `nodeTypes` y sólo se habilita en los tipos
+de nodo que tienen viajes cargados. Un nodo institucional sin movilidad no lo ve en el
+sidebar.
+
+### Verificación final
+
+```
+npm run smoke                # 40/40 rutas
+npm run verify:attribution   # 80/80
+npm run verify:canonical     # 42/42 invariantes
+```
+
+Build OK. Lint: los mismos 7 errores preexistentes de siempre.
+
+---
+
+## 14. Estado final
+
+Las siete fases están hechas. Lo que sigue depende de Martín, no de nosotros:
+
+1. **El `dashboard_sync.json` de Energía**, si existe. Es la única pregunta bloqueante que
+   quedó del análisis original.
+2. **El paquete de la acción de recuperación de plástico** — declarada como hueco explícito
+   en `MISSING_ACTION_PACKAGES`, sin ficha inventada.
+3. **Las 12 consultas abiertas de Montessori** (Q01–Q12). Las de gas y energía inyectada
+   bloquean dos indicadores; Q09 mantiene el perfil público en cero.
+4. **La cotización del piloto de 20-30 empleados de La Caja**, sin responder desde el 13 de
+   agosto. Es tema de Agus y Santi.
+
+Y dos cosas para avisar antes de que las vea en pantalla: el SES del dashboard de Martín
+bajó de 842 a 35 porque ese es el valor real, y Montessori aparece con cero acciones
+verificadas porque entra al piloto con histórico documentado, no con acciones que hayan
+pasado el pipeline.

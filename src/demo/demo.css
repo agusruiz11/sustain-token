@@ -3268,3 +3268,89 @@ body:has(.dash-layout)::before { display: none; }
   color: var(--ink-100);
   border-color: rgba(41,221,245,0.3);
 }
+
+/* ── Módulo Movilidad ──────────────────────────────────────
+   El anclaje se muestra como DEMO explícito, con color de advertencia: es la
+   diferencia entre "todavía no pasó" y "pasó". */
+.mob-demo {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 3px 8px;
+  color: #B8860B;
+  background: rgba(184,134,11,0.12);
+  border: 1px solid rgba(184,134,11,0.35);
+  border-radius: var(--r-sm, 4px);
+}
+
+.mob-mrv,
+.mob-provider {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+}
+
+.mob-genesis {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #8A7BB8;
+}
+
+.mob-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 780px) {
+  .mob-detail { grid-template-columns: 1fr; }
+}
+
+.mob-evidence-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 8px;
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+}
+
+.mob-evidence-meta {
+  margin: 8px 0 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+}
+
+.mob-checks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.mob-checks li {
+  font-size: 12px;
+  color: var(--ink-100);
+}
+
+.mob-checks li span {
+  display: inline-block;
+  width: 16px;
+  font-family: var(--font-mono);
+}
+
+.mob-checks li.ok span { color: var(--green-600, #1E9E72); }
+
+/* Un control no cumplido no se esconde: es lo que separa MRV-M1 de un nivel
+   superior de verificación. */
+.mob-checks li.no {
+  color: var(--ink-300);
+}
+
+.mob-checks li.no span { color: #B8860B; }
+
+.mob-limits { margin-top: 16px; }
