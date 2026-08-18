@@ -29,6 +29,7 @@ import { CATEGORY_ORDER, CATEGORIES } from './categories.js';
 import { ACTIONS, actionsByCategory } from './actions.js';
 import { INSTITUTIONS } from './institutions.js';
 import { dashboardKeyOf } from './sustainNodes.js';
+import { categoryIndicators, unmappedCanonicalCategories } from './montessori/index.js';
 
 export const COVERAGE = {
   ACTIVE: 'active',         // verificada por Sustain, con datos cargados
@@ -114,16 +115,25 @@ export function categoryCoverage(node) {
     if (catId) pilot.set(catId, m);
   }
 
+  /* Los indicadores canónicos sólo existen para el nodo institucional. Un nodo
+     personal no tiene expediente del que importar mediciones. */
+  const canonical = nodeKey === 'montessori';
+
   const rows = CATEGORY_ORDER.map((id) => {
     const mod = pilot.get(id);
     /* Un nodo sin `modules` declarados (el usuario final) deriva su cobertura
        de las acciones que realmente tiene. Antes esto devolvía todo fuera de
        alcance porque sólo miraba INSTITUTIONS. */
     const metrics = metricsFor(id, nodeKey);
+    const indicators = canonical ? categoryIndicators(id) : [];
+
     let coverage;
-    if (mod) coverage = PILOT_STATUS_TO_COVERAGE[mod.status] ?? COVERAGE.PENDING;
-    else if (metrics) coverage = COVERAGE.ACTIVE;
+    if (metrics) coverage = COVERAGE.ACTIVE;
+    else if (mod) coverage = PILOT_STATUS_TO_COVERAGE[mod.status] ?? COVERAGE.PENDING;
+    else if (indicators.length) coverage = COVERAGE.HISTORICAL;
     else coverage = COVERAGE.OUT_OF_SCOPE;
+
+    const conDato = indicators.filter((i) => i.total).length;
 
     return {
       category: CATEGORIES[id],
@@ -133,6 +143,10 @@ export function categoryCoverage(node) {
       // El histórico documental no trae serie de consumo/baseline: no pasó por
       // el pipeline, así que no hay línea base que graficar.
       metrics: coverage === COVERAGE.ACTIVE ? metrics : null,
+      /* Indicadores del expediente. Alimentan la tarjeta cuando la categoría es
+         histórica: números reales con su procedencia, sin línea base. */
+      indicators,
+      indicatorsWithData: conDato,
     };
   });
 
@@ -158,10 +172,29 @@ export function coverageSummary(rows) {
   };
 }
 
-/** Módulos del nodo que no corresponden a ninguna de las 13 (ver D6). */
+/**
+ * Lo que el nodo tiene y la taxonomía Sustain no contempla.
+ *
+ * Dos fuentes: los módulos declarados que no mapean a ninguna de las 13, y las
+ * categorías canónicas del expediente sin equivalente (governance y
+ * social_sustainability). El § 4.5 pide no inventarles categoría propia hasta
+ * que se defina la taxonomía definitiva.
+ */
 export function unmappedPilotModules(node) {
-  const inst = INSTITUTIONS[dashboardKeyOf(node)];
-  return (inst?.modules ?? []).filter((m) => !PILOT_MODULE_TO_CATEGORY[m.name]);
+  const key = dashboardKeyOf(node);
+  const inst = INSTITUTIONS[key];
+  const fromModules = (inst?.modules ?? [])
+    .filter((m) => !PILOT_MODULE_TO_CATEGORY[m.name])
+    .map((m) => ({ name: m.name, metric: m.metric }));
+
+  const fromCanonical = key === 'montessori'
+    ? unmappedCanonicalCategories().map((u) => ({
+        name: u.programs.map((p) => p.name).join(', '),
+        metric: `Categoría canónica «${u.category}» · ${u.programs.length} programa${u.programs.length === 1 ? '' : 's'}`,
+      }))
+    : [];
+
+  return [...fromModules, ...fromCanonical];
 }
 
 /** Serie del SES acumulado a lo largo de las acciones del nodo. */

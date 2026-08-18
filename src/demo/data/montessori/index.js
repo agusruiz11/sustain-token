@@ -106,6 +106,51 @@ export const publicMeasurements = measurements.filter((m) => m.quality_status ==
 
 export const needsReviewMeasurements = measurements.filter((m) => m.quality_status === 'needs_review');
 
+/* ── Procedencia de un KPI — Entregable 3 § 4.5 ──────────────
+   «Cada KPI debe mostrar procedencia: Medido / Calculado / Reportado /
+   Histórico documental / Verificado Sustain.»
+
+   El dataset no trae ese campo: trae `measurement_method`, que es más granular.
+   Acá se traduce uno al otro. La distinción que importa es cuánto respaldo
+   tiene el número, no de qué agente vino:
+
+     Medido      → hay una lectura de instrumento o una factura del proveedor
+     Calculado   → sale de una ficha técnica, no de una medición
+     Reportado   → lo declaró la institución, sin instrumento detrás
+     Histórico   → no encaja en las anteriores y viene del expediente
+
+   `Verificado Sustain` gana sobre todas: si el registro pasó el pipeline, esa
+   es su procedencia, sin importar cómo se originó el número. */
+export const PROVENANCE = {
+  MEASURED: 'measured',
+  CALCULATED: 'calculated',
+  REPORTED: 'reported',
+  HISTORICAL: 'historical',
+  SUSTAIN: 'sustain_verified',
+};
+
+export const PROVENANCE_STYLE = {
+  [PROVENANCE.SUSTAIN]: { label: 'Verificado Sustain', color: '#1E9E72' },
+  [PROVENANCE.MEASURED]: { label: 'Medido', color: '#29DDF5' },
+  [PROVENANCE.CALCULATED]: { label: 'Calculado', color: '#B8860B' },
+  [PROVENANCE.REPORTED]: { label: 'Reportado', color: '#6C8FC7' },
+  [PROVENANCE.HISTORICAL]: { label: 'Histórico documental', color: '#8A7BB8' },
+};
+
+const METHOD_TO_PROVENANCE = {
+  meter_reading_register: PROVENANCE.MEASURED,
+  utility_billed: PROVENANCE.MEASURED,
+  utility_billed_or_table: PROVENANCE.REPORTED,
+  technical_specification: PROVENANCE.CALCULATED,
+  historical_manual_register: PROVENANCE.REPORTED,
+  platform_reported: PROVENANCE.REPORTED,
+};
+
+export function provenanceOf(measurement) {
+  if (isSustainVerified(measurement)) return PROVENANCE.SUSTAIN;
+  return METHOD_TO_PROVENANCE[measurement?.measurement_method] ?? PROVENANCE.HISTORICAL;
+}
+
 export const measurementsFor = (indicatorId, { publicOnly = true } = {}) =>
   (publicOnly ? publicMeasurements : measurements)
     .filter((m) => m.indicator_id === indicatorId)
@@ -361,6 +406,87 @@ export const visibleAt = (records, viewerLevel = 'institutional') => {
   const max = levelOf(viewerLevel);
   return records.filter((r) => levelOf(r.access_level) <= max);
 };
+
+/* ── Impacto por categoría — Entregable 3 § 4.5 ─────────────── */
+
+/**
+ * Indicadores de una categoría de la app, con su total y su procedencia.
+ *
+ * La taxonomía es configurable: se resuelve con appCategoryFor(), que respeta
+ * el mapeo canónico→app y las desviaciones por indicador. Cambiar la
+ * taxonomía no toca este código.
+ */
+export function categoryIndicators(appCategoryId) {
+  return indicatorDefinitions
+    .filter((i) => appCategoryFor(i) === appCategoryId)
+    .map((i) => {
+      const rows = measurementsFor(i.indicator_id);
+      const all = measurements.filter((m) => m.indicator_id === i.indicator_id);
+      const total = indicatorTotal(i.indicator_id);
+      /* Un indicador puede mezclar métodos entre períodos, así que la
+         procedencia se cuenta, no se asume única. */
+      const counts = {};
+      for (const m of all) {
+        const p = provenanceOf(m);
+        counts[p] = (counts[p] ?? 0) + 1;
+      }
+      return {
+        indicatorId: i.indicator_id,
+        name: i.name,
+        unit: i.unit,
+        aggregation: i.aggregation_method,
+        total,
+        measured: all.length,
+        excluded: all.length - rows.length,
+        provenance: Object.entries(counts)
+          .sort((a, b) => b[1] - a[1])
+          .map(([id, n]) => ({ id, n, ...PROVENANCE_STYLE[id] })),
+        /* Serie histórica para el sparkline. El § 4.5 pide permitirlas aunque
+           no generen SES; se marcan como históricas, no como verificadas. */
+        series: rows.map((m) => ({ value: m.value, period: m.period_start })),
+      };
+    });
+}
+
+/** Categorías de la app que tienen al menos un indicador con dato. */
+export function categoriesWithData() {
+  const out = new Map();
+  for (const i of indicatorDefinitions) {
+    const app = appCategoryFor(i);
+    if (!app) continue;
+    if (!out.has(app)) out.set(app, 0);
+    if (indicatorTotal(i.indicator_id)) out.set(app, out.get(app) + 1);
+  }
+  return out;
+}
+
+/**
+ * Indicadores cuya categoría canónica no tiene equivalente en la taxonomía
+ * Sustain. Hoy: ninguno con mediciones, pero los programas de `governance` y
+ * `social_sustainability` sí existen. El § 4.5 pide no inventarles categoría.
+ */
+export const unmappedCanonicalCategories = () =>
+  [...new Set(programs.map((p) => p.category))]
+    .filter((c) => !CANONICAL_CATEGORY_TO_APP[c])
+    .map((c) => ({
+      category: c,
+      programs: programs.filter((p) => p.category === c),
+    }));
+
+/** Detalle de un indicador: mediciones con período, fuente y procedencia. */
+export function indicatorDetail(indicatorId) {
+  const ind = getIndicator(indicatorId);
+  if (!ind) return null;
+  const rows = measurements
+    .filter((m) => m.indicator_id === indicatorId)
+    .sort((a, b) => (a.period_start ?? '').localeCompare(b.period_start ?? ''))
+    .map((m) => ({
+      ...m,
+      provenance: PROVENANCE_STYLE[provenanceOf(m)],
+      countsForKpi: m.quality_status === 'accepted',
+    }));
+  return { indicator: ind, total: indicatorTotal(indicatorId), rows };
+}
 
 /* ── Personas y roles ─────────────────────────────────────────
    § 11: no exponer nombres sin autorización. Q09 pregunta justamente qué

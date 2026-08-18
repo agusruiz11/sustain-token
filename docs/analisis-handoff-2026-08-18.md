@@ -316,7 +316,7 @@ una capa de acceso que aplica IR-004 / IR-006 / IR-007 / IR-009 en un solo lugar
 33 invariantes verificadas con `npm run verify:canonical`.
 
 **✅ Fase 2 · Instituciones + Timeline + Data Room — HECHA (18 ago)** — ver §9
-**Fase 3 · Impacto + indicadores (1.5 días)** — KPIs con procedencia
+**✅ Fase 3 · Impacto + indicadores — HECHA (18 ago)** — ver §10
 **Fase 4 · Auditoría + Reportes (1.5 días)** — trazabilidad documental
 **Fase 5 · Home + Identity (1 día)** — resumen ejecutivo
 **Fase 6 · Configuración + auditor externo (1 día)** — scaffolding read-only
@@ -545,3 +545,61 @@ Build OK. Lint: los mismos 7 errores preexistentes.
 
 `DataTable` ganó `rowAction` — variante botón del patrón `rowHref` existente, para el
 maestro-detalle de programas sin perder navegación por teclado.
+
+---
+
+## 10. Fase 3 — Impact Dashboard con procedencia (18 ago)
+
+El § 4.5 pide que **cada KPI muestre su procedencia**: Medido / Calculado / Reportado /
+Histórico documental / Verificado Sustain. El dataset no trae ese campo — trae
+`measurement_method`, que es más granular. La traducción vive en `provenanceOf()`, en la
+capa canónica, y la distinción que preserva es cuánto respaldo tiene el número:
+
+| Procedencia | De dónde sale |
+|---|---|
+| Medido | lectura de instrumento (`meter_reading_register`) o factura del proveedor (`utility_billed`) |
+| Calculado | ficha técnica (`technical_specification`), no una medición |
+| Reportado | lo declaró la institución (`historical_manual_register`, `platform_reported`) |
+| Histórico documental | no encaja en las anteriores y viene del expediente |
+| Verificado Sustain | pasó el pipeline — gana sobre todas |
+
+Resultado sobre el dato real de Montessori: 11 de 13 categorías con datos, todas
+`Histórico documental`, ninguna `Verificado Sustain`. Consumo de agua y de gas salen como
+**Medido**; capacidad fotovoltaica como **Calculado**; los 9 indicadores de residuos y los
+3 de campañas como **Reportado**.
+
+### Trazabilidad de KPI a expediente
+
+Click en un indicador abre su detalle: cada medición con período, valor, procedencia,
+calidad, estado de verificación y referencia de fuente. Es la cadena que el producto
+promete, andando sobre dato real.
+
+El caso de gas lo muestra entero: 12 mediciones, todas **Medido**, todas
+**Requiere revisión**, y la fuente de cada fila dice por qué —
+*"PDF p.9-p.12; tabla de lecturas/consumos. Junio presenta diferencia 3732/3733 en
+distintas referencias"*. Eso es exactamente la consulta abierta Q05. El indicador no tiene
+total y la pantalla explica que se recalcula solo cuando la institución confirme.
+
+### Taxonomía configurable
+
+Las categorías se resuelven con `appCategoryFor()` de la capa canónica, no con una lista
+rígida en el componente. Cambiar la taxonomía no toca la UI.
+
+`governance` y `social_sustainability` quedan deliberadamente sin equivalente Sustain: el
+§ 4.5 prohíbe crearles categoría propia por defecto. Aparecen en el bloque "Fuera de la
+taxonomía Sustain" con sus programas, para que la decisión quede a la vista en lugar de
+resolverse por inercia. Eso cierra la discrepancia D6 que estaba abierta en
+[nodeTypes.js](../src/demo/data/nodeTypes.js).
+
+### Verificación
+
+```
+npm run smoke                # 37/37 rutas
+npm run verify:attribution   # 51/51
+npm run verify:canonical     # 33/33 invariantes
+```
+
+### Lo que queda
+
+Fases 4-7: Auditoría documental + Reportes, Home/Identity, Configuración con el scaffolding
+de auditor externo, y Movilidad al final por pedido de Martín.

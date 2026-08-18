@@ -2992,3 +2992,79 @@ body:has(.dash-layout)::before { display: none; }
 .inst-back:hover {
   text-decoration: underline;
 }
+
+/* ── Impact Dashboard · indicadores con procedencia ────────
+   Entregable 3 § 4.5: un total del expediente y uno que pasó el pipeline no
+   pueden verse igual aunque los dos tengan número. */
+.imp-ind-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.imp-ind {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 0;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--line-300);
+  cursor: pointer;
+}
+
+.imp-ind:hover .imp-ind-name {
+  color: var(--brand-300);
+}
+
+.imp-ind-main {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.imp-ind-name {
+  font-size: 12px;
+  color: var(--ink-100);
+}
+
+.imp-ind-prov {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.imp-prov-chip {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.3px;
+  padding: 2px 6px;
+  border-radius: var(--r-sm, 4px);
+  white-space: nowrap;
+}
+
+.imp-ind-value {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-100);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.imp-ind-value small {
+  font-size: 10px;
+  color: var(--ink-300);
+}
+
+/* Las mediciones excluidas se nombran; no se descuentan en silencio. */
+.imp-ind-excl {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--amber-600, #B8860B);
+}

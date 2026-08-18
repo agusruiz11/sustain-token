@@ -57,6 +57,17 @@ const CHECKS = [
   ['/demo/institucion/montessori/organizacion?s=indicadores', 'Todas en revisión', true, 'indicadores: gas sin total dice por qué'],
   ['/demo/institucion/montessori/organizacion?s=programas&prog=prog_solar_energy', 'No genera SES', true, 'ficha de programa: histórico no genera SES'],
   ['/demo/institucion/montessori/organizacion?s=estructura', 'Nivel Maternal', true, 'estructura: unidad canónica'],
+
+  // ── Fase 3 · procedencia por KPI ──
+  ['/demo/institucion/montessori/impacto', 'Histórico documental', true, 'impacto: procedencia histórica'],
+  ['/demo/institucion/montessori/impacto', 'Botellas de Amor recuperadas', true, 'impacto: indicador canónico en tarjeta'],
+  ['/demo/institucion/montessori/impacto', 'fuera del KPI público', true, 'impacto: excluidas nombradas, no descontadas en silencio'],
+  ['/demo/institucion/montessori/impacto', 'Accesibilidad, inclusión y diversidad', true, 'impacto: categoría canónica sin equivalente Sustain'],
+  ['/demo/institucion/montessori/impacto?ind=gas_consumption_m3', 'Medido', true, 'detalle: procedencia por medición'],
+  ['/demo/institucion/montessori/impacto?ind=gas_consumption_m3', 'Requiere revisión', true, 'detalle: calidad needs_review visible'],
+  ['/demo/institucion/montessori/impacto?ind=gas_consumption_m3', 'no alimentan el KPI público', true, 'detalle: explica la exclusión'],
+  ['/demo/institucion/montessori/impacto?ind=solar_capacity_kwp', 'Último valor', true, 'detalle: respeta aggregation_method latest'],
+  ['/demo/usuario/impacto', 'Verificado Sustain', true, 'impacto usuario: energía verificada'],
 ];
 
 let fail = 0;
