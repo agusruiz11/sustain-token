@@ -68,6 +68,18 @@ const CHECKS = [
   ['/demo/institucion/montessori/impacto?ind=gas_consumption_m3', 'no alimentan el KPI público', true, 'detalle: explica la exclusión'],
   ['/demo/institucion/montessori/impacto?ind=solar_capacity_kwp', 'Último valor', true, 'detalle: respeta aggregation_method latest'],
   ['/demo/usuario/impacto', 'Verificado Sustain', true, 'impacto usuario: energía verificada'],
+
+  // ── Fase 4 · auditoría documental y reportes ──
+  ['/demo/institucion/montessori/auditoria', 'Histórico documental', true, 'auditoría: sección documental'],
+  ['/demo/institucion/montessori/auditoria', 'no aplicado', true, 'auditoría: MRV no aplicado al histórico'],
+  ['/demo/institucion/montessori/auditoria', 'Excel DATOS POR AÑO', true, 'auditoría: fuente hasta la celda del Excel'],
+  ['/demo/institucion/montessori/auditoria', 'Estado de anclaje', false, 'auditoría: sin bloque de anclaje donde no hay acciones'],
+  ['/demo/usuario/auditoria', 'Acciones Sustain', true, 'auditoría usuario: sección criptográfica'],
+  ['/demo/usuario/auditoria', 'Histórico documental', false, 'auditoría usuario: sin expediente institucional'],
+  ['/demo/institucion/montessori/reportes', 'Sello Ambiental COA', true, 'reportes: COA como marco externo'],
+  ['/demo/institucion/montessori/reportes', 'Histórico institucional', true, 'reportes: los 6 tipos'],
+  ['/demo/institucion/montessori/reportes', 'record origin', true, 'reportes: procedencia en la vista previa'],
+  ['/demo/institucion/montessori/reportes', 'verification status', true, 'reportes: verificación en la vista previa'],
 ];
 
 let fail = 0;

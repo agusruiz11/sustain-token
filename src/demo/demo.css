@@ -3068,3 +3068,53 @@ body:has(.dash-layout)::before { display: none; }
   font-size: 9px;
   color: var(--amber-600, #B8860B);
 }
+
+/* ── Auditoría documental ──────────────────────────────────
+   Lo que no aplica al histórico se afirma una vez arriba de la tabla, no como
+   columnas vacías repetidas en cada fila. */
+.aud-hist-rule {
+  margin: 0 0 14px;
+  padding: 9px 12px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--ink-300);
+  background: rgba(138,123,184,0.07);
+  border: 1px solid rgba(138,123,184,0.22);
+  border-radius: var(--r-md);
+}
+
+.aud-hist-rule strong {
+  color: #C8B8E8;
+  font-weight: 600;
+}
+
+.aud-kind {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-300);
+}
+
+.aud-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--brand-300);
+  background: var(--bg-200);
+  border: 1px solid var(--line-300);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.aud-more:hover {
+  border-color: var(--brand-300);
+}
+
+.aud-more-count {
+  color: var(--ink-300);
+}

@@ -317,7 +317,7 @@ una capa de acceso que aplica IR-004 / IR-006 / IR-007 / IR-009 en un solo lugar
 
 **✅ Fase 2 · Instituciones + Timeline + Data Room — HECHA (18 ago)** — ver §9
 **✅ Fase 3 · Impacto + indicadores — HECHA (18 ago)** — ver §10
-**Fase 4 · Auditoría + Reportes (1.5 días)** — trazabilidad documental
+**✅ Fase 4 · Auditoría + Reportes — HECHA (18 ago)** — ver §11
 **Fase 5 · Home + Identity (1 día)** — resumen ejecutivo
 **Fase 6 · Configuración + auditor externo (1 día)** — scaffolding read-only
 
@@ -603,3 +603,79 @@ npm run verify:canonical     # 33/33 invariantes
 
 Fases 4-7: Auditoría documental + Reportes, Home/Identity, Configuración con el scaffolding
 de auditor externo, y Movilidad al final por pedido de Martín.
+
+---
+
+## 11. Fase 4 — auditoría documental y reportes (18 ago)
+
+### Auditoría (§ 4.7)
+
+Dos secciones que no se mezclan. **Acciones Sustain** conserva la verificación
+criptográfica —hash, CID, transacción— con su estado real. **Histórico documental** suma
+214 registros auditables: 13 hitos, 168 mediciones, 24 documentos y 14 evaluaciones de
+cumplimiento, cada uno con período, estado, nivel de acceso y referencia de fuente.
+
+La trazabilidad llega hasta la celda: las mediciones citan
+*"Excel DATOS POR AÑO, fila 10, columna 8"*, los documentos *"PDF p.9-p.12"*.
+
+El spec pide afirmar que para el histórico MRV no está aplicado, SES no aplica y
+CID/blockchain no aplican. Eso no es un cálculo por fila — es una propiedad de la
+naturaleza del dato. Se dice una vez arriba de la tabla en vez de repetir tres columnas
+vacías 214 veces.
+
+Filtros por tipo, estado y "Ver como", el mismo selector de alcance del Data Room.
+
+### Reportes (§ 4.6)
+
+Seis tipos —Impacto ambiental, Acciones verificadas, Histórico institucional, Evidencias,
+Auditoría, Integral— y tres marcos: Sustain Standard, el framework externo del nodo
+(Sello Ambiental COA, leído de sus datos, no cableado) y Personalizado.
+
+La lógica vive en [reports.js](../src/demo/data/reports.js) y no en el componente, porque
+la regla que atraviesa todo es de datos, no de UI:
+
+> «Cada exportación debe incluir campos de procedencia y estado de verificación para
+> evitar que un tercero confunda histórico con MRV.»
+
+Ese es el punto entero. Un CSV que sale de acá termina en la mano de un auditor que nunca
+vio el dashboard: si una fila no dice de dónde salió, no tiene cómo saber que una medición
+del expediente de 2021 no pasó por ningún pipeline. Por eso `record_origin` y
+`verification_status` van en **todos** los tipos, están fijados en la vista previa aunque
+queden fuera del corte de columnas, y hay invariantes que lo verifican:
+
+```
+✓ §4.6: reporte "impacto" exporta procedencia en sus 18 filas
+✓ §4.6: reporte "acciones" exporta procedencia en sus 8 filas
+✓ §4.6: reporte "historico" exporta procedencia en sus 36 filas
+✓ §4.6: reporte "evidencias" exporta procedencia en sus 19 filas
+✓ §4.6: reporte "auditoria" exporta procedencia en sus 214 filas
+✓ §4.6: reporte "integral" exporta procedencia en sus 214 filas
+✓ §4.6: las acciones demo se exportan marcadas como fixture
+```
+
+Las 8 facturas EDESUR salen con `data_mode: demo` en cualquier exportación — si alguien
+manda ese CSV afuera, la fila lo dice.
+
+El integral no concatena todo en una tabla: serían filas de formas distintas mezcladas.
+Devuelve las cinco secciones por separado en el JSON, y el CSV lleva la de auditoría, que
+es la única que abarca hitos, mediciones, documentos y evaluaciones a la vez.
+
+### Detalles de uso
+
+Reportes arrancaba en "Acciones verificadas" —vacío para Montessori— teniendo cinco tipos
+llenos; ahora abre en el que tiene datos, igual que se corrigió el Data Room. La tabla de
+auditoría muestra de a 50 registros con "ver más" en vez de pintar 214 de un saque, y la
+vista previa de reportes muestra 25 filas aclarando que la exportación lleva todas.
+
+### Verificación
+
+```
+npm run smoke                # 37/37 rutas
+npm run verify:attribution   # 61/61
+npm run verify:canonical     # 42/42 invariantes
+```
+
+### Lo que queda
+
+Fases 5-7: Home + Environmental Identity, Configuración con el scaffolding de auditor
+externo, y Movilidad al final por pedido de Martín.

@@ -78,6 +78,25 @@ check(publicDocs.every((d) => d.access_level === 'public'),
   'IR-009: la vista pública no expone documentos institucionales ni restringidos',
   `${publicDocs.length} documentos visibles como público`);
 
+// § 4.6 · toda fila exportada declara su procedencia. Es la regla que evita
+// que un tercero confunda un histórico con algo verificado por el pipeline.
+const R = await server.ssrLoadModule('/src/demo/data/reports.js');
+const A = await server.ssrLoadModule('/src/demo/data/actions.js');
+for (const t of R.REPORT_TYPES) {
+  const rows = R.buildReport({ type: t.id, actions: A.ACTIONS, hasHistory: true }).rows;
+  const sinProcedencia = rows.filter(
+    (r) => r.record_origin === undefined || r.verification_status === undefined,
+  );
+  check(rows.length > 0 && sinProcedencia.length === 0,
+    `§4.6: reporte "${t.id}" exporta procedencia en sus ${rows.length} filas`,
+    rows.length === 0 ? 'dataset vacío' : `${sinProcedencia.length} filas sin campos`);
+}
+
+// Las 8 facturas EDESUR salen marcadas como fixture en cualquier exportación.
+const acc = R.buildReport({ type: 'acciones', actions: A.ACTIONS, hasHistory: false }).rows;
+check(acc.every((r) => r.data_mode === 'demo'),
+  '§4.6: las acciones demo se exportan marcadas como fixture');
+
 await server.close();
 console.log(`\n${fail === 0 ? 'todas las invariantes OK' : `${fail} invariantes rotas`}`);
 process.exit(fail ? 1 : 0);

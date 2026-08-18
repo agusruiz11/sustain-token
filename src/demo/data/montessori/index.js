@@ -488,6 +488,87 @@ export function indicatorDetail(indicatorId) {
   return { indicator: ind, total: indicatorTotal(indicatorId), rows };
 }
 
+/* ── Auditoría documental — Entregable 3 § 4.7 ────────────────
+   «Agregar auditoría documental del histórico con columnas: registro, tipo,
+   período, fuente, referencia, evidencia, estado de verificación, hash si
+   existe.»
+
+   Para históricos: MRV = No aplicado, SES = No aplica, CID/blockchain = No
+   aplica. Eso no se calcula por registro — es una propiedad de la naturaleza
+   del dato, y por eso se afirma una vez a nivel de la vista en lugar de
+   repetir seis columnas vacías en cada fila. */
+
+/**
+ * Todo lo auditable del expediente en una sola lista: hitos, mediciones,
+ * documentos y evaluaciones de cumplimiento.
+ *
+ * Ninguno tiene hash. No es un campo faltante: estos registros no pasaron por
+ * el pipeline, así que su prueba es la referencia al expediente. Cuando
+ * lleguen los archivos originales (consulta Q10) se les podrá calcular hash
+ * sin alterar el registro lógico.
+ */
+export function auditRecords({ viewerLevel = 'institutional' } = {}) {
+  const rows = [
+    ...actions.map((a) => ({
+      id: a.action_id,
+      kind: 'action',
+      kindLabel: 'Hito',
+      title: a.summary,
+      period: a.occurred_at,
+      verificationStatus: a.verification_status,
+      recordOrigin: a.record_origin,
+      sourceReference: a.source_reference,
+      accessLevel: 'institutional',
+      evidence: evidenceFor('action', a.action_id).length,
+    })),
+    ...measurements.map((m) => ({
+      id: m.measurement_id,
+      kind: 'measurement',
+      kindLabel: 'Medición',
+      title: `${getIndicator(m.indicator_id)?.name ?? m.indicator_id} · ${m.value} ${m.unit}`,
+      period: m.period_start && m.period_end ? `${m.period_start} → ${m.period_end}` : m.period_start,
+      verificationStatus: m.verification_status,
+      qualityStatus: m.quality_status,
+      recordOrigin: m.record_origin,
+      sourceReference: m.source_reference,
+      accessLevel: 'institutional',
+      provenance: PROVENANCE_STYLE[provenanceOf(m)],
+      indicatorId: m.indicator_id,
+      evidence: 0,
+    })),
+    ...documents.map((d) => ({
+      id: d.document_id,
+      kind: 'document',
+      kindLabel: 'Documento',
+      title: d.title,
+      period: d.effective_date,
+      verificationStatus: 'documented',
+      recordOrigin: 'historical_import',
+      sourceReference: d.source_reference,
+      accessLevel: d.access_level,
+      evidence: evidenceFor('document', d.document_id).length,
+    })),
+    ...complianceAssessments.map((c) => ({
+      id: c.assessment_id,
+      kind: 'compliance',
+      kindLabel: 'Evaluación',
+      title: frameworkRequirements.find((r) => r.requirement_id === c.requirement_id)?.description
+        ?? c.requirement_id,
+      period: c.assessment_period,
+      verificationStatus: 'third_party_supported',
+      recordOrigin: 'historical_import',
+      sourceReference: c.source_reference,
+      accessLevel: 'institutional',
+      evidence: 0,
+    })),
+  ];
+
+  return visibleAt(
+    rows.map((r) => ({ ...r, access_level: r.accessLevel })),
+    viewerLevel,
+  ).sort((a, b) => String(b.period ?? '').localeCompare(String(a.period ?? '')));
+}
+
 /* ── Personas y roles ─────────────────────────────────────────
    § 11: no exponer nombres sin autorización. Q09 pregunta justamente qué
    responsables se pueden mostrar y sigue sin respuesta, así que la lista se
