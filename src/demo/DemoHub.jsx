@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.png';
+/* Mismo problema que en la barra lateral: logo.png es opaco y sus esquinas son
+   blancas, y esta nav también es oscura. */
+import logo from '../assets/sustain-bird-logo-colorcombinado.png';
 import { COMPANY_LIST, COMPANIES } from './data/companies';
 import { INSTITUTION_LIST, INSTITUTIONS } from './data/institutions';
 import { USER } from './data/user';

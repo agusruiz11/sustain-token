@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNode } from '../components/useNode';
-import { actionsForNode } from '../data/actions';
+import { actionsForNode, missingPackagesForNode } from '../data/actions';
 import { dashboardKeyOf, DATA_MODE } from '../data/sustainNodes';
 import { CATEGORIES } from '../data/categories';
 import { moduleHref } from '../data/nodeTypes';
@@ -29,10 +29,16 @@ export default function MisAcciones() {
   const rows = useMemo(
     () => all.filter((a) =>
       (categoria === 'todas' || a.categoryId === categoria) &&
-      (resultado === 'todos' || a.result.direction === resultado),
+      (resultado === 'todos' || a.outcome.direction === resultado),
     ),
     [all, categoria, resultado],
   );
+
+  /* Paquetes que el nodo declara pero que todavía no llegaron. Se anuncian
+     como hueco: el total del node_state no cierra con lo que se ve, y decirlo
+     es más honesto que mostrar una ficha inventada. */
+  const missing = useMemo(() => missingPackagesForNode(node), [nodeKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  const missingCount = missing.reduce((n, m) => n + m.count, 0);
 
   // Sólo se ofrecen las categorías que este nodo realmente tiene cargadas:
   // un filtro con 13 opciones donde 12 no dan resultados no ayuda a nadie.
@@ -46,7 +52,14 @@ export default function MisAcciones() {
     [all],
   );
 
-  const base = moduleHref(node.nodeTypeId, node.slug, 'acciones', routeSegment);
+  /* Cada acción abre donde se explica bien: una factura en su ficha de acción,
+     un viaje en el módulo Movilidad, que ya tiene metodología de carbono y
+     controles de validación. `detailPath` lo declara el propio dato. */
+  const hrefOf = (a) => {
+    const mod = moduleHref(node.nodeTypeId, node.slug, a.detailPath.module, routeSegment);
+    if (a.detailPath.query) return `${mod}?${a.detailPath.query}`;
+    return `${mod}/${a.id}`;
+  };
 
   const columns = [
     {
@@ -67,11 +80,31 @@ export default function MisAcciones() {
       render: (a) => CATEGORIES[a.categoryId].name,
     },
     {
-      key: 'result',
-      label: 'vs. línea base',
+      key: 'metric',
+      label: 'Medición',
       align: 'right',
-      width: '120px',
-      render: (a) => <DeltaPct value={a.result.deltaPct} />,
+      width: '130px',
+      render: (a) => (
+        <span className="act-cell-metric">
+          {a.metric.value} <span className="act-cell-unit">{a.metric.unit}</span>
+        </span>
+      ),
+    },
+    {
+      key: 'result',
+      label: 'Resultado',
+      align: 'right',
+      width: '140px',
+      /* Energía se mide contra su propia línea base y da un porcentaje;
+         movilidad da CO₂e evitado. La columna muestra lo que cada acción
+         realmente tiene, en vez de forzar a las dos al mismo número. */
+      render: (a) => a.outcome.deltaPct !== null
+        ? <DeltaPct value={a.outcome.deltaPct} />
+        : (
+          <span className="act-cell-metric">
+            {a.outcome.value} <span className="act-cell-unit">{a.outcome.unit} CO₂e</span>
+          </span>
+        ),
     },
     {
       key: 'ses',
@@ -119,7 +152,7 @@ export default function MisAcciones() {
         <DataTable
           columns={columns}
           rows={rows}
-          rowHref={(a) => `${base}/${a.id}`}
+          rowHref={hrefOf}
           caption="Acciones verificadas del nodo"
           // Un nodo sin acciones y un filtro sin resultados son dos cosas
           // distintas. Montessori entra al piloto con histórico documentado y
@@ -142,6 +175,18 @@ export default function MisAcciones() {
           {demoFixtures} de estas acciones son fixtures de demostración cargadas para
           construir y probar el flujo. Los valores marcados como pendientes no están
           cargados todavía y no se completaron con datos inventados.
+        </p>
+      )}
+
+      {/* El hueco declarado. El nodo dice tener más acciones de las que se ven
+          y la diferencia se nombra, en vez de dejar que el total no cierre sin
+          explicación. */}
+      {missingCount > 0 && (
+        <p className="mod-scaffold-note">
+          El nodo declara {all.length + missingCount} acciones verificadas y acá se
+          muestran {all.length}. {missingCount === 1 ? 'Falta 1 paquete' : `Faltan ${missingCount} paquetes`}:{' '}
+          {missing.map((m) => m.module).join(', ')}. No se genera una ficha sin el archivo
+          fuente; hasta que llegue, la acción existe pero no tiene detalle.
         </p>
       )}
     </>

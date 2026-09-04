@@ -7,6 +7,7 @@ import { CATEGORIES } from '../data/categories';
 import { moduleHref } from '../data/nodeTypes';
 import { SesDelta } from '../components/StatusChip';
 import { stepStyle } from '../components/stepStyle';
+import { anchorLinks } from '../data/anchorLinks';
 import {
   historicalTimeline, verificationLabel, programs as montPrograms,
 } from '../data/montessori/index.js';
@@ -147,6 +148,7 @@ export default function Timeline() {
 function SustainEvent({ action, base }) {
   const cat = CATEGORIES[action.categoryId];
   const milestones = buildTimeline(action);
+  const links = anchorLinks(action.anchor);
 
   return (
     <li className="tl-item">
@@ -165,10 +167,20 @@ function SustainEvent({ action, base }) {
         <ol className="tl-milestones">
           {milestones.map((m) => {
             const s = stepStyle(m.status);
-            return (
-              <li key={m.key} className="tl-ms" title={m.detail ?? ''}>
+            /* IPFS y blockchain se pueden abrir desde el propio timeline
+               cuando hay dato: es el recorrido que se muestra en el celular. */
+            const href = m.key === 'ipfs' ? links.ipfs : m.key === 'blockchain' ? links.tx : null;
+            const inner = (
+              <>
                 <span className="tl-ms-mark" style={{ color: s.color }}>{s.mark}</span>
                 <span className="tl-ms-label">{m.label}</span>
+              </>
+            );
+            return (
+              <li key={m.key} className="tl-ms" title={m.detail ?? ''}>
+                {href
+                  ? <a className="tl-ms-link" href={href} target="_blank" rel="noreferrer noopener">{inner}↗</a>
+                  : inner}
               </li>
             );
           })}

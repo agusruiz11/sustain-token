@@ -6,7 +6,11 @@ import { moduleHref } from '../data/nodeTypes';
 import DataTable from '../components/DataTable';
 import StatusChip from '../components/StatusChip';
 import AuditTrail from '../components/AuditTrail';
-import { auditRecords, verificationLabel, qualityLabel, accessLabel } from '../data/montessori/index.js';
+import { anchorLinks } from '../data/anchorLinks';
+import {
+  auditRecords, verificationLabel, qualityLabel, accessLabel,
+  recordStateOf, recordStateLabel, RECORD_STATE,
+} from '../data/montessori/index.js';
 
 /**
  * § 10 del brief + Entregable 3 § 4.7 — Auditoría.
@@ -42,7 +46,11 @@ export default function Auditoria() {
   const hasHistory = nodeKey === 'montessori';
 
   const actions = actionsForNode(node).sort((a, b) => b.date.localeCompare(a.date));
-  const base = moduleHref(node.nodeTypeId, node.slug, 'acciones', routeSegment);
+
+  const hrefOf = (a) => {
+    const mod = moduleHref(node.nodeTypeId, node.slug, a.detailPath.module, routeSegment);
+    return a.detailPath.query ? `${mod}?${a.detailPath.query}` : `${mod}/${a.id}`;
+  };
 
   const conHash = actions.filter((a) => a.anchor.hash).length;
   const conCid = actions.filter((a) => a.anchor.cid).length;
@@ -59,17 +67,29 @@ export default function Auditoria() {
         : <span className="trace-step-value--pending">Pendiente de cálculo</span>,
     },
     {
+      /* Con CID cargado la celda abre el archivo en el gateway; sin CID
+         muestra el estado. Nunca un enlace que no lleva a ninguna parte. */
       key: 'cid',
       label: 'CID',
-      width: '120px',
-      render: (a) => <StatusChip status={a.anchor.cidStatus} />,
+      width: '140px',
+      render: (a) => {
+        const url = anchorLinks(a.anchor).ipfs;
+        return url
+          ? <a className="aud-link" href={url} target="_blank" rel="noreferrer noopener">Ver en IPFS ↗</a>
+          : <StatusChip status={a.anchor.cidStatus} />;
+      },
     },
     {
       key: 'chain',
       label: 'Blockchain',
       align: 'right',
-      width: '130px',
-      render: (a) => <StatusChip status={a.anchor.chainStatus} />,
+      width: '170px',
+      render: (a) => {
+        const l = anchorLinks(a.anchor);
+        return l.tx
+          ? <a className="aud-link" href={l.tx} target="_blank" rel="noreferrer noopener">Ver en {l.explorer} ↗</a>
+          : <StatusChip status={a.anchor.chainStatus} />;
+      },
     },
   ];
 
@@ -105,7 +125,10 @@ export default function Auditoria() {
             <DataTable
               columns={columns}
               rows={actions}
-              rowHref={(a) => `${base}/${a.id}`}
+              /* Cada acción abre donde se explica: la factura y la Botella de
+                 Amor en su ficha, el viaje en el módulo Movilidad. Antes todas
+                 iban a la ficha y las de movilidad rebotaban por un redirect. */
+              rowHref={hrefOf}
               caption="Estado criptográfico de cada acción"
             />
           </div>
@@ -154,6 +177,18 @@ function HistoricalAudit() {
   const enRevision = all.filter((r) => r.qualityStatus === 'needs_review').length;
   const visibles = rows.slice(0, limite);
 
+  /* Cuántos registros hay en cada uno de los cuatro estados. Sirve como
+     herramienta de data-quality: la escuela ve de un vistazo cuánto le falta
+     confirmar, que es justamente para lo que se le comparte el dashboard. */
+  const porEstado = useMemo(() => {
+    const c = {};
+    for (const r of all) {
+      const s = recordStateOf(r);
+      c[s] = (c[s] ?? 0) + 1;
+    }
+    return c;
+  }, [all]);
+
   return (
     <div className="dash-card">
       <div className="dash-section-header">
@@ -171,6 +206,19 @@ function HistoricalAudit() {
         su prueba es la referencia al expediente, no un hash.
       </p>
 
+      {/* Los cuatro estados, contados. Un estado con cero registros no se
+          muestra: una etiqueta en 0 sugiere que falta cargar algo. */}
+      <div className="rec-state-legend">
+        {[RECORD_STATE.SUSTAIN_VERIFIED, RECORD_STATE.DOCUMENTED,
+          RECORD_STATE.PENDING_CONFIRMATION, RECORD_STATE.OUT_OF_SCOPE]
+          .filter((s) => porEstado[s] > 0)
+          .map((s) => (
+            <span key={s} className={`rec-state rec-state--${s}`}>
+              {recordStateLabel(s)} · {porEstado[s]}
+            </span>
+          ))}
+      </div>
+
       <div className="act-filters">
         <label className="act-filter">
           <span>Tipo</span>
@@ -179,7 +227,7 @@ function HistoricalAudit() {
           </select>
         </label>
         <label className="act-filter">
-          <span>Estado</span>
+          <span>Verificación</span>
           <select value={estado} onChange={(e) => setEstado(e.target.value)}>
             <option value="todos">Todos</option>
             {estados.map((s) => <option key={s} value={s}>{verificationLabel(s)}</option>)}
@@ -207,10 +255,21 @@ function HistoricalAudit() {
             render: (r) => r.period ?? <span className="trace-step-value--pending">Sin fecha</span>,
           },
           {
-            key: 'estado', label: 'Verificación', width: '150px',
-            render: (r) => (
-              <span className="inst-origin-badge">{verificationLabel(r.verificationStatus)}</span>
-            ),
+            /* Los cuatro estados que pidió Martín, resueltos a uno solo por
+               fila. La verificación cruda sigue disponible en el tooltip: es
+               dato de auditoría, no se pierde. */
+            key: 'estadoRegistro', label: 'Estado', width: '190px',
+            render: (r) => {
+              const s = recordStateOf(r);
+              return (
+                <span
+                  className={`rec-state rec-state--${s}`}
+                  title={`Verificación: ${verificationLabel(r.verificationStatus)}`}
+                >
+                  {recordStateLabel(s)}
+                </span>
+              );
+            },
           },
           {
             key: 'calidad', label: 'Calidad', width: '130px',
@@ -255,7 +314,7 @@ function HistoricalAudit() {
         Ningún registro histórico tiene hash. No es un campo faltante: no pasaron por el
         pipeline. Cuando lleguen los archivos originales del expediente (consulta Q10) se
         les podrá calcular hash y versionado sin alterar el registro lógico.
-        {enRevision > 0 && ` ${enRevision} mediciones están en revisión y no alimentan KPI públicos, pero siguen siendo auditables.`}
+        {enRevision > 0 && ` ${enRevision} mediciones figuran como Pendiente de confirmación: existen y están respaldadas por el expediente, pero falta que la institución precise qué se midió, cómo y en qué período. No alimentan KPI públicos y no se completaron por inferencia.`}
       </p>
     </div>
   );

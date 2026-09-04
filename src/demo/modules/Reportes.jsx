@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNode } from '../components/useNode';
-import { actionsForNode } from '../data/actions';
+import { actionsForNode, ACTION_KIND } from '../data/actions';
 import { dashboardKeyOf } from '../data/sustainNodes';
 import { CATEGORIES } from '../data/categories';
 import { REPORT_TYPES, frameworksFor, buildReport, previewColumns } from '../data/reports';
@@ -88,8 +88,13 @@ export default function Reportes() {
     [all],
   );
 
+  /* El ahorro en kWh/día sólo existe para las acciones de energía: una acción
+     de movilidad no tiene consumo propio contra el que comparar. Sumarlas todas
+     daría un número que no significa nada, así que el agregado se calcula sobre
+     el subconjunto que corresponde y el resto del resumen sobre el total. */
   const resumen = useMemo(() => {
-    const reducciones = rows.filter((a) => a.result.direction === 'reduction');
+    const energia = rows.filter((a) => a.kind === ACTION_KIND.ENERGY);
+    const reducciones = energia.filter((a) => a.outcome.direction === 'reduction');
     const ahorro = reducciones.reduce((s, a) => s + a.result.savedPerDay, 0);
     const sesConocido = rows.filter((a) => a.ses.delta !== null);
     return {

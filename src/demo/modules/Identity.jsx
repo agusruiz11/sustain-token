@@ -50,6 +50,28 @@ export default function Identity() {
   const knownSum = known.reduce((s, h) => s + h.delta, 0);
   const gap = declared !== null ? declared - knownSum : null;
 
+  /* Aporte de cada módulo al puntaje, en orden cronológico, con el acumulado
+     que deja. Es la forma legible de mostrar cómo se llega al score: energía
+     lleva a 20, la Botella de Amor a 23, movilidad a 35. */
+  const byKind = useMemo(() => {
+    const ETIQUETA = { energy: 'Energía', plastic_recovery: 'Botella de Amor', mobility: 'Movilidad' };
+    const orden = [...actions].sort((a, b) => a.date.localeCompare(b.date));
+    const filas = [];
+    let acumulado = 0;
+    for (const a of orden) {
+      acumulado += a.ses.delta ?? 0;
+      const etiqueta = ETIQUETA[a.kind] ?? a.kind;
+      const ultima = filas[filas.length - 1];
+      if (ultima && ultima[0] === etiqueta) {
+        ultima[1] += a.ses.delta ?? 0;
+        ultima[2] = acumulado;
+      } else {
+        filas.push([etiqueta, a.ses.delta ?? 0, acumulado]);
+      }
+    }
+    return filas;
+  }, [actions]);
+
   const badges = data?.badges ?? [];
 
   return (
@@ -89,6 +111,28 @@ export default function Identity() {
           )}
         </div>
       </div>
+
+      {/* Con los 9 paquetes cargados la cadena cierra sola. Se muestra el
+          desglose por módulo en vez de la diferencia a explicar: la
+          reconciliación sigue siendo una condición verificable, sólo que ahora
+          da bien. Si mañana deja de cerrar, este bloque lo canta. */}
+      {gap === 0 && unknown.length === 0 && byKind.length > 1 && (
+        <div className="dash-card prov-note">
+          <div className="dash-nav-group-label">Reconciliación del puntaje</div>
+          <p className="mod-scaffold-note" style={{ paddingTop: 8 }}>
+            El puntaje declarado por el pipeline coincide exacto con la suma de los deltas de las{' '}
+            {known.length} acciones del nodo. No queda diferencia sin explicar.
+          </p>
+          <div className="mod-scaffold-stats" style={{ borderBottom: 0, paddingTop: 0 }}>
+            {byKind.map(([label, suma, acumulado]) => (
+              <div className="mod-scaffold-stat" key={label}>
+                <div className="mod-scaffold-stat-value">{suma > 0 ? `+${suma}` : suma}</div>
+                <div className="mod-scaffold-stat-label">{label} · acumulado {acumulado}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {gap !== null && unknown.length > 0 && (
         <div className="dash-card prov-note">

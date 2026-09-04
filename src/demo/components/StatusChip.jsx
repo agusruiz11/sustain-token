@@ -30,8 +30,17 @@ export function SesDelta({ value }) {
   );
 }
 
-/** Variación porcentual contra la línea base. Negativo = reducción = bueno. */
-export function DeltaPct({ value }) {
+/**
+ * Variación porcentual contra la línea base. Negativo = reducción = bueno.
+ *
+ * `null` no es un dato faltante: hay acciones que no se miden contra una línea
+ * base de consumo propio —un viaje en bici, por ejemplo— y para esas la
+ * variación porcentual no existe. Se dice, no se muestra un 0 que mentiría.
+ */
+export function DeltaPct({ value, fallback = 'No aplica' }) {
+  if (value === null || value === undefined) {
+    return <span className="ses-delta ses-delta--unknown">{fallback}</span>;
+  }
   const cls = value < 0 ? 'ses-delta--up' : value > 0 ? 'ses-delta--down' : 'ses-delta--flat';
   return (
     <span className={`ses-delta ${cls}`}>
