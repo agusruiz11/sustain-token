@@ -29,7 +29,7 @@ export default function Footer() {
             ))}
           </ul>
           <div className="footer-copy">
-            © 2026 <a href="https://sustaintoken.org/" style={{ color: 'inherit' }}>SustainToken.org</a> · <span>{t('footer.copy')}</span>
+            © 2026 <a href="https://sustainprotocol.org/" style={{ color: 'inherit' }}>SustainProtocol.org</a> · <span>{t('footer.copy')}</span>
           </div>
           <a
             href="https://www.posicionarte.online/"

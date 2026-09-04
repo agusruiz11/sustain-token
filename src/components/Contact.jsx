@@ -16,7 +16,7 @@ export default function Contact() {
             <a href="#pilot-form" className="btn btn--primary btn--large">
               {t('contact.btnPilot')}
             </a>
-            <a href="mailto:contact@sustaintoken.org" className="btn btn--ghost btn--large">
+            <a href="mailto:contact@sustainprotocol.org" className="btn btn--ghost btn--large">
               {t('contact.btnDev')}
             </a>
             <a href="#resources" className="btn btn--ghost btn--large">
