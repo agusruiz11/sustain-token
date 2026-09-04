@@ -89,6 +89,87 @@ export const isSustainVerified = (record) =>
 
 export const isHistorical = (record) => NON_SUSTAIN_STATUSES.has(record?.verification_status);
 
+/* ── Estado de un registro en pantalla — pedido de Martín, 24 ago 2026 ──
+   «Preferimos que la interfaz muestre claramente: Histórico documentado /
+    Sustain Verified / Pendiente de confirmación / Fuera de alcance.»
+
+   Un registro tiene tres campos que dicen cosas distintas —de dónde vino
+   (record_origin), cuánto respaldo tiene (verification_status) y si su dato es
+   utilizable (quality_status)— y el lector no debería tener que combinarlos de
+   memoria. `recordStateOf` los resuelve a un solo estado visible.
+
+   El orden importa: un registro que requiere revisión es "Pendiente de
+   confirmación" aunque su verificación diga "documentado", porque lo que la
+   escuela tiene que hacer con él es aclararlo, no leerlo.
+
+   FUERA DE ALCANCE — resuelto el 25 ago 2026. Martín lo definió así:
+
+     «Manejarlo como estado de alcance/configuración del piloto, separado de
+      verification status. No inferirlo del paquete.»
+
+   Por eso vive en PILOT_SCOPE, una configuración explícita del piloto, y no
+   en el paquete canónico. Hoy está vacío: mientras nadie declare un registro
+   fuera de alcance, ninguno lo está. El estado NUNCA se deduce del dato —
+   inferirlo sería inventar una decisión de la institución. */
+
+/* ── Alcance del piloto ──────────────────────────────────────
+   Qué queda explícitamente afuera. Se declara por id de registro, de programa
+   o de indicador; cada entrada lleva el motivo, porque un "fuera de alcance"
+   sin explicación es peor que no marcarlo.
+
+   Vacío = nada fuera de alcance. Lo llena una decisión del equipo con la
+   institución, nunca un import. */
+export const PILOT_SCOPE = {
+  measurements: {},
+  programs: {},
+  indicators: {},
+};
+
+/** Motivo por el que un registro quedó fuera del alcance del piloto, o null. */
+export function outOfScopeReason(record) {
+  if (!record) return null;
+  const id = record.measurement_id ?? record.measurementId ?? record.id ?? null;
+  return (
+    PILOT_SCOPE.measurements[id]
+    ?? PILOT_SCOPE.programs[record.program_id ?? record.programId]
+    ?? PILOT_SCOPE.indicators[record.indicator_id ?? record.indicatorId]
+    ?? null
+  );
+}
+
+export const RECORD_STATE = {
+  SUSTAIN_VERIFIED: 'sustain_verified',
+  DOCUMENTED: 'documented',
+  PENDING_CONFIRMATION: 'pending_confirmation',
+  OUT_OF_SCOPE: 'out_of_scope',
+};
+
+const RECORD_STATE_LABEL = {
+  sustain_verified: 'Sustain Verified',
+  documented: 'Histórico documentado',
+  pending_confirmation: 'Pendiente de confirmación',
+  out_of_scope: 'Fuera de alcance',
+};
+
+/** Acepta el registro crudo (snake_case) o el normalizado de auditRecords. */
+export function recordStateOf(record) {
+  if (!record) return RECORD_STATE.DOCUMENTED;
+  const quality = record.quality_status ?? record.qualityStatus ?? null;
+  const verification = record.verification_status ?? record.verificationStatus ?? null;
+
+  /* El alcance manda sobre todo lo demás: si el piloto declaró que un registro
+     queda afuera, no importa cuán verificado esté. Sale de PILOT_SCOPE, que es
+     configuración del equipo, no del paquete. */
+  if (outOfScopeReason(record)) return RECORD_STATE.OUT_OF_SCOPE;
+  if (quality === 'needs_review') return RECORD_STATE.PENDING_CONFIRMATION;
+  if (verification === 'sustain_verified' || verification === 'anchored') {
+    return RECORD_STATE.SUSTAIN_VERIFIED;
+  }
+  return RECORD_STATE.DOCUMENTED;
+}
+
+export const recordStateLabel = (state) => RECORD_STATE_LABEL[state] ?? state;
+
 /* ── Mediciones ─────────────────────────────────────────────── */
 
 /**
