@@ -1,0 +1,201 @@
+{
+  "protocol": {
+    "name": "Sustain Protocol",
+    "schema": "DASHBOARD_SYNC",
+    "schema_version": "1.0",
+    "source_schema": "DASHBOARD_UPDATE",
+    "source_schema_version": "1.0"
+  },
+  "synchronization": {
+    "sync_id": "sync_2ed9b9db57ab54ff96e25927",
+    "sync_stage": "post_anchor",
+    "sync_status": "READY_FOR_SYNC",
+    "generated_at": "2026-07-14T06:14:33Z",
+    "source_action_id": "edesur_ar:lsp:B-0501-83618908-18",
+    "source_node_id": "edesur_ar:customer:80506030:meter:005103949",
+    "idempotency_key": "spn_01ee6583da858ca1fa19323d:spa_c29d7a929bb619785137bcda"
+  },
+  "platform_identifiers": {
+    "node_id": "spn_01ee6583da858ca1fa19323d",
+    "action_id": "spa_c29d7a929bb619785137bcda"
+  },
+  "internal_identifiers": {
+    "source_node_id": "edesur_ar:customer:80506030:meter:005103949",
+    "source_action_id": "edesur_ar:lsp:B-0501-83618908-18",
+    "access_scope": "platform_restricted",
+    "dashboard_display_allowed": false
+  },
+  "node_snapshot": {
+    "node_id": "spn_01ee6583da858ca1fa19323d",
+    "display_name": "MARTIN PABLO CERON",
+    "beneficiary_type": "individual",
+    "current_ses": 20,
+    "previous_ses": 50,
+    "ses_delta": -30,
+    "total_actions": 8,
+    "verified_actions": 8,
+    "module_action_counts": {
+      "energy": 8,
+      "water": 0,
+      "gas": 0,
+      "recycling": 0,
+      "compost": 0,
+      "cleanup": 0,
+      "mobility": 0,
+      "other": 0
+    },
+    "lifetime_metrics": {
+      "total_verified_kwh_saved": 211.190949,
+      "estimated_co2_saved_kg": null,
+      "estimated_cost_saved": null,
+      "electricity_actions": 8,
+      "electricity_kwh_saved": 211.190949,
+      "water_liters_saved": 0.0,
+      "gas_m3_saved": 0.0,
+      "co2_estimated_kg": 0.0,
+      "waste_recycled_kg": 0.0,
+      "organic_composted_kg": 0.0,
+      "cleanup_waste_removed_kg": 0.0,
+      "bike_km": 0.0,
+      "ev_km": 0.0,
+      "public_transport_km": 0.0,
+      "trees_planted": 0,
+      "native_plants": 0,
+      "textiles_reused_kg": 0.0,
+      "electronics_recycled_kg": 0.0,
+      "food_saved_kg": 0.0,
+      "rainwater_liters": 0.0,
+      "biodiversity_actions": 0,
+      "education_hours": 0.0,
+      "volunteer_hours": 0.0
+    },
+    "badges": [
+      {
+        "badge_code": "FIRST_VERIFIED_ENERGY_RECORD",
+        "date": "2025-11-14"
+      },
+      {
+        "badge_code": "EXCEPTIONAL_ENERGY_REDUCTION",
+        "date": "2026-02-20",
+        "action_id": "spa_8f2f331331f1c26535f54f6d"
+      },
+      {
+        "badge_code": "EXCEPTIONAL_ENERGY_REDUCTION",
+        "date": "2026-03-19",
+        "action_id": "spa_8b9bcd5cd034356756aefbe9"
+      },
+      {
+        "badge_code": "OUTSTANDING_ENERGY_REDUCTION",
+        "date": "2026-04-21",
+        "action_id": "spa_1d4967a1d22647ba47723787"
+      }
+    ],
+    "level": "Level 1 — Verified Participant",
+    "last_action_id": "spa_c29d7a929bb619785137bcda",
+    "last_action_date": "2026-06-22",
+    "snapshot_is_complete": true
+  },
+  "action_event": {
+    "action_id": "spa_c29d7a929bb619785137bcda",
+    "node_id": "spn_01ee6583da858ca1fa19323d",
+    "module": "energy",
+    "action_type": "verified_energy_consumption",
+    "date": "2026-06-22",
+    "title": "Consumo eléctrico verificado",
+    "subtitle": "Periodo liquidado 6",
+    "verification_status": "verified",
+    "verification_depth": "HIGH",
+    "ses_delta": -30,
+    "current_ses_after": 20,
+    "public_metrics": {
+      "provider": "EDESUR",
+      "country": "AR",
+      "city": "Capital Federal",
+      "current_consumption_kwh": 618,
+      "current_kwh_per_day": 19.935484,
+      "baseline_kwh_per_day": 11.554713,
+      "reduction_percent": -72.531191
+    },
+    "baseline_summary": {
+      "baseline_status": "robust_historical_active",
+      "baseline_strategy": "rolling_6_invoice_average",
+      "baseline_confidence": 86,
+      "evidence_count": 8,
+      "scoring_baseline_kwh_per_day": 11.554713,
+      "current_operational_baseline_kwh_per_day": 13.396342
+    },
+    "badges_awarded": []
+  },
+  "registry_proof": {
+    "ipfs": {
+      "cid": "bafybeieatgly6nzhju76dr6oiensrrfllm5q2b3noakkgo7znq36ayo2yu",
+      "uri": "ipfs://bafybeieatgly6nzhju76dr6oiensrrfllm5q2b3noakkgo7znq36ayo2yu",
+      "gateway_url": "https://ipfs.io/ipfs/bafybeieatgly6nzhju76dr6oiensrrfllm5q2b3noakkgo7znq36ayo2yu",
+      "status": "stored"
+    },
+    "blockchain": {
+      "network_name": "BNB Smart Chain Mainnet",
+      "chain_id": 56,
+      "contract_address": "0x141cc96351d622fcf26fAA40E0fd2a1ba8D25e1B",
+      "transaction_hash": "0xdb299a5a3e4425a57594620ac93c93b5a64f7193f178775fcb668c6097038397",
+      "transaction_status": null,
+      "block_number": null,
+      "block_timestamp": null,
+      "anchor_method": "anchorAction(string,string)",
+      "transaction_url": "https://bscscan.com/tx/0xdb299a5a3e4425a57594620ac93c93b5a64f7193f178775fcb668c6097038397",
+      "contract_url": "https://bscscan.com/address/0x141cc96351d622fcf26fAA40E0fd2a1ba8D25e1B"
+    },
+    "proof_validation_status": "PARTIAL"
+  },
+  "integration_directives": {
+    "node_operation": "UPSERT_BY_NODE_ID",
+    "action_operation": "UPSERT_BY_ACTION_ID",
+    "delete_previous_actions": false,
+    "allow_duplicate_action_id": false,
+    "replace_node_snapshot": true,
+    "preserve_action_history": true,
+    "display_registry_links": true
+  },
+  "privacy": {
+    "visibility_mode": "authenticated_private_dashboard",
+    "public_sharing_enabled": false,
+    "consent_status": "not_provided",
+    "platform_safe": true,
+    "public_safe": false,
+    "private_fields_removed": true,
+    "contains_pii": true,
+    "forbidden_fields_checked": [
+      "full_address",
+      "tax_id",
+      "customer_id",
+      "meter_number",
+      "payment_codes",
+      "qr",
+      "barcodes",
+      "cuit",
+      "dni",
+      "lsp",
+      "cesp"
+    ]
+  },
+  "dates": {
+    "action_date": "2026-06-22",
+    "processed_at": "2026-07-14T06:05:04Z",
+    "registered_at": null,
+    "anchored_at": null,
+    "source_generated_at": "2026-07-14T06:05:04Z",
+    "synced_at": "2026-07-14T06:14:33Z"
+  },
+  "integrity": {
+    "source_dashboard_update_hash": "fecf2383ad78eea09902e3dde40317b35fc1bf84d92aa7086e79da97b9a97691",
+    "sync_payload_hash": "0736031b7587b078e660741eb37ca2b46f3b0a2b23b870731d2c6a462da7dc60",
+    "hash_algorithm": "sha256",
+    "validation_notes": [
+      "dashboard_update.json structure and identifiers validated.",
+      "Platform identifiers preserved exactly as received.",
+      "CID, transaction hash and contract address are structurally valid.",
+      "Blockchain confirmation evidence was not provided; proof status is PARTIAL.",
+      "Environmental metrics, SES, badges, counters and node state were not recalculated."
+    ]
+  }
+}

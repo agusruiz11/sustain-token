@@ -1,0 +1,539 @@
+<title>Paleta y Tipografías Sustain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+  /* Los tokens de sustainprotocol.org, tal cual están en src/styles/tokens.css.
+     La página se documenta a sí misma: todo lo que ves acá usa estos valores. */
+  :root {
+    --brand-700:#1EC0D8; --brand-500:#29DDF5; --brand-300:#97ECF9; --brand-100:#E6FBFE;
+    --ink-900:#1B365F; --ink-700:#2A4A7A; --ink-500:#3E5E92; --ink-300:#6F88AE; --ink-100:#C2D3E8;
+    --soft-300:#E8BEE0; --soft-200:#F2D4EF; --soft-100:#FAEFF8;
+    --bg-0:#05080F; --bg-50:#090D18; --bg-100:#0D1422; --bg-200:#111A2B;
+    --line-200:#1D2940; --line-300:#243250;
+    --green-600:#1E9E72; --red-600:#D64545; --amber-600:#B8860B;
+    --body:#C8D8F0;
+    --font-display:'Syne', system-ui, sans-serif;
+    --font-body:'DM Sans', system-ui, sans-serif;
+    --font-mono:'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  /* Identidad de un solo tema: el sitio es oscuro por definición y este pliego
+     lo documenta. Por eso no hay bloque claro — todo se pinta explícito. */
+  body {
+    background: var(--bg-0);
+    color: var(--body);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 24px 96px; }
+
+  h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; text-wrap: balance; }
+
+  /* --- Cabecera --- */
+  .head { border-bottom: 1px solid var(--line-300); padding-bottom: 32px; margin-bottom: 56px; }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    letter-spacing: 1.4px; text-transform: uppercase; color: var(--brand-300);
+    margin-bottom: 18px;
+  }
+  h1 { font-size: clamp(30px, 4.4vw, 46px); font-weight: 800; letter-spacing: -0.9px; color: #fff; }
+  .head p { max-width: 62ch; margin-top: 16px; color: var(--ink-300); font-size: 15px; }
+  .head code { font-family: var(--font-mono); font-size: 13px; color: var(--brand-300); }
+
+  /* --- Secciones --- */
+  section { margin-bottom: 72px; }
+  h2 {
+    font-size: 13px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase;
+    color: var(--brand-500); margin-bottom: 8px;
+  }
+  .sec-note { color: var(--ink-300); font-size: 14px; max-width: 64ch; margin-bottom: 28px; }
+
+  /* --- Grupos de color --- */
+  .group { margin-bottom: 36px; }
+  .group-label {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.1px;
+    text-transform: uppercase; color: var(--ink-300);
+    padding-bottom: 10px; border-bottom: 1px solid var(--line-200); margin-bottom: 4px;
+  }
+  .sw {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr) 108px 68px 92px;
+    align-items: center; gap: 20px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--line-200);
+  }
+  .chip { width: 56px; height: 40px; border-radius: 5px; border: 1px solid var(--line-300); }
+  .sw-name { font-family: var(--font-mono); font-size: 13px; color: var(--ink-100); }
+  .sw-role { font-size: 13px; color: var(--ink-300); margin-top: 2px; }
+  .hex {
+    font-family: var(--font-mono); font-size: 13px; font-weight: 500;
+    color: var(--body); background: none; border: 1px solid var(--line-300);
+    border-radius: 5px; padding: 5px 9px; cursor: pointer;
+    letter-spacing: 0.3px; text-align: left; width: 100%;
+    transition: border-color .15s, color .15s;
+  }
+  .hex:hover, .hex:focus-visible { border-color: var(--brand-700); color: var(--brand-300); }
+  .hex:focus-visible { outline: 2px solid var(--brand-500); outline-offset: 2px; }
+  .hex[data-done="1"] { color: var(--green-600); border-color: var(--green-600); }
+  .num {
+    font-family: var(--font-mono); font-size: 12px; color: var(--ink-300);
+    font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .num--zero { color: var(--amber-600); }
+  .ratio { font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; text-align: right; }
+  .ratio b { font-weight: 500; color: var(--ink-100); }
+  .ratio span { color: var(--ink-300); font-size: 11px; }
+  .col-head {
+    display: grid; grid-template-columns: 56px minmax(0, 1fr) 108px 68px 92px;
+    gap: 20px; padding-bottom: 8px;
+  }
+  .col-head div {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--ink-500);
+  }
+  .col-head div:nth-child(4), .col-head div:nth-child(5) { text-align: right; }
+
+  /* --- Tipografía --- */
+  .face { border-top: 1px solid var(--line-300); padding: 30px 0; }
+  .face-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 22px; }
+  .face-name { font-family: var(--font-display); font-size: 25px; font-weight: 700; color: #fff; letter-spacing: -0.4px; }
+  .face-role { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--brand-300); }
+  .face-meta { font-size: 13px; color: var(--ink-300); margin-left: auto; }
+  .spec { display: flex; flex-direction: column; gap: 18px; }
+  .spec-row { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 22px; align-items: baseline; }
+  .spec-key { font-family: var(--font-mono); font-size: 11px; color: var(--ink-300); line-height: 1.5; }
+  .spec-key b { display: block; color: var(--ink-100); font-weight: 500; }
+
+  .t-h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 3.8vw, 52px); letter-spacing: -0.5px; line-height: 1.15; color: #fff; }
+  .t-h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 3.2vw, 40px); letter-spacing: -0.5px; line-height: 1.15; color: #fff; }
+  .t-h3 { font-family: var(--font-display); font-weight: 700; font-size: 22px; letter-spacing: -0.5px; color: #fff; }
+  .t-btn { font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: 0.2px; color: #03151A; background: var(--brand-500); border-radius: 12px; padding: 11px 22px; display: inline-block; }
+  .t-logo { font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -0.3px; color: #fff; }
+  .t-body { font-size: 15px; line-height: 1.6; color: var(--body); max-width: 62ch; }
+  .t-body-sm { font-size: 13px; color: var(--ink-300); }
+  .t-mono { font-family: var(--font-mono); font-size: 13px; color: var(--brand-300); word-break: break-all; }
+  .t-mono-lbl { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-300); }
+
+  /* --- Código --- */
+  pre {
+    background: var(--bg-100); border: 1px solid var(--line-200); border-radius: 8px;
+    padding: 16px 18px; overflow-x: auto; margin-top: 20px;
+  }
+  pre code { font-family: var(--font-mono); font-size: 12px; line-height: 1.75; color: var(--ink-100); }
+
+  /* --- Notas --- */
+  .notes { border-left: 2px solid var(--amber-600); padding-left: 24px; display: flex; flex-direction: column; gap: 20px; }
+  .note b { display: block; font-family: var(--font-display); font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 5px; }
+  .note p { color: var(--ink-300); font-size: 14px; max-width: 66ch; }
+  .note code, .notes code { font-family: var(--font-mono); font-size: 12.5px; color: var(--brand-300); }
+
+  .foot { border-top: 1px solid var(--line-300); margin-top: 72px; padding-top: 22px; font-family: var(--font-mono); font-size: 11px; color: var(--ink-500); }
+
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  @media (max-width: 720px) {
+    .sw, .col-head { grid-template-columns: 44px minmax(0, 1fr) 96px; gap: 14px; }
+    .chip { width: 44px; height: 36px; }
+    .sw .num, .sw .ratio, .col-head div:nth-child(4), .col-head div:nth-child(5) { display: none; }
+    .spec-row { grid-template-columns: 1fr; gap: 8px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+  <header class="head">
+    <div class="eyebrow">Sustain Protocol · Referencia de identidad</div>
+    <h1>Paleta y tipografías del sitio</h1>
+    <p>
+      Los valores exactos que están hoy en producción en sustainprotocol.org, leídos de
+      <code>src/styles/tokens.css</code> y del CSS del sitio. La columna <b>usos</b> cuenta las veces que
+      cada token aparece efectivamente en el código: sirve para separar lo que la marca usa de lo que
+      quedó definido y nunca se aplicó.
+    </p>
+  </header>
+
+  <section>
+    <h2>Color</h2>
+    <p class="sec-note">
+      Cuatro escalas y tres semánticos. El contraste está calculado contra
+      <code style="font-family:var(--font-mono);font-size:13px;color:var(--brand-300)">#0D1422</code>,
+      el fondo de tarjeta donde vive casi todo el texto. Tocá un hex para copiarlo.
+    </p>
+
+    <div class="col-head" aria-hidden="true">
+      <div></div><div>Token / rol</div><div>Hex</div><div>Usos</div><div>Contraste</div>
+    </div>
+
+    <div class="group">
+      <div class="group-label">Marca — cian</div>
+
+      <div class="sw">
+        <div class="chip" style="background:#1EC0D8"></div>
+        <div><div class="sw-name">--brand-700</div><div class="sw-role">Hover de links y estados presionados</div></div>
+        <button class="hex" data-hex="#1EC0D8">#1EC0D8</button>
+        <div class="num">2</div>
+        <div class="ratio"><b>9.15</b> <span>AAA</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#29DDF5"></div>
+        <div><div class="sw-name">--brand-500</div><div class="sw-role">Acento principal: links, botón primario, cifras destacadas</div></div>
+        <button class="hex" data-hex="#29DDF5">#29DDF5</button>
+        <div class="num">50</div>
+        <div class="ratio"><b>11.19</b> <span>AAA</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#97ECF9"></div>
+        <div><div class="sw-name">--brand-300</div><div class="sw-role">Texto de chips, etiquetas y volantas</div></div>
+        <button class="hex" data-hex="#97ECF9">#97ECF9</button>
+        <div class="num">56</div>
+        <div class="ratio"><b>13.75</b> <span>AAA</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#E6FBFE"></div>
+        <div><div class="sw-name">--brand-100</div><div class="sw-role">Definido, sin uso en el código</div></div>
+        <button class="hex" data-hex="#E6FBFE">#E6FBFE</button>
+        <div class="num num--zero">0</div>
+        <div class="ratio"><b>17.18</b> <span>AAA</span></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-label">Secundario — rosa</div>
+
+      <div class="sw">
+        <div class="chip" style="background:#E8BEE0"></div>
+        <div><div class="sw-name">--soft-300</div><div class="sw-role">Acento secundario, muy puntual</div></div>
+        <button class="hex" data-hex="#E8BEE0">#E8BEE0</button>
+        <div class="num">3</div>
+        <div class="ratio"><b>11.29</b> <span>AAA</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#F2D4EF"></div>
+        <div><div class="sw-name">--soft-200</div><div class="sw-role">Relleno del logo pájaro en una de sus variantes</div></div>
+        <button class="hex" data-hex="#F2D4EF">#F2D4EF</button>
+        <div class="num">2</div>
+        <div class="ratio"><b>13.54</b> <span>AAA</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#FAEFF8"></div>
+        <div><div class="sw-name">--soft-100</div><div class="sw-role">Definido, sin uso en el código</div></div>
+        <button class="hex" data-hex="#FAEFF8">#FAEFF8</button>
+        <div class="num num--zero">0</div>
+        <div class="ratio"><b>15.7</b> <span>AAA</span></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-label">Azules de texto — ink</div>
+
+      <div class="sw">
+        <div class="chip" style="background:#1B365F"></div>
+        <div><div class="sw-name">--ink-900</div><div class="sw-role">Color del contorno del logo pájaro. Sin uso como color de UI</div></div>
+        <button class="hex" data-hex="#1B365F">#1B365F</button>
+        <div class="num num--zero">0</div>
+        <div class="ratio"><span>fondo</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#2A4A7A"></div>
+        <div><div class="sw-name">--ink-700</div><div class="sw-role">Bordes y separadores puntuales</div></div>
+        <button class="hex" data-hex="#2A4A7A">#2A4A7A</button>
+        <div class="num">1</div>
+        <div class="ratio"><span>fondo</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#3E5E92"></div>
+        <div><div class="sw-name">--ink-500</div><div class="sw-role">Texto deshabilitado y encabezados de tabla</div></div>
+        <button class="hex" data-hex="#3E5E92">#3E5E92</button>
+        <div class="num">5</div>
+        <div class="ratio"><b>2.82</b> <span>decorativo</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#6F88AE"></div>
+        <div><div class="sw-name">--ink-300</div><div class="sw-role">Texto secundario. El token más usado de todo el sitio</div></div>
+        <button class="hex" data-hex="#6F88AE">#6F88AE</button>
+        <div class="num">144</div>
+        <div class="ratio"><b>5.09</b> <span>AA</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#C2D3E8"></div>
+        <div><div class="sw-name">--ink-100</div><div class="sw-role">Texto primario dentro del dashboard</div></div>
+        <button class="hex" data-hex="#C2D3E8">#C2D3E8</button>
+        <div class="num">12</div>
+        <div class="ratio"><b>12.08</b> <span>AAA</span></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-label">Fondos y líneas</div>
+
+      <div class="sw">
+        <div class="chip" style="background:#05080F"></div>
+        <div><div class="sw-name">--bg-0</div><div class="sw-role">Fondo de página</div></div>
+        <button class="hex" data-hex="#05080F">#05080F</button>
+        <div class="num">10</div>
+        <div class="ratio"><span>base</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#090D18"></div>
+        <div><div class="sw-name">--bg-50</div><div class="sw-role">Bandas de sección alternadas</div></div>
+        <button class="hex" data-hex="#090D18">#090D18</button>
+        <div class="num">9</div>
+        <div class="ratio"><span>base</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#0D1422"></div>
+        <div><div class="sw-name">--bg-100</div><div class="sw-role">Tarjetas. Es el fondo contra el que se mide el contraste</div></div>
+        <button class="hex" data-hex="#0D1422">#0D1422</button>
+        <div class="num">22</div>
+        <div class="ratio"><span>base</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#111A2B"></div>
+        <div><div class="sw-name">--bg-200</div><div class="sw-role">Superficie elevada: inputs, filas activas, hover de tabla</div></div>
+        <button class="hex" data-hex="#111A2B">#111A2B</button>
+        <div class="num">32</div>
+        <div class="ratio"><span>base</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#1D2940"></div>
+        <div><div class="sw-name">--line-200</div><div class="sw-role">Divisores internos</div></div>
+        <button class="hex" data-hex="#1D2940">#1D2940</button>
+        <div class="num">45</div>
+        <div class="ratio"><span>línea</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#243250"></div>
+        <div><div class="sw-name">--line-300</div><div class="sw-role">Bordes de tarjeta y contorno de componentes</div></div>
+        <button class="hex" data-hex="#243250">#243250</button>
+        <div class="num">50</div>
+        <div class="ratio"><span>línea</span></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-label">Semánticos — estado, no marca</div>
+
+      <div class="sw">
+        <div class="chip" style="background:#1E9E72"></div>
+        <div><div class="sw-name">--green-600</div><div class="sw-role">Verificado, reducción lograda, anclaje confirmado</div></div>
+        <button class="hex" data-hex="#1E9E72">#1E9E72</button>
+        <div class="num">22</div>
+        <div class="ratio"><b>5.43</b> <span>AA</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#B8860B"></div>
+        <div><div class="sw-name">--amber-600</div><div class="sw-role">Pendiente, dato faltante, registro incompleto</div></div>
+        <button class="hex" data-hex="#B8860B">#B8860B</button>
+        <div class="num">6</div>
+        <div class="ratio"><b>5.66</b> <span>AA</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#D64545"></div>
+        <div><div class="sw-name">--red-600</div><div class="sw-role">Definido para error. Todavía sin uso en el código</div></div>
+        <button class="hex" data-hex="#D64545">#D64545</button>
+        <div class="num num--zero">0</div>
+        <div class="ratio"><b>4.21</b> <span>AA grande</span></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-label">En uso, fuera de la escala de tokens</div>
+
+      <div class="sw">
+        <div class="chip" style="background:#C8D8F0"></div>
+        <div><div class="sw-name">#C8D8F0</div><div class="sw-role">Color del texto del <code>body</code>. Escrito a mano 25 veces, sin token</div></div>
+        <button class="hex" data-hex="#C8D8F0">#C8D8F0</button>
+        <div class="num">25</div>
+        <div class="ratio"><b>12.75</b> <span>AAA</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#FFFFFF"></div>
+        <div><div class="sw-name">#FFFFFF</div><div class="sw-role">Títulos y nombres de producto. El blanco puro no está tokenizado</div></div>
+        <button class="hex" data-hex="#FFFFFF">#FFFFFF</button>
+        <div class="num">46</div>
+        <div class="ratio"><b>18.42</b> <span>AAA</span></div>
+      </div>
+
+      <div class="sw">
+        <div class="chip" style="background:#03151A"></div>
+        <div><div class="sw-name">#03151A</div><div class="sw-role">Texto sobre fondo cian: el botón primario y los chips llenos</div></div>
+        <button class="hex" data-hex="#03151A">#03151A</button>
+        <div class="num">6</div>
+        <div class="ratio"><b>10.9</b> <span>sobre #29DDF5</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Tipografía</h2>
+    <p class="sec-note">
+      Tres familias de Google Fonts, cada una con un rol fijo. Los tamaños de abajo son los reales del
+      sitio, no ejemplos: los títulos usan <code>clamp()</code>, así que cambian con el ancho de la ventana.
+    </p>
+
+    <div class="face">
+      <div class="face-head">
+        <div class="face-name">Syne</div>
+        <div class="face-role">Display</div>
+        <div class="face-meta">Pesos cargados 400 · 600 · 700 · 800 — en uso 700 y 800</div>
+      </div>
+      <div class="spec">
+        <div class="spec-row">
+          <div class="spec-key"><b>H1</b>clamp(28→52px)<br>700 · -0.5px</div>
+          <div class="t-h1">Infraestructura de impacto ambiental</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key"><b>H2</b>clamp(26→40px)<br>700 · -0.5px</div>
+          <div class="t-h2">Cada acción, verificable</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key"><b>H3</b>22px<br>700 · -0.5px</div>
+          <div class="t-h3">Trazabilidad de punta a punta</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key"><b>Logotipo</b>18px<br>800 · -0.3px</div>
+          <div class="t-logo">Sustain</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key"><b>Botón</b>14px<br>700 · +0.2px</div>
+          <div><span class="t-btn">Ver el protocolo</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="face">
+      <div class="face-head">
+        <div class="face-name">DM Sans</div>
+        <div class="face-role">Texto</div>
+        <div class="face-meta">Pesos cargados 300 · 400 · 500 · 600</div>
+      </div>
+      <div class="spec">
+        <div class="spec-row">
+          <div class="spec-key"><b>Párrafo</b>16px · 400<br>interlínea 1.6</div>
+          <div class="t-body">
+            Sustain registra acciones ambientales verificables. Cada factura, cada viaje y cada kilo
+            recuperado deja una cadena de evidencia que termina en un CID de IPFS y una transacción
+            en blockchain: cualquiera puede abrirla y comprobarla sin pedirnos permiso.
+          </div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key"><b>Secundario</b>13px · 400</div>
+          <div class="t-body-sm">Período de 61 días · 1.482 kWh totales, según la factura.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="face">
+      <div class="face-head">
+        <div class="face-name">JetBrains Mono</div>
+        <div class="face-role">Dato</div>
+        <div class="face-meta">Pesos cargados 400 · 500</div>
+      </div>
+      <div class="spec">
+        <div class="spec-row">
+          <div class="spec-key"><b>Identificadores</b>13px · 400</div>
+          <div class="t-mono">bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi</div>
+        </div>
+        <div class="spec-row">
+          <div class="spec-key"><b>Etiqueta</b>10px · 500<br>versal · +1px</div>
+          <div class="t-mono-lbl">Anclaje en BNB Smart Chain</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sec-note" style="margin-top:28px;margin-bottom:0">La línea que carga las tres, tal cual está en el <code>index.html</code>:</p>
+<pre><code>&lt;link rel="preconnect" href="https://fonts.googleapis.com" /&gt;
+&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /&gt;
+&lt;link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800
+&amp;family=DM+Sans:wght@300;400;500;600
+&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" /&gt;</code></pre>
+  </section>
+
+  <section>
+    <h2>Antes de cerrar el manual</h2>
+    <p class="sec-note">
+      Cuatro cosas que el código no define y que el manual va a tener que resolver. Ninguna se puede
+      deducir de lo que hay: hay que decidirlas.
+    </p>
+    <div class="notes">
+      <div class="note">
+        <b>No existe versión clara</b>
+        <p>
+          El sitio es oscuro por diseño y no hay ni una definición de paleta clara en el código.
+          Para papelería, fondo blanco o cualquier pieza impresa hay que crearla de cero. Los azules
+          <code>ink-900</code> a <code>ink-500</code> son los únicos que funcionarían como texto sobre blanco.
+        </p>
+      </div>
+      <div class="note">
+        <b>Faltan equivalentes CMYK y Pantone</b>
+        <p>
+          Todo lo de arriba es RGB para pantalla. <code>#29DDF5</code> es un cian muy saturado: en CMYK
+          va a bajar bastante. Si el manual incluye impresión, esa conversión hay que hacerla y aprobarla
+          con muestra física, no calculada.
+        </p>
+      </div>
+      <div class="note">
+        <b>Dos colores clave no son tokens</b>
+        <p>
+          <code>#C8D8F0</code> (texto general) y <code>#FFFFFF</code> (títulos) están escritos a mano 25 y 46
+          veces. Son parte de la identidad real aunque no figuren en la escala. Si el manual los fija,
+          conviene que después los llevemos a token en el código para que no se desincronicen.
+        </p>
+      </div>
+      <div class="note">
+        <b>El logo tiene varias versiones sin una oficial</b>
+        <p>
+          En el repo hay seis archivos del pájaro: contorno <code>#1B365F</code>, relleno <code>#F2D4EF</code>,
+          versión rosa, versión combinada. Ninguno está marcado como el principal. Antes de armar la
+          hoja de logo hay que confirmar con Martín cuál es la versión maestra y en qué formato vectorial existe.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    Leído de sustainprotocol.org · src/styles/tokens.css, src/index.css, src/demo/demo.css · 02.09.2026
+  </div>
+
+  <div class="sr" role="status" aria-live="polite" id="live"></div>
+</div>
+
+<script>
+  document.querySelectorAll('.hex').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var hex = btn.dataset.hex;
+      var done = function () {
+        var prev = btn.textContent;
+        btn.textContent = 'copiado';
+        btn.dataset.done = '1';
+        document.getElementById('live').textContent = hex + ' copiado';
+        setTimeout(function () { btn.textContent = prev; btn.removeAttribute('data-done'); }, 1100);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(hex).then(done, function () {});
+      }
+    });
+  });
+</script>
