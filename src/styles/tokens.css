@@ -12,6 +12,14 @@
   --ink-700: #2A4A7A;
   --ink-500: #3E5E92;
   --ink-300: #6F88AE;
+  /* Faltaba, y demo.css lo usa 12 veces para el texto principal del dashboard
+     —nombres de indicador, valores, títulos de ficha—. Al no existir, la regla
+     `color: var(--ink-100)` era inválida y el texto heredaba el color del
+     <button> contenedor: casi negro sobre fondo oscuro. Por eso sólo se leía
+     al pasar el mouse, que sí aplicaba un color existente.
+     12:1 de contraste sobre la tarjeta (--bg-100): texto primario cómodo, en
+     la misma familia fría de la escala, y el hover celeste sigue notándose. */
+  --ink-100: #C2D3E8;
 
   --soft-300: #E8BEE0;
   --soft-200: #F2D4EF;

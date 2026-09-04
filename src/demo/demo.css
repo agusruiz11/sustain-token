@@ -1760,6 +1760,20 @@ body:has(.dash-layout)::before { display: none; }
   outline-offset: -2px;
   border-radius: var(--r-sm);
 }
+
+/* Esa capa invisible cubre la fila entera, así que se traga los clics de
+   cualquier link real que viva en otra celda: los "Ver en IPFS" y "Ver en
+   BscScan" de Auditoría no abrían nada, navegaban a la ficha de la acción.
+
+   Al estar posicionada, la capa pinta por encima del contenido sin posicionar
+   aunque venga antes en el DOM. La solución es levantar los elementos
+   interactivos reales por encima de ella. Vale para cualquier celda: si mañana
+   una tabla suma un botón o un link, funciona sin tocar nada. */
+.dash-table--data td a:not(.dash-table-rowlink),
+.dash-table--data td button:not(.dash-table-rowlink) {
+  position: relative;
+  z-index: 1;
+}
 .dash-table-empty {
   margin: 0;
   padding: 28px 0;
@@ -1825,6 +1839,19 @@ body:has(.dash-layout)::before { display: none; }
 .act-cell-title { display: flex; align-items: center; gap: 8px; }
 .act-cell-icon { flex-shrink: 0; }
 
+/* Medición y resultado de una acción. La unidad se lee más chica que el número
+   para que la columna se escanee por el valor: una factura muestra kWh/día y un
+   viaje muestra km en la misma tabla. */
+.act-cell-metric {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.act-cell-unit {
+  font-size: 0.85em;
+  opacity: 0.7;
+  margin-left: 2px;
+}
+
 /* ── Ficha de la acción ─────────────────────────────────────── */
 .act-detail-head {
   display: flex;
@@ -1888,6 +1915,15 @@ body:has(.dash-layout)::before { display: none; }
   font-size: 10px;
   color: var(--ink-300);
   overflow-wrap: anywhere;
+}
+
+/* Un KPI que no aplica a este tipo de acción. Se dice, no se pone un cero:
+   una Botella de Amor no tiene línea base de consumo. */
+.act-kpi-na {
+  font-size: 13px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-300);
 }
 
 .act-detail-grid {
@@ -1955,6 +1991,46 @@ body:has(.dash-layout)::before { display: none; }
 .trace-step-value--pending {
   color: var(--amber-600);
   font-style: italic;
+}
+
+/* Pasos que se abren fuera del producto: IPFS y el explorador de bloques.
+   El área táctil se agranda a 44px porque este recorrido se muestra desde el
+   celular — un CID de 59 caracteres en una línea de 11px no se puede tocar. */
+.trace-step-value--link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: var(--brand-500);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.trace-step-value--link:hover,
+.trace-step-value--link:focus-visible {
+  border-bottom-color: currentColor;
+}
+.trace-step-out {
+  flex-shrink: 0;
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+/* Mismo criterio en la tabla de auditoría y en el timeline. */
+.aud-link,
+.tl-ms-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  color: var(--brand-500);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.aud-link:hover,
+.aud-link:focus-visible,
+.tl-ms-link:hover,
+.tl-ms-link:focus-visible {
+  text-decoration: underline;
 }
 
 /* ── Data Room (vista dentro de la ficha) ───────────────────── */
@@ -2663,6 +2739,48 @@ body:has(.dash-layout)::before { display: none; }
   border: 1px solid rgba(138,123,184,0.3);
   border-radius: var(--r-sm, 4px);
   padding: 3px 8px;
+}
+
+/* ── Estado del registro ─────────────────────────────────────
+   Los cuatro estados que la escuela tiene que poder distinguir de un vistazo.
+   El color sigue la convención del resto del producto: violeta = histórico
+   documental, verde = verificado por el pipeline, ámbar = falta un dato,
+   gris = queda fuera. */
+.rec-state {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: var(--r-sm, 4px);
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+.rec-state--documented {
+  color: #8A7BB8;
+  background: rgba(138,123,184,0.12);
+  border: 1px solid rgba(138,123,184,0.3);
+}
+.rec-state--sustain_verified {
+  color: #2FA37A;
+  background: rgba(47,163,122,0.12);
+  border: 1px solid rgba(47,163,122,0.3);
+}
+.rec-state--pending_confirmation {
+  color: #C08A2E;
+  background: rgba(192,138,46,0.12);
+  border: 1px solid rgba(192,138,46,0.32);
+}
+.rec-state--out_of_scope {
+  color: #7C8794;
+  background: rgba(124,135,148,0.12);
+  border: 1px solid rgba(124,135,148,0.3);
+}
+.rec-state-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 var(--dash-pad, 18px) 12px;
 }
 
 .inst-trajectory-lead {

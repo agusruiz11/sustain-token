@@ -29,7 +29,10 @@ export const MODULES = {
   dataRoom:       { id: 'dataRoom',       label: 'Data Room',             icon: '▤', path: 'data-room',     brief: 3 },
   impacto:        { id: 'impacto',        label: 'Impact Dashboard',      icon: '◉', path: 'impacto',       brief: 4 },
   timeline:       { id: 'timeline',       label: 'Timeline',              icon: '⋮', path: 'timeline',      brief: 5 },
-  identity:       { id: 'identity',       label: 'Environmental Identity', icon: '⬡', path: 'identidad',    brief: 6 },
+  /* "Identidad Ambiental" y no "Environmental Identity": es el único módulo que
+     quedaba en inglés en una navegación que está toda en español, y Martín lo
+     marcó el 25 de agosto. El id interno no cambia. */
+  identity:       { id: 'identity',       label: 'Identidad Ambiental', icon: '⬡', path: 'identidad',    brief: 6 },
   integraciones:  { id: 'integraciones',  label: 'Integraciones',         icon: '⊕', path: 'integraciones', brief: 7 },
   instituciones:  { id: 'instituciones',  label: 'Instituciones',         icon: '▦', path: 'organizacion',  brief: 8 },
   reportes:       { id: 'reportes',       label: 'Reportes',              icon: '≡', path: 'reportes',      brief: 9 },

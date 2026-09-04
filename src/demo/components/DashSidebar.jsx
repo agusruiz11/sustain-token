@@ -1,5 +1,9 @@
 import { NavLink } from 'react-router-dom';
-import logoMark from '../../assets/logo-mark.png';
+/* logo-mark.png es 100% opaco y sus esquinas son blancas: sobre la barra
+   oscura se ve como un recuadro blanco alrededor del pájaro. Martín lo marcó
+   el 25 de agosto —"el logo con el recuadro blanco baja el tremendo laburo"—
+   y tiene razón. Este asset es el mismo pájaro con fondo transparente. */
+import logoMark from '../../assets/sustain-bird-logo-colorcombinado.png';
 import { navFor, moduleHref } from '../data/nodeTypes';
 
 /**
