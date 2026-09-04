@@ -26,7 +26,7 @@
    ============================================================ */
 
 import { CATEGORY_ORDER, CATEGORIES } from './categories.js';
-import { ACTIONS, actionsByCategory } from './actions.js';
+import { ACTIONS, NODE_ACTIONS, actionsByCategory } from './actions.js';
 import { INSTITUTIONS } from './institutions.js';
 import { dashboardKeyOf } from './sustainNodes.js';
 import { categoryIndicators, unmappedCanonicalCategories } from './montessori/index.js';
@@ -75,10 +75,19 @@ const PILOT_STATUS_TO_COVERAGE = {
   scoping: COVERAGE.PENDING,
 };
 
-/** Métricas reales de una categoría que sí tiene acciones cargadas. */
+/**
+ * Métricas reales de una categoría que sí tiene acciones cargadas.
+ *
+ * La serie consumo/línea base y el ahorro en kWh/día sólo tienen sentido sobre
+ * acciones que se miden contra una línea base de consumo propio — hoy, las de
+ * energía. Una Botella de Amor o un viaje en bici no tienen `result`, así que
+ * quedan fuera de este cálculo en lugar de romperlo o de aportar un cero que
+ * no significa nada. Cuando esas categorías necesiten su propio panel, van a
+ * necesitar su propia función, no un campo fingido en ésta.
+ */
 function metricsFor(categoryId, nodeKey) {
   const acts = actionsByCategory(categoryId)
-    .filter((a) => a.nodeKey === nodeKey)
+    .filter((a) => a.nodeKey === nodeKey && a.result)
     .sort((a, b) => a.date.localeCompare(b.date));
 
   if (!acts.length) return null;
@@ -197,10 +206,17 @@ export function unmappedPilotModules(node) {
   return [...fromModules, ...fromCanonical];
 }
 
-/** Serie del SES acumulado a lo largo de las acciones del nodo. */
+/**
+ * Serie del SES acumulado a lo largo de las acciones del nodo.
+ *
+ * Lee el universo canónico completo —energía, plástico y movilidad—, no sólo
+ * las de energía. Mientras leía nada más que ACTIONS, la serie terminaba en 23
+ * y la pantalla mostraba una diferencia de 12 contra el 35 declarado, que no
+ * era un hueco de dato sino que faltaban los viajes en la cuenta.
+ */
 export function sesHistory(node) {
   const nodeKey = dashboardKeyOf(node);
-  const acts = ACTIONS
+  const acts = NODE_ACTIONS
     .filter((a) => a.nodeKey === nodeKey)
     .sort((a, b) => a.date.localeCompare(b.date));
 

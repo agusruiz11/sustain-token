@@ -23,7 +23,7 @@
    se dice que no está.
    ============================================================ */
 
-import { ACTIONS } from './actions.js';
+import { NODE_ACTIONS } from './actions.js';
 
 const stringify = (obj) => JSON.stringify(obj, null, 2);
 
@@ -84,11 +84,57 @@ function dashboardUpdate(a) {
   });
 }
 
+/* ── Artefactos de una acción de movilidad ──────────────────
+   Mismo criterio que arriba: el contenido se serializa desde el viaje real
+   (distancia, duración, CO₂e, SES son los del paquete), así que el SHA-256 que
+   calcula el navegador sobre el JSON es auténtico. */
+
+function mobilityActivity(a) {
+  const t = a.source;
+  return stringify({
+    action_id: a.id,
+    node_id: a.nodeId,
+    category: a.categoryId,
+    activity: {
+      date: t.date,
+      started_at_local: t.startedAt,
+      transport_mode: t.transportMode,
+      distance_km: t.distanceKm,
+      duration_seconds: t.durationSeconds,
+      positive_elevation_m: t.positiveElevationM,
+    },
+    source: {
+      provider: t.sourceProvider,
+      type: t.sourceType,
+      privacy_mode: t.privacyMode,
+    },
+    verification: {
+      mrv_class: t.mrvClass,
+      depth: t.verificationDepth,
+    },
+  });
+}
+
+function carbonEstimate(a) {
+  const t = a.source;
+  return stringify({
+    action_id: a.id,
+    methodology_id: 'SUSTAIN-MOBILITY-CARBON',
+    result_type: 'modeled_estimate_not_direct_measurement',
+    distance_km: t.distanceKm,
+    estimated_co2e_avoided_kg: t.co2eAvoidedKg,
+    reference_mode: 'thermal_coach_autocar',
+    reference_factor_kgco2e_per_passenger_km: 0.0376,
+  });
+}
+
 const ARTIFACT_BUILDERS = {
   'consumption_data.json': consumptionData,
   'baseline_report.json': baselineReport,
   'ses_score.json': sesScore,
   'dashboard_update.json': dashboardUpdate,
+  'mobility_activity.json': mobilityActivity,
+  'carbon_estimate.json': carbonEstimate,
 };
 
 /* ── Construcción del árbol ─────────────────────────────────── */
@@ -141,7 +187,7 @@ export function filesOf(action) {
 }
 
 export function getFile(fileId) {
-  for (const a of ACTIONS) {
+  for (const a of NODE_ACTIONS) {
     const found = filesOf(a).find((f) => f.id === fileId);
     if (found) return { file: found, action: a };
   }

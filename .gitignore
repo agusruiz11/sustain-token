@@ -26,3 +26,13 @@ dist-ssr
 # Large drive files
 drive-files/
 docu/
+
+# Documentos comerciales e internos. No entran al repo.
+# El historial de git es permanente: si algún día se abre el código para
+# cumplir el criterio de la Fundación Solana, borrar el archivo no alcanza.
+docs/comercial/
+docs/*.pdf
+docs/*.pptx
+docs/borrador-respuesta-martin-*.md
+docs/mensajes-martin-*.md
+docs/montessori-registros-pendientes-*.md

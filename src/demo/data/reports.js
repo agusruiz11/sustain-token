@@ -58,26 +58,40 @@ const provenanceFields = (recordOrigin, verificationStatus) => ({
   verification_status: verificationStatus,
 });
 
-/** Acciones Sustain del nodo, con su cadena de trazabilidad resumida. */
+/**
+ * Acciones Sustain del nodo, con su cadena de trazabilidad resumida.
+ *
+ * Desde el 24 ago exporta el universo canónico completo —energía y movilidad—
+ * y no sólo las facturas. Las columnas salen del sobre común `metric`/`outcome`
+ * para que una fila de bici y una de factura convivan en el mismo CSV sin que
+ * ninguna invente los campos de la otra: lo que no aplica va en null, que es
+ * distinto de cero.
+ */
 function accionesDataset(actions) {
   return actions.map((a) => ({
     id: a.id,
     fecha: a.date,
     accion: a.title,
+    tipo: a.kind,
     categoria: CATEGORIES[a.categoryId].name,
-    consumo: a.consumption.value,
-    unidad: a.consumption.unit,
+    metrica: a.metric.label,
+    valor: a.metric.value,
+    unidad: a.metric.unit,
     linea_base: a.baseline.value,
     metodo_baseline: a.baseline.method,
-    variacion_pct: a.result.deltaPct,
-    direccion: a.result.direction,
+    resultado: a.outcome.label,
+    resultado_valor: a.outcome.value,
+    resultado_unidad: a.outcome.unit,
+    variacion_pct: a.outcome.deltaPct,
+    direccion: a.outcome.direction,
     ses_delta: a.ses.delta,
     ses_clasificacion: a.ses.label,
     hash: a.anchor.hash,
+    cid: a.anchor.cid,
     anclado_en_cadena: Boolean(a.anchor.tx),
     pasos_completos: buildTraceability(a).filter((s) => s.status === 'complete').length,
-    /* Las 8 facturas EDESUR son fixtures de demo. Si alguien exporta esto y lo
-       manda afuera, la fila tiene que decirlo. */
+    /* Las 8 facturas EDESUR son fixtures de demo; los 5 viajes no. Si alguien
+       exporta esto y lo manda afuera, la fila tiene que decirlo. */
     data_mode: a.dataMode ?? 'production',
     ...provenanceFields('native_sustain', 'sustain_verified'),
   }));
