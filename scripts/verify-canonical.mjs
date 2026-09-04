@@ -82,6 +82,7 @@ check(publicDocs.every((d) => d.access_level === 'public'),
 // que un tercero confunda un histórico con algo verificado por el pipeline.
 const R = await server.ssrLoadModule('/src/demo/data/reports.js');
 const A = await server.ssrLoadModule('/src/demo/data/actions.js');
+const L = await server.ssrLoadModule('/src/demo/data/anchorLinks.js');
 for (const t of R.REPORT_TYPES) {
   const rows = R.buildReport({ type: t.id, actions: A.ACTIONS, hasHistory: true }).rows;
   const sinProcedencia = rows.filter(
@@ -94,8 +95,134 @@ for (const t of R.REPORT_TYPES) {
 
 // Las 8 facturas EDESUR salen marcadas como fixture en cualquier exportación.
 const acc = R.buildReport({ type: 'acciones', actions: A.ACTIONS, hasHistory: false }).rows;
-check(acc.every((r) => r.data_mode === 'demo'),
-  '§4.6: las acciones demo se exportan marcadas como fixture');
+check(acc.filter((r) => r.tipo === 'energy').every((r) => r.data_mode === 'demo'),
+  '§4.6: las 8 facturas EDESUR se exportan marcadas como fixture');
+
+/* ── Universo canónico de acciones (24 ago 2026) ──────────────
+   Martín pidió que Mis Acciones, Timeline, Impact, Reportes, Auditoría e
+   Identity lean el mismo conjunto. Estas invariantes son las que impiden que
+   vuelva a abrirse. */
+
+const N = A.NODE_ACTIONS;
+const energia = N.filter((a) => a.kind === 'energy');
+const movilidad = N.filter((a) => a.kind === 'mobility');
+const plastico = N.filter((a) => a.kind === 'plastic_recovery');
+
+check(N.length === 14, 'universo: las 14 acciones del node_state, todas con paquete',
+  `son ${N.length}`);
+check(energia.length === 8 && plastico.length === 1 && movilidad.length === 5,
+  'universo: 8 energía + 1 plástico + 5 movilidad cubren el total',
+  `${energia.length} + ${plastico.length} + ${movilidad.length}`);
+
+// Ya no queda ningún hueco declarado: el paquete de Botella de Amor llegó.
+const declaradas = N.length + A.MISSING_ACTION_PACKAGES.reduce((n, m) => n + m.count, 0);
+check(declaradas === 14, 'universo: sin huecos pendientes, el total cierra en 14',
+  `suman ${declaradas}`);
+
+// La cadena de SES tiene que cerrar en el 35 canónico del node_state.
+const porFecha = [...N].sort((a, b) => a.date.localeCompare(b.date));
+const sesTotal = porFecha.reduce((s, a) => s + (a.ses.delta ?? 0), 0);
+check(sesTotal === 35, 'SES: la suma de los deltas de las 14 acciones da el 35 canónico',
+  `da ${sesTotal}`);
+check(energia.reduce((s, a) => s + a.ses.delta, 0) === 20,
+  'SES: las 8 de energía suman 20');
+check(plastico.reduce((s, a) => s + a.ses.delta, 0) === 3,
+  'SES: Botella de Amor aporta los 3 que llevan de 20 a 23');
+check(movilidad.reduce((s, a) => s + a.ses.delta, 0) === 12,
+  'SES: los 5 viajes aportan los 12 que llevan de 23 a 35');
+check(N.every((a) => a.ses.delta !== null),
+  'SES: ninguna acción queda sin delta cargado');
+
+// Sobre común: sin esto una pantalla vuelve a necesitar código por tipo.
+const SOBRE = ['kind', 'metric', 'outcome', 'baseline', 'ses', 'mrv', 'anchor', 'dataRoom', 'detailPath'];
+const incompletas = N.filter((a) => SOBRE.some((k) => a[k] === undefined));
+check(incompletas.length === 0, 'universo: toda acción trae el sobre común completo',
+  incompletas.map((a) => a.id).join(', '));
+
+// La cadena de trazabilidad tiene 10 pasos para cualquier tipo de acción.
+const cadenaRota = N.filter((a) => A.buildTraceability(a).length !== 10);
+check(cadenaRota.length === 0, 'universo: la cadena de 10 pasos se arma para todo tipo de acción',
+  cadenaRota.map((a) => a.id).join(', '));
+
+// Ninguna acción inventa un identificador de anclaje. Es LA regla del producto.
+const inventados = N.filter((a) => {
+  const okCid = a.anchor.cid === null || a.anchor.cidStatus === 'complete';
+  const okTx = a.anchor.tx === null || a.anchor.chainStatus === 'complete';
+  return !okCid || !okTx;
+});
+check(inventados.length === 0, 'anclaje: ningún CID ni tx aparece sin estado que lo respalde',
+  inventados.map((a) => a.id).join(', '));
+
+// Movilidad tiene hash real de evidencia; energía sólo una de las ocho.
+check(movilidad.every((a) => a.anchor.hash && a.anchor.hashStatus === 'complete'),
+  'anclaje: los 5 viajes exponen su SHA-256 verificable');
+check(movilidad.every((a) => a.anchor.cid === null && a.anchor.tx === null),
+  'anclaje: los 5 viajes siguen sin CID ni transacción, como en la fuente');
+
+// Anclaje real de energía y plástico (28 ago 2026).
+const conAncla = [...energia, ...plastico];
+check(conAncla.every((a) => a.anchor.cid && a.anchor.tx),
+  'anclaje: las 9 acciones con paquete traen CID y transacción',
+  conAncla.filter((a) => !a.anchor.cid || !a.anchor.tx).map((a) => a.id).join(', '));
+check(conAncla.every((a) => a.anchor.chainId === 56 && a.anchor.contract === '0x141cc96351d622fcf26fAA40E0fd2a1ba8D25e1B'),
+  'anclaje: las 9 apuntan al mismo contrato en BNB Smart Chain (56)');
+check(conAncla.every((a) => /^0x[0-9a-f]{64}$/.test(a.anchor.tx)),
+  'anclaje: los 9 hashes de transacción tienen forma válida',
+  conAncla.filter((a) => !/^0x[0-9a-f]{64}$/.test(a.anchor.tx)).map((a) => a.id).join(', '));
+check(new Set(conAncla.map((a) => a.anchor.tx)).size === conAncla.length,
+  'anclaje: ninguna transacción está repetida entre acciones');
+check(new Set(conAncla.map((a) => a.anchor.cid)).size === conAncla.length,
+  'anclaje: ningún CID está repetido entre acciones');
+// PARTIAL en las 9: hay TX, falta la confirmación. No es ausencia de prueba.
+check(conAncla.every((a) => a.anchor.blockNumber === null && a.anchor.proofValidationStatus === 'PARTIAL'),
+  'anclaje: las 9 quedan en PARTIAL, sin bloque ni timestamp reconstruidos');
+check(conAncla.every((a) => L.proofState(a.anchor) === 'tx_unconfirmed'),
+  'anclaje: las 9 resuelven a "TX registrada", nunca a "pendiente de anclaje"');
+
+// Procedencia: las facturas son fixture, los viajes son dato productivo.
+check(energia.every((a) => a.dataMode === 'demo'),
+  'procedencia: las 8 facturas EDESUR siguen marcadas como fixture de demo');
+check(movilidad.every((a) => a.dataMode === 'production'),
+  'procedencia: los 5 viajes son dato productivo del nodo, no fixture');
+check(N.every((a) => a.nodeKey === 'usuario'),
+  'atribución: todo el universo pertenece al nodo de Martín, no a la escuela');
+
+// El reporte de acciones sobre el universo completo sigue declarando procedencia.
+const uni = R.buildReport({ type: 'acciones', actions: N, hasHistory: false }).rows;
+check(uni.length === 14 && uni.every((r) => r.record_origin && r.verification_status),
+  '§4.6: el reporte de acciones exporta las 14 con procedencia', `${uni.length} filas`);
+check(uni.filter((r) => r.data_mode === 'demo').length === 8,
+  '§4.6: la exportación distingue las 8 de demo de las 5 productivas');
+
+/* ── Los cuatro estados visibles (24 ago 2026) ────────────────
+   Histórico documentado / Sustain Verified / Pendiente de confirmación /
+   Fuera de alcance. Lo que se verifica acá es que el estado salga del dato y
+   no de una interpretación de la pantalla. */
+
+const registros = M.auditRecords({ viewerLevel: 'institutional' });
+const estados = registros.map((r) => M.recordStateOf(r));
+const cuenta = (s) => estados.filter((e) => e === s).length;
+
+check(estados.every((s) => Object.values(M.RECORD_STATE).includes(s)),
+  'estados: todo registro resuelve a uno de los cuatro estados');
+check(cuenta('pending_confirmation') === 14,
+  'estados: los 14 needs_review son los que figuran como Pendiente de confirmación',
+  `son ${cuenta('pending_confirmation')}`);
+check(cuenta('sustain_verified') === 0,
+  'estados: ningún registro histórico figura como Sustain Verified',
+  `${cuenta('sustain_verified')} marcados`);
+/* "Fuera de alcance" sale de PILOT_SCOPE —configuración del piloto—, nunca del
+   paquete. Con PILOT_SCOPE vacío no puede haber ninguno: si aparece uno, es
+   porque alguien lo está infiriendo del dato, que es justo lo que Martín pidió
+   que no hiciéramos. */
+const scopeVacio = Object.values(M.PILOT_SCOPE).every((g) => Object.keys(g).length === 0);
+check(!scopeVacio || cuenta('out_of_scope') === 0,
+  'estados: Fuera de alcance sale de PILOT_SCOPE, nunca de inferir el paquete',
+  `${cuenta('out_of_scope')} inferidos con PILOT_SCOPE vacío`);
+check(M.outOfScopeReason(registros[0]) === null,
+  'estados: un registro sin declaración explícita nunca queda fuera de alcance');
+check(cuenta('documented') + cuenta('pending_confirmation') === registros.length,
+  'estados: la partición cubre todos los registros del expediente');
 
 await server.close();
 console.log(`\n${fail === 0 ? 'todas las invariantes OK' : `${fail} invariantes rotas`}`);

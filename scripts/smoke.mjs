@@ -62,6 +62,19 @@ const { renderToString } = await import('react-dom/server');
 const { StaticRouter } = await import('react-router');
 const App = (await server.ssrLoadModule('/src/App.jsx')).default;
 
+/* La ficha de CADA acción del nodo, derivada del universo canónico y no
+   escrita a mano. Antes la lista fija sólo cubría una factura de energía, y
+   por eso no se detectó que la ficha de la Botella de Amor rompía: leía
+   campos que sólo existen en las acciones de energía. Con esto, cualquier
+   acción nueva queda cubierta el día que se agrega. */
+const A = await server.ssrLoadModule('/src/demo/data/actions.js');
+for (const a of A.NODE_ACTIONS) {
+  const mod = a.detailPath?.module ?? 'acciones';
+  ROUTES.push(a.detailPath?.query
+    ? `/demo/usuario/${mod}?${a.detailPath.query}`
+    : `/demo/usuario/${mod}/${a.id}`);
+}
+
 let fail = 0;
 for (const route of ROUTES) {
   try {
@@ -79,6 +92,38 @@ for (const route of ROUTES) {
     fail++;
     console.log(`✗ ${route}\n    ${e.message.split('\n')[0]}`);
   }
+}
+
+
+/* ── Tokens CSS: usados vs. definidos ─────────────────────────
+   Un `var(--x)` sin fallback que no está definido no rompe el build ni el
+   render: la declaración se descarta en silencio y el elemento hereda el color
+   del padre. Así se coló `--ink-100`, que dejaba el texto principal del
+   dashboard casi negro sobre fondo oscuro y sólo legible en hover.
+   Esto lo detecta antes de que llegue a producción. */
+import { readFileSync } from 'node:fs';
+
+const CSS_DEF = ['src/styles/tokens.css', 'src/index.css', 'src/App.css', 'src/demo/demo.css'];
+const CSS_USE = ['src/demo/demo.css', 'src/index.css'];
+const leer = (f) => { try { return readFileSync(f, 'utf8'); } catch { return ''; } };
+
+const definidos = new Set();
+for (const f of CSS_DEF) {
+  for (const m of leer(f).matchAll(/^\s*(--[\w-]+)\s*:/gm)) definidos.add(m[1]);
+}
+const huerfanos = new Map();
+for (const f of CSS_USE) {
+  for (const m of leer(f).matchAll(/var\(\s*(--[\w-]+)\s*([,)])/g)) {
+    if (m[2] === ')' && !definidos.has(m[1])) {
+      huerfanos.set(m[1], (huerfanos.get(m[1]) ?? 0) + 1);
+    }
+  }
+}
+if (huerfanos.size) {
+  fail++;
+  for (const [t, n] of huerfanos) console.log(`\u2717 token CSS sin definir: ${t} (${n} usos sin fallback)`);
+} else {
+  console.log(`\u2713 tokens CSS: los ${definidos.size} usados están definidos`);
 }
 
 await server.close();
