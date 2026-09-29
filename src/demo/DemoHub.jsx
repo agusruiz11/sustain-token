@@ -47,7 +47,7 @@ export default function DemoHub() {
             return (
               <Link
                 key={inst.slug}
-                to={`/demo/institucion/${inst.slug}`}
+                to={`/demo/${inst.routeSegment ?? 'institucion'}/${inst.slug}`}
                 className="demo-hub-card"
                 style={{
                   '--card-accent': inst.accentColor,
@@ -90,7 +90,11 @@ export default function DemoHub() {
                     >
                       {data.stats[2].value}
                     </div>
-                    <div className="demo-hub-card-stat-lbl">SES Score</div>
+                    {/* Antes decía "SES Score" fijo, pero para Montessori la
+                        tercera tarjeta es "Evidencias y Documentos": el hub
+                        mostraba 56 como si fuera puntaje. La etiqueta sale
+                        del dato. */}
+                    <div className="demo-hub-card-stat-lbl">{data.stats[2].label}</div>
                   </div>
                 </div>
                 <div className="demo-hub-card-cta">

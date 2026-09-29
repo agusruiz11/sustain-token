@@ -10,7 +10,10 @@
     "preview": "vite preview",
     "smoke": "node scripts/smoke.mjs",
     "verify:attribution": "node scripts/assert-attribution.mjs",
-    "verify:canonical": "node scripts/verify-canonical.mjs"
+    "verify:canonical": "node scripts/verify-canonical.mjs",
+    "import:institutional": "node scripts/import-dashboard-sync.mjs",
+    "verify:onchain": "node scripts/verify-onchain.mjs",
+    "verify:institutional": "node scripts/verify-institutional.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

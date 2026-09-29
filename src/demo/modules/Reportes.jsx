@@ -102,7 +102,9 @@ export default function Reportes() {
       reducciones: reducciones.length,
       ahorroDia: Number(ahorro.toFixed(2)),
       sesNeto: sesConocido.reduce((s, a) => s + a.ses.delta, 0),
-      sesPendientes: rows.length - sesConocido.length,
+      /* RECORD_ONLY no es "sin dato": la política decidió no asignar. */
+      sesPendientes: rows.filter((a) => a.ses.delta === null && a.ses.policy !== 'RECORD_ONLY').length,
+      sesRecordOnly: rows.filter((a) => a.ses.policy === 'RECORD_ONLY').length,
     };
   }, [rows]);
 
@@ -207,7 +209,7 @@ export default function Reportes() {
               {resumen.sesNeto > 0 ? `+${resumen.sesNeto}` : resumen.sesNeto}
             </div>
             <div className="mod-scaffold-stat-label">
-              SES neto{resumen.sesPendientes > 0 ? ` · ${resumen.sesPendientes} sin dato` : ''}
+              SES neto{resumen.sesPendientes > 0 ? ` · ${resumen.sesPendientes} sin dato` : ''}{resumen.sesRecordOnly > 0 ? ` · ${resumen.sesRecordOnly} RECORD_ONLY` : ''}
             </div>
           </div>
         </div>

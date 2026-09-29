@@ -133,6 +133,12 @@ export default function Timeline() {
           IPFS y blockchain. Es el estado real del piloto, no un dato faltante de la demo.
         </p>
       )}
+      {actions.length > 0 && actions.every((a) => a.anchor.storageType === 'hash_only') && (
+        <p className="mod-scaffold-note">
+          El hito «IPFS» figura como no aplicable: estas acciones se registran con almacenamiento
+          hash_only (hash del manifiesto anclado en cadena, evidencia bajo custodia).
+        </p>
+      )}
 
       {hasHistory && (
         <p className="mod-scaffold-note">
@@ -161,7 +167,9 @@ function SustainEvent({ action, base }) {
           <Link to={`${base}/${action.id}`} className="tl-title">{action.title}</Link>
           <span className="tl-origin tl-origin--sustain">Sustain</span>
           <span className="tl-date">{action.dateLabel}</span>
-          <SesDelta value={action.ses.delta} />
+          {action.ses.policy === 'RECORD_ONLY'
+            ? <span className="ses-delta ses-delta--unknown">No asignado</span>
+            : <SesDelta value={action.ses.delta} />}
         </div>
 
         <ol className="tl-milestones">

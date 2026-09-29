@@ -2,6 +2,13 @@ import { Link } from 'react-router-dom';
 import { useNode } from '../components/useNode';
 import { actionsForNode } from '../data/actions';
 import { moduleHref } from '../data/nodeTypes';
+import StatusChip from '../components/StatusChip';
+
+const AUDIT_MODE_LABEL = {
+  documentary: 'Documental',
+  cryptographic: 'Criptográfica',
+  mixed: 'Documental + criptográfica',
+};
 
 const MODULE_STATUS_STYLE = {
   active: { color: '#1E9E72' },
@@ -70,14 +77,25 @@ export default function HomeEscuela() {
             </div>
           ) : (
             verified.slice(0, 5).map((a) => (
-              <div key={a.id} className="dash-action-row">
+              <Link
+                key={a.id}
+                to={`${moduleHref(node.nodeTypeId, node.slug, 'acciones', routeSegment)}/${a.id}`}
+                className="dash-action-row"
+              >
                 <div className="dash-action-dot" />
                 <div className="dash-action-info">
                   <div className="dash-action-name">{a.title}</div>
                   <div className="dash-action-date">{a.dateLabel}</div>
                 </div>
-              </div>
+                <StatusChip
+                  status={a.anchor.chainStatus}
+                  label={a.anchor.verification?.verified ? 'ANCLADA · VERIFICADA' : undefined}
+                />
+              </Link>
             ))
+          )}
+          {verified.length > 0 && inst.sustainActions?.note && (
+            <p className="inst-trajectory-note">{inst.sustainActions.note}</p>
           )}
         </div>
 
@@ -219,12 +237,13 @@ export default function HomeEscuela() {
         </div>
       </div>
 
-      {/* La escuela no tiene anclaje criptográfico porque ninguna acción pasó
-          por el pipeline. Su trazabilidad es documental — Entregable 3 § 4.7. */}
+      {/* Hasta el 28 sep 2026 la escuela no tenía anclaje criptográfico. Desde
+          la entrega 05_INSTITUTIONS conviven dos trazabilidades y la
+          etiqueta lo dice — Entregable 3 § 4.7. */}
       <div className="dash-card">
         <div className="dash-section-header">
           <span className="dash-section-title">Trazabilidad</span>
-          <span className="inst-origin-badge">Documental</span>
+          <span className="inst-origin-badge">{AUDIT_MODE_LABEL[inst.auditMode] ?? 'Documental'}</span>
         </div>
         <p className="inst-trajectory-note" style={{ marginTop: 0 }}>
           {inst.auditNote}

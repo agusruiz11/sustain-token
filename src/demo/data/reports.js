@@ -88,7 +88,14 @@ function accionesDataset(actions) {
     ses_clasificacion: a.ses.label,
     hash: a.anchor.hash,
     cid: a.anchor.cid,
+    almacenamiento: a.anchor.storageType ?? (a.anchor.cid ? 'ipfs' : null),
     anclado_en_cadena: Boolean(a.anchor.tx),
+    transaccion: a.anchor.tx,
+    bloque: a.anchor.blockNumber,
+    /* Verificación nuestra contra la red, con fecha; null si no se hizo. */
+    anclaje_verificado_por_agencia: a.anchor.verification?.verified ?? null,
+    anclaje_verificado_el: a.anchor.verification?.verifiedAt ?? null,
+    politica_ses: a.ses.policy ?? null,
     pasos_completos: buildTraceability(a).filter((s) => s.status === 'complete').length,
     /* Las 8 facturas EDESUR son fixtures de demo; los 5 viajes no. Si alguien
        exporta esto y lo manda afuera, la fila tiene que decirlo. */

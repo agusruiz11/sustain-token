@@ -89,6 +89,7 @@
 import { DATA_MODE, dashboardKeyOf } from './sustainNodes.js';
 import { ACTION_STATUS, STEP_STATUS, ACTION_KIND } from './actionShape.js';
 import { MOBILITY_AS_ACTIONS } from './mobilityActions.js';
+import { INSTITUTIONAL_ACTIONS } from './institutionalActions.js';
 
 export { ACTION_STATUS, STEP_STATUS, ACTION_KIND };
 
@@ -604,20 +605,43 @@ export const MISSING_ACTION_PACKAGES = [];
  */
 export function buildTraceability(action) {
   const { ses, mrv, anchor, dataRoom } = action;
+  /* RECORD_ONLY (entrega 05_INSTITUTIONS) no es "pendiente": la política
+     decidió no asignar puntaje. Se dice eso, no 0 ni pendiente. */
+  const sesValue = ses.policy === 'RECORD_ONLY'
+    ? 'No asignado (RECORD_ONLY)'
+    : ses.delta === null ? 'Pendiente' : `${ses.delta > 0 ? '+' : ''}${ses.delta}`;
+  /* hash_only: la evidencia no está en IPFS y no va a estar. Estado propio. */
+  const cidValue = anchor.storageType === 'hash_only' ? 'No aplica · hash_only' : anchor.cid;
   return [
     ...evidenceChain(action),
-    { step: 5, key: 'ses', label: 'SES', value: ses.delta === null ? 'Pendiente' : `${ses.delta > 0 ? '+' : ''}${ses.delta}`, status: ses.status },
+    { step: 5, key: 'ses', label: 'SES', value: sesValue, status: ses.status },
     { step: 6, key: 'mrv', label: 'MRV', value: mrv.standard, status: mrv.status },
     { step: 7, key: 'hash', label: 'Hash', value: anchor.hash, status: anchor.hashStatus },
-    { step: 8, key: 'cid', label: 'CID', value: anchor.cid, status: anchor.cidStatus },
+    { step: 8, key: 'cid', label: 'CID', value: cidValue, status: anchor.cidStatus },
     { step: 9, key: 'chain', label: 'Blockchain', value: anchor.tx, status: anchor.chainStatus },
-    { step: 10, key: 'reports', label: 'Reportes', value: `${dataRoom.reports.length} documentos`, status: STEP_STATUS.COMPLETE },
+    {
+      step: 10, key: 'reports', label: 'Reportes',
+      value: dataRoom.reports.length ? `${dataRoom.reports.length} documentos` : 'Sin reportes en el paquete',
+      status: dataRoom.reports.length ? STEP_STATUS.COMPLETE : STEP_STATUS.PENDING,
+    },
   ];
 }
 
 /** Pasos 1-4. Lo único que cambia entre una factura y un viaje. */
 function evidenceChain(action) {
   const { evidence, baseline, metric, outcome } = action;
+
+  if (action.kind === ACTION_KIND.CLEANUP || action.kind === ACTION_KIND.EDUCATION || action.kind === ACTION_KIND.REFORESTATION) {
+    /* Aporte institucional: evidencia bajo custodia, medición casi siempre
+       no cuantificada, sin línea base. Lo que no está se dice. */
+    const metricValue = metric.value === null ? `No medido · ${metric.unit}` : `${metric.value} ${metric.unit}`;
+    return [
+      { step: 1, key: 'evidence', label: 'Evidencia', value: evidence.kind, status: evidence.status },
+      { step: 2, key: 'metric', label: metric.label, value: metricValue, status: metric.status },
+      { step: 3, key: 'baseline', label: 'Línea base', value: baseline.method, status: baseline.status },
+      { step: 4, key: 'result', label: outcome.label, value: `${outcome.value} ${outcome.unit}`, status: outcome.status },
+    ];
+  }
 
   if (action.kind === ACTION_KIND.MOBILITY) {
     return [
@@ -643,9 +667,9 @@ export function buildTimeline(action) {
     { key: 'action', label: 'Acción registrada', detail: action.title, at: dateLabel, status: evidence.status },
     { key: 'validation', label: 'Validación', detail: mrv.verifier, at: dateLabel, status: mrv.status },
     { key: 'hash', label: 'Hash', detail: anchor.hash ?? 'Pendiente de cálculo', at: null, status: anchor.hashStatus },
-    { key: 'ipfs', label: 'IPFS', detail: anchor.cid ?? 'Pendiente de anclaje', at: null, status: anchor.cidStatus },
-    { key: 'blockchain', label: 'Blockchain', detail: anchor.tx ?? 'Pendiente de anclaje', at: null, status: anchor.chainStatus },
-    { key: 'ses', label: 'Actualización del SES', detail: ses.delta === null ? 'Pendiente' : `${ses.delta > 0 ? '+' : ''}${ses.delta} pts`, at: dateLabel, status: ses.status },
+    { key: 'ipfs', label: 'IPFS', detail: anchor.storageType === 'hash_only' ? 'No aplica · almacenamiento hash_only' : (anchor.cid ?? 'Pendiente de anclaje'), at: null, status: anchor.cidStatus },
+    { key: 'blockchain', label: 'Blockchain', detail: anchor.tx ?? 'Pendiente de anclaje', at: anchor.timestamp ? anchor.timestamp.slice(0, 10) : null, status: anchor.chainStatus },
+    { key: 'ses', label: 'Actualización del SES', detail: ses.policy === 'RECORD_ONLY' ? 'No asignado · RECORD_ONLY' : ses.delta === null ? 'Pendiente' : `${ses.delta > 0 ? '+' : ''}${ses.delta} pts`, at: dateLabel, status: ses.status },
   ];
 }
 
@@ -667,7 +691,11 @@ export function buildTimeline(action) {
    paquete. 13 + 1 hueco explícito, no 14 fabricadas.
    ============================================================ */
 
-export const NODE_ACTIONS = [...ACTIONS, ...MOBILITY_AS_ACTIONS];
+/* Desde el 28 sep 2026 se suman las acciones institucionales de la entrega
+   05_INSTITUTIONS: 3 de Montessori y 1 de Posicionarte. Viven en otros
+   nodos (nodeKey 'montessori' y 'posicionarte'), así que no tocan las 14 de
+   Martín. Ver data/institutionalActions.js. */
+export const NODE_ACTIONS = [...ACTIONS, ...MOBILITY_AS_ACTIONS, ...INSTITUTIONAL_ACTIONS];
 
 /* ── Consultas ────────────────────────────────────────────── */
 
@@ -688,7 +716,7 @@ export const missingPackagesForNode = (node) => {
  * para Montessori, que era justamente la atribución equivocada.
  *
  * Un nodo sin acciones Sustain devuelve `[]`, que es un estado legítimo y no
- * un error: hoy es el caso de Montessori, que sólo tiene histórico documental.
+ * un error. Fue el caso de Montessori hasta el 28 sep 2026.
  */
 export const actionsForNode = (node) => {
   const key = dashboardKeyOf(node);

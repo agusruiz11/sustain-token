@@ -172,8 +172,36 @@ function CategoryCard({ category, coverage, note, metrics, indicators, indicator
   );
 }
 
+/** Categoría de aporte: cuenta acciones, no grafica una línea base que no existe. */
+function ContributionMetrics({ metrics }) {
+  return (
+    <>
+      <div className="imp-card-metrics">
+        <div className="imp-metric">
+          <span className="imp-metric-value">{metrics.actions}</span>
+          <span className="imp-metric-label">{metrics.actions === 1 ? 'acción verificada' : 'acciones verificadas'}</span>
+        </div>
+        <div className="imp-metric">
+          <span className="imp-metric-value">{metrics.anchored}</span>
+          <span className="imp-metric-label">ancladas en cadena</span>
+        </div>
+        <div className="imp-metric">
+          <span className="imp-metric-value">{metrics.measured}</span>
+          <span className="imp-metric-label">con cantidad medida</span>
+        </div>
+      </div>
+      <p className="imp-card-note">
+        {metrics.recordOnly === metrics.actions
+          ? 'Registradas con política RECORD_ONLY: cuentan como hechas, no suman KPI físico ni SES.'
+          : 'Aporte sin línea base: no hay variación porcentual que graficar.'}
+      </p>
+    </>
+  );
+}
+
 /** Categoría con acciones verificadas: consumo real contra línea base. */
 function SustainMetrics({ category, metrics }) {
+  if (metrics.contribution) return <ContributionMetrics metrics={metrics} />;
   return (
     <>
       <div className="imp-card-metrics">

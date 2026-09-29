@@ -90,7 +90,7 @@ function metricsFor(categoryId, nodeKey) {
     .filter((a) => a.nodeKey === nodeKey && a.result)
     .sort((a, b) => a.date.localeCompare(b.date));
 
-  if (!acts.length) return null;
+  if (!acts.length) return contributionMetricsFor(categoryId, nodeKey);
 
   const reducciones = acts.filter((a) => a.result.direction === 'reduction');
   const mejor = reducciones.length
@@ -107,6 +107,37 @@ function metricsFor(categoryId, nodeKey) {
       { label: 'Línea base', color: '#3E5E92', dashed: true, values: acts.map((a) => a.baseline.value) },
     ],
     unit: acts[0].consumption.unit,
+  };
+}
+
+/**
+ * Categoría de aporte (limpiezas, reforestación, educación ambiental) con
+ * acciones institucionales cargadas — entrega 05_INSTITUTIONS, 28 sep 2026.
+ *
+ * No hay serie consumo/línea base porque no hay línea base. Lo que se puede
+ * afirmar es cuántas acciones verificadas hay y cuántas traen una cantidad
+ * medida (casi nunca: el paquete declara null y acá se respeta).
+ */
+function contributionMetricsFor(categoryId, nodeKey) {
+  const acts = NODE_ACTIONS
+    .filter((a) => a.nodeKey === nodeKey && a.categoryId === categoryId && a.outcome?.direction === 'contribution')
+    .sort((a, b) => a.date.localeCompare(b.date));
+  if (!acts.length) return null;
+  /* "Con cantidad medida" excluye las observaciones que el paquete marca
+     como no aptas para KPI (plantines visibles en una foto, canteros en una
+     foto): son descripciones de la evidencia, no mediciones. */
+  const medidas = acts.filter((a) => a.metric.value !== null && a.metric.kpiEligible !== false);
+  return {
+    actions: acts.length,
+    contribution: true,
+    measured: medidas.length,
+    recordOnly: acts.filter((a) => a.ses.policy === 'RECORD_ONLY').length,
+    anchored: acts.filter((a) => a.anchor.tx).length,
+    savedPerDay: null,
+    bestReductionPct: null,
+    bestReductionAt: null,
+    series: null,
+    unit: acts[0].metric.unit,
   };
 }
 

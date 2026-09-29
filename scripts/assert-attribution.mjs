@@ -36,7 +36,11 @@ const CHECKS = [
   ['/demo/institucion/montessori/impacto', 'Histórico documental', true, 'impacto: procedencia histórica visible'],
   ['/demo/usuario/impacto', 'Verificado Sustain', true, 'impacto usuario: energía verificada'],
   ['/demo/usuario/acciones', 'fixtures de demostración', true, 'nota de fixture demo en nodo usuario'],
-  ['/demo/institucion/montessori/acciones', 'todavía no tiene acciones verificadas', true, 'empty state correcto'],
+  /* 28 sep 2026: Montessori tiene 3 acciones reales (entrega 05_INSTITUTIONS).
+     El vacío dejó de aplicar; lo que se verifica es que sigan siendo suyas y
+     no las de Martín. Detalle en scripts/verify-institutional.mjs. */
+  ['/demo/institucion/montessori/acciones', 'todavía no tiene acciones verificadas', false, 'Montessori ya tiene acciones propias'],
+  ['/demo/institucion/montessori/acciones', 'Tandil', true, 'acciones de Montessori son de la escuela'],
   ['/demo', '178.45', false, 'hub sin saldo inventado'],
   ['/demo/usuario', 'null días', false, 'topbar sin racha nula'],
   ['/demo/usuario', 'Racha:', false, 'topbar sin racha inventada'],
@@ -49,9 +53,12 @@ const CHECKS = [
   ['/demo/institucion/montessori/timeline', 'Bicicleteada solidaria', true, 'timeline: hito histórico de 2019'],
   ['/demo/institucion/montessori/timeline', 'Timeline ambiental del nodo', true, 'timeline: título del § 4.4'],
   ['/demo/institucion/montessori/timeline', 'PDF p.21-p.22', true, 'timeline: referencia de expediente visible'],
-  ['/demo/institucion/montessori/timeline', 'tl-milestones', false, 'timeline: histórico sin cadena de hitos MRV'],
+  /* 28 sep 2026: las 3 acciones Sustain de la escuela sí tienen cadena de
+     hitos; lo que se verifica es que el histórico siga separado y con su
+     referencia de expediente. */
+  ['/demo/institucion/montessori/timeline', 'tl-milestones', true, 'timeline: las acciones Sustain traen cadena de hitos'],
   ['/demo/institucion/montessori/data-room', 'Archivo institucional', true, 'data room: selector de repositorio'],
-  ['/demo/institucion/montessori/data-room', 'Referencia en expediente', true, 'data room: no finge archivo original'],
+  ['/demo/institucion/montessori/data-room?repo=archive', 'Referencia en expediente', true, 'data room: no finge archivo original'],
   ['/demo/institucion/montessori/data-room', 'Relevamiento de Trayectorias Escolares', false, 'data room: doc audit_restricted oculto a nivel institución'],
   ['/demo/institucion/montessori/organizacion?s=responsables', 'Alejandro Viola', false, 'responsables: persona restricted no se expone'],
   ['/demo/institucion/montessori/organizacion?s=indicadores', 'Todas en revisión', true, 'indicadores: gas sin total dice por qué'],
@@ -73,7 +80,7 @@ const CHECKS = [
   ['/demo/institucion/montessori/auditoria', 'Histórico documental', true, 'auditoría: sección documental'],
   ['/demo/institucion/montessori/auditoria', 'no aplicado', true, 'auditoría: MRV no aplicado al histórico'],
   ['/demo/institucion/montessori/auditoria', 'Excel DATOS POR AÑO', true, 'auditoría: fuente hasta la celda del Excel'],
-  ['/demo/institucion/montessori/auditoria', 'Estado de anclaje', false, 'auditoría: sin bloque de anclaje donde no hay acciones'],
+  ['/demo/institucion/montessori/auditoria', 'Estado de anclaje', true, 'auditoría: bloque de anclaje con las 3 acciones reales'],
   ['/demo/usuario/auditoria', 'Acciones Sustain', true, 'auditoría usuario: sección criptográfica'],
   ['/demo/usuario/auditoria', 'Histórico documental', false, 'auditoría usuario: sin expediente institucional'],
   ['/demo/institucion/montessori/reportes', 'Sello Ambiental COA', true, 'reportes: COA como marco externo'],

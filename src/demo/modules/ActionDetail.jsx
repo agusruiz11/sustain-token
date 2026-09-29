@@ -70,8 +70,10 @@ export default function ActionDetail() {
         <div className="act-detail-kpis">
           <div className="act-kpi">
             <div className="act-kpi-label">{metric.label}</div>
-            <div className="act-kpi-value">{metric.value}</div>
-            <div className="act-kpi-unit">{metric.unit}</div>
+            <div className="act-kpi-value">
+              {metric.value ?? <span className="act-kpi-na">No medido</span>}
+            </div>
+            <div className="act-kpi-unit">{metric.value === null ? `${metric.unit} · sin cantidad verificada` : metric.unit}</div>
           </div>
           <div className="act-kpi">
             <div className="act-kpi-label">Línea base</div>
@@ -90,12 +92,17 @@ export default function ActionDetail() {
             <div className="act-kpi-unit">
               {outcome.direction === 'reduction' ? 'Reducción'
                 : outcome.direction === 'increase' ? 'Aumento'
-                  : 'Primer registro'}
+                  : outcome.direction === 'contribution' ? 'Aporte verificado'
+                    : 'Primer registro'}
             </div>
           </div>
           <div className="act-kpi">
             <div className="act-kpi-label">Impacto en SES</div>
-            <div className="act-kpi-value"><SesDelta value={ses.delta} /></div>
+            <div className="act-kpi-value">
+              {ses.policy === 'RECORD_ONLY'
+                ? <span className="act-kpi-na">No asignado</span>
+                : <SesDelta value={ses.delta} />}
+            </div>
             <div className="act-kpi-unit">{ses.label ?? 'Clasificación pendiente'}</div>
           </div>
         </div>
@@ -149,7 +156,7 @@ export default function ActionDetail() {
                         className={valueClass}
                         title={typeof step.value === 'string' ? step.value : undefined}
                       >
-                        {step.value ?? (step.key === 'chain' ? proofLabel(links.proof) : 'Pendiente de anclaje')}
+                        {step.value ?? (step.key === 'chain' ? proofLabel(links.proof) : step.key === 'cid' && action.anchor.storageType === 'hash_only' ? 'No aplica · hash_only' : 'Pendiente de anclaje')}
                       </div>
                     )}
                   </div>
@@ -157,12 +164,31 @@ export default function ActionDetail() {
                     status={step.status}
                     label={step.key === 'chain' && links.proof === PROOF_STATE.TX_UNCONFIRMED
                       ? 'TX REGISTRADA'
-                      : undefined}
+                      : step.key === 'chain' && action.anchor.verification?.verified
+                        ? 'VERIFICADO'
+                        : step.key === 'cid' && action.anchor.storageType === 'hash_only'
+                          ? 'NO APLICA'
+                          : undefined}
                   />
                 </li>
               );
             })}
           </ol>
+
+          {/* Anclaje confirmado por bloque y verificado por nosotros contra
+              un nodo público de la red (scripts/verify-onchain.mjs). Es la
+              primera vez que el piloto puede decir "verificado" y no sólo
+              "declarado". */}
+          {action.anchor.verification?.verified && (
+            <p className="mod-scaffold-note">
+              Anclaje verificado por Posicionarte contra {action.anchor.network} el{' '}
+              {action.anchor.verification.verifiedAt.slice(0, 10)}: bloque {action.anchor.blockNumber},{' '}
+              {action.anchor.verification.confirmations.toLocaleString('es-AR')} confirmaciones, evento{' '}
+              <code>{action.anchor.verification.eventSignature ?? action.anchor.eventName}</code> con el
+              action_id y el hash del manifiesto. Sin CID: el almacenamiento es hash_only, la evidencia
+              original queda bajo custodia y no está en IPFS.
+            </p>
+          )}
 
           {/* El estado intermedio que describió Martín: hay transacción, falta
               que el Sync incorpore bloque y timestamp. No es "sin anclar". */}
@@ -266,6 +292,45 @@ function ProvenanceNote({ action }) {
           <li>
             El peso lo midió el usuario y lo respaldó con evidencia. No es una medición
             instrumental y se declara así.
+          </li>
+        )}
+        {action.occurredOn === null && (
+          <li>
+            Fecha de actividad no informada por la institución. La fecha que ordena esta acción
+            es la de recepción de la evidencia ({action.evidenceReceivedOn}); no se reemplaza por
+            la de anclaje.
+          </li>
+        )}
+        {action.validationStatus && (
+          <li>
+            Estado de validación: <code>{action.validationStatus}</code>
+            {action.evidenceQuality ? <> · calidad de evidencia: <code>{action.evidenceQuality}</code></> : null}.
+            El anclaje on-chain prueba que el registro no cambió; no prueba por sí mismo el resultado ambiental.
+          </li>
+        )}
+        {action.description && <li>{action.description}</li>}
+        {action.limitations?.length > 0 && (
+          <li>
+            Limitaciones declaradas por Sustain en el MRV (texto del paquete, en inglés):
+            <ul className="mod-scaffold-list">
+              {action.limitations.map((l) => <li key={l}>{l}</li>)}
+            </ul>
+          </li>
+        )}
+        {action.ses?.policy === 'RECORD_ONLY' && (
+          <li>Política RECORD_ONLY: {action.ses.reason}</li>
+        )}
+        {action.media && action.media.candidateCount > 0 && !action.media.publicationAuthorized && (
+          <li>
+            {action.media.candidateCount} {action.media.candidateCount === 1 ? 'archivo candidato' : 'archivos candidatos'} a
+            publicación, todavía sin autorización de la escuela ({action.media.approvalScope}). No se muestran
+            hasta que la aprobación quede registrada.
+          </li>
+        )}
+        {action.computeFootprint?.aiUsage && (
+          <li>
+            Sustain declara uso de IA en la revisión de evidencia, con huella de cómputo sin cuantificar.
+            Se conserva como «no cuantificado», no como cero.
           </li>
         )}
       </ul>

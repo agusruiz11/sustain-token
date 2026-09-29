@@ -128,7 +128,39 @@ function carbonEstimate(a) {
   });
 }
 
+/* ── Ficha pública de una acción institucional ───────────────
+   Entrega 05_INSTITUTIONS, 28 sep 2026. Es la proyección de campos que el
+   manual de Sustain autoriza a publicar, serializada desde el dato importado.
+   El dashboard_sync.json completo NO se genera acá a propósito: incluye
+   evidencia y auditoría que no se sirven desde el navegador. */
+function fichaPublica(a) {
+  const p = a.source;
+  const pub = new Set(p.privacy.publicFields);
+  return stringify({
+    action_id: a.id,
+    node_id: a.nodeId,
+    section: p.section,
+    category: a.categoryId,
+    title: a.title,
+    occurred_on: pub.has('occurred_on') || pub.has('event_date') ? p.dates.occurredOn : undefined,
+    evidence_received_on: p.dates.evidenceReceivedOn,
+    location: pub.has('city') || pub.has('generalized_location')
+      ? { city: p.location.city, province: p.location.province, country: p.location.country }
+      : undefined,
+    cohort_label: pub.has('cohort_label') ? a.hierarchy.nodes.filter((n) => n.nodeType === 'cohort').map((n) => n.displayName) : undefined,
+    pseudonyms: pub.has('pseudonyms') ? a.hierarchy.nodes.filter((n) => n.nodeType === 'individual').map((n) => n.displayName) : undefined,
+    validation_status: a.validationStatus,
+    ses: a.ses.policy === 'RECORD_ONLY'
+      ? { policy: 'RECORD_ONLY', delta: null }
+      : { policy: a.ses.policy, gross_delta: a.ses.delta },
+    integrity: { canonical_root: `sha256:${a.anchor.hash}`, storage: a.anchor.storageType },
+    onchain: { network: a.anchor.network, contract: a.anchor.contract, transaction_hash: a.anchor.tx, block_number: a.anchor.blockNumber },
+    limitations: a.limitations,
+  });
+}
+
 const ARTIFACT_BUILDERS = {
+  'ficha_publica.json': fichaPublica,
   'consumption_data.json': consumptionData,
   'baseline_report.json': baselineReport,
   'ses_score.json': sesScore,

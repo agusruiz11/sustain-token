@@ -54,7 +54,11 @@ export default function Auditoria() {
 
   const conHash = actions.filter((a) => a.anchor.hash).length;
   const conCid = actions.filter((a) => a.anchor.cid).length;
+  const hashOnly = actions.filter((a) => a.anchor.storageType === 'hash_only').length;
   const ancladas = actions.filter((a) => a.anchor.tx).length;
+  /* Verificadas por nosotros contra la red, no sólo declaradas por Sustain. */
+  const verificadas = actions.filter((a) => a.anchor.verification?.verified).length;
+  const verifiedAt = actions.find((a) => a.anchor.verification?.verifiedAt)?.anchor.verification.verifiedAt ?? null;
 
   const columns = [
     { key: 'title', label: 'Acción', render: (a) => a.title },
@@ -74,9 +78,10 @@ export default function Auditoria() {
       width: '140px',
       render: (a) => {
         const url = anchorLinks(a.anchor).ipfs;
-        return url
-          ? <a className="aud-link" href={url} target="_blank" rel="noreferrer noopener">Ver en IPFS ↗</a>
-          : <StatusChip status={a.anchor.cidStatus} />;
+        if (url) return <a className="aud-link" href={url} target="_blank" rel="noreferrer noopener">Ver en IPFS ↗</a>;
+        /* hash_only no es "pendiente": la evidencia no va a IPFS. */
+        if (a.anchor.storageType === 'hash_only') return <StatusChip status={a.anchor.cidStatus} label="HASH_ONLY" />;
+        return <StatusChip status={a.anchor.cidStatus} />;
       },
     },
     {
@@ -87,7 +92,12 @@ export default function Auditoria() {
       render: (a) => {
         const l = anchorLinks(a.anchor);
         return l.tx
-          ? <a className="aud-link" href={l.tx} target="_blank" rel="noreferrer noopener">Ver en {l.explorer} ↗</a>
+          ? (
+            <span style={{ display: 'inline-flex', gap: 8, alignItems: 'center' }}>
+              {a.anchor.verification?.verified && <StatusChip status={STEP_STATUS.COMPLETE} label="VERIFICADO" />}
+              <a className="aud-link" href={l.tx} target="_blank" rel="noreferrer noopener">Ver en {l.explorer} ↗</a>
+            </span>
+          )
           : <StatusChip status={a.anchor.chainStatus} />;
       },
     },
@@ -108,13 +118,36 @@ export default function Auditoria() {
               </div>
               <div className="mod-scaffold-stat">
                 <div className="mod-scaffold-stat-value">{conCid} / {actions.length}</div>
-                <div className="mod-scaffold-stat-label">Con CID en IPFS</div>
+                <div className="mod-scaffold-stat-label">
+                  Con CID en IPFS{hashOnly > 0 ? ` · ${hashOnly} hash_only` : ''}
+                </div>
               </div>
               <div className="mod-scaffold-stat">
                 <div className="mod-scaffold-stat-value">{ancladas} / {actions.length}</div>
                 <div className="mod-scaffold-stat-label">Ancladas en cadena</div>
               </div>
+              <div className="mod-scaffold-stat">
+                <div className="mod-scaffold-stat-value">{verificadas} / {actions.length}</div>
+                <div className="mod-scaffold-stat-label">Verificadas contra la red</div>
+              </div>
             </div>
+            {verificadas > 0 && (
+              <p className="mod-scaffold-note" style={{ marginTop: 0 }}>
+                «Verificadas contra la red» es nuestra comprobación, no la del paquete: el{' '}
+                {verifiedAt?.slice(0, 10)} consultamos un nodo público de BNB Smart Chain y confirmamos
+                para cada transacción el contrato, la cuenta firmante, el bloque, el timestamp y el evento
+                <code> ActionAnchored</code> con el action_id y el hash del manifiesto
+                (<code>scripts/verify-onchain.mjs</code>).
+              </p>
+            )}
+            {hashOnly > 0 && (
+              <p className="mod-scaffold-note" style={{ marginTop: 0 }}>
+                {hashOnly === actions.length ? 'Estas acciones usan' : `${hashOnly} de estas acciones usan`} almacenamiento
+                hash_only: la evidencia no se subió a IPFS y no hay CID para consultar. El valor
+                <code> sha256:…</code> del registro es una referencia de integridad del manifiesto
+                canónico, no un enlace al archivo. Los originales quedan bajo custodia de la institución.
+              </p>
+            )}
           </div>
 
           <div className="dash-card">

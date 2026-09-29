@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useNode } from '../components/useNode';
 import { sesHistory } from '../data/impact';
 import { actionsForNode } from '../data/actions';
-import { dashboardKeyOf } from '../data/sustainNodes';
+import { dashboardKeyOf, sustainNodeFor } from '../data/sustainNodes';
 import Sparkline from '../components/Sparkline';
 import StatusChip from '../components/StatusChip';
 import { STEP_STATUS } from '../data/actions';
@@ -44,9 +44,20 @@ export default function Identity() {
   // eslint-disable-next-line react-hooks/exhaustive-deps -- ver MisAcciones
   const actions = useMemo(() => actionsForNode(node), [dashboardKeyOf(node)]);
 
-  const declared = declaredScore(data);
+  const sustain = sustainNodeFor(node);
+  /* Un nodo institucional con política RECORD_ONLY no tiene puntaje: no es
+     un 0 ni un dato faltante. `declaredScore` lo resuelve desde stats, y
+     para Montessori no hay ninguna tarjeta de SES, así que da null. */
+  const recordOnly = sustain?.ses?.policyApplied === 'RECORD_ONLY';
+  const declared = recordOnly ? null : (sustain?.ses?.current ?? declaredScore(data));
   const known = history.filter((h) => h.known);
   const unknown = history.filter((h) => !h.known);
+  /* Anclaje del nodo: si todas sus acciones están ancladas y verificadas, la
+     identidad ya tiene prueba pública. Antes esto sólo miraba data.audit. */
+  const anchoredAll = actions.length > 0 && actions.every((a) => a.anchor.tx);
+  const verifiedAll = anchoredAll && actions.every((a) => a.anchor.verification?.verified);
+  const contract = actions.find((a) => a.anchor.tx)?.anchor.contract ?? data?.audit?.contract ?? null;
+  const network = actions.find((a) => a.anchor.tx)?.anchor.network ?? data?.audit?.blockchain ?? null;
   const knownSum = known.reduce((s, h) => s + h.delta, 0);
   const gap = declared !== null ? declared - knownSum : null;
 
@@ -85,13 +96,17 @@ export default function Identity() {
         <div className="idt-hero">
           <div className="idt-score">
             <div className="idt-score-label">Puntaje SES</div>
-            <div className="idt-score-value">{declared ?? '—'}</div>
+            <div className="idt-score-value">{declared ?? (recordOnly ? 'No asignado' : '—')}</div>
             <div className="idt-score-sub">
-              {data?.sesLevel ?? `${actions.length} acciones verificadas`}
+              {recordOnly
+                ? `${actions.length} acciones registradas · RECORD_ONLY`
+                : sustain?.ses?.policyApplied === 'full_action_score_reference_non_additive'
+                  ? `Referencia no aditiva · ${actions.length} ${actions.length === 1 ? 'acción verificada' : 'acciones verificadas'}`
+                  : (data?.sesLevel ?? `${actions.length} acciones verificadas`)}
             </div>
           </div>
 
-          {history.length > 1 && (
+          {history.length > 1 && !recordOnly && (
             <div className="idt-chart">
               <div className="dash-nav-group-label">Evolución del SES acumulado</div>
               <Sparkline
@@ -134,7 +149,19 @@ export default function Identity() {
         </div>
       )}
 
-      {gap !== null && unknown.length > 0 && (
+      {recordOnly && (
+        <div className="dash-card prov-note">
+          <div className="dash-nav-group-label">Por qué no hay puntaje</div>
+          <p className="mod-scaffold-note" style={{ paddingTop: 8 }}>
+            Las {actions.length} acciones del nodo se registraron con política RECORD_ONLY: quedan
+            documentadas y ancladas, pero la especificación del SES todavía no tiene una regla
+            numérica para actividades educativas ni plantaciones sin seguimiento de supervivencia.
+            «No asignado» no es «impacto cero»: es que nadie inventó un número.
+          </p>
+        </div>
+      )}
+
+      {gap !== null && unknown.length > 0 && !recordOnly && (
         <div className="dash-card prov-note">
           <div className="dash-nav-group-label">Reconciliación del puntaje</div>
           <div className="mod-scaffold-stats" style={{ borderBottom: 0, paddingTop: 8 }}>
@@ -198,9 +225,9 @@ export default function Identity() {
             <div key={h.id} className="idt-hist">
               <span className="idt-hist-date">{h.label}</span>
               <span className={`ses-delta ${h.known ? (h.delta > 0 ? 'ses-delta--up' : h.delta < 0 ? 'ses-delta--down' : 'ses-delta--flat') : 'ses-delta--unknown'}`}>
-                {h.known ? (h.delta > 0 ? `+${h.delta}` : h.delta) : 'Pendiente'}
+                {h.known ? (h.delta > 0 ? `+${h.delta}` : h.delta) : recordOnly ? 'No asignado' : 'Pendiente'}
               </span>
-              <span className="idt-hist-acc">{h.accumulated}</span>
+              <span className="idt-hist-acc">{recordOnly ? '—' : h.accumulated}</span>
             </div>
           ))}
         </div>
@@ -217,23 +244,24 @@ export default function Identity() {
           </div>
           <div>
             <dt>Contrato</dt>
-            <dd className="idt-mono">{data?.audit?.contract ?? '—'}</dd>
+            <dd className="idt-mono">{contract ?? '—'}</dd>
           </div>
           <div>
             <dt>Red</dt>
             <dd>
               <StatusChip
-                status={data?.audit?.tx && !/pendiente/i.test(String(data.audit.tx))
+                status={anchoredAll || (data?.audit?.tx && !/pendiente/i.test(String(data.audit.tx)))
                   ? STEP_STATUS.COMPLETE
                   : STEP_STATUS.PENDING}
-                label={data?.audit?.blockchain ?? 'Pendiente de anclaje'}
+                label={anchoredAll ? `${network}${verifiedAll ? ' · verificado' : ''}` : (data?.audit?.blockchain ?? 'Pendiente de anclaje')}
               />
             </dd>
           </div>
         </dl>
         <p className="mod-scaffold-note">
-          La identidad del nodo existe y es estable; lo que todavía no está es su anclaje público
-          en blockchain. Hasta que ocurra, la verificación es contra el hash local.
+          {anchoredAll
+            ? `${actions.length === 1 ? 'La única acción del nodo está anclada' : `Las ${actions.length} acciones del nodo están ancladas`} en ${network} contra el contrato del registro${verifiedAll ? ', y cada transacción la comprobamos nosotros contra un nodo público de la red (contrato, firmante, bloque, timestamp y evento)' : ''}. La identidad del nodo es estable y tiene prueba pública.`
+            : 'La identidad del nodo existe y es estable; lo que todavía no está es su anclaje público en blockchain. Hasta que ocurra, la verificación es contra el hash local.'}
         </p>
       </div>
     </>

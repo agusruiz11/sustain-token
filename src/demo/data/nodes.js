@@ -65,9 +65,16 @@ function fromCompany(slug, co) {
   };
 }
 
+/* institutionType del registro → tipo de nodo del shell. */
+const INSTITUTION_NODE_TYPE = {
+  school: 'escuela',
+  organization: 'organizacion',
+};
+
 function fromInstitution(slug, inst) {
+  const pilot = inst.pilot ?? { value: 'Mes 1', total: '/ 3', note: 'Centralización de información histórica' };
   return {
-    nodeTypeId: 'escuela',
+    nodeTypeId: INSTITUTION_NODE_TYPE[inst.institutionType] ?? 'escuela',
     slug,
     name: inst.name,
     tagline: inst.tagline,
@@ -78,9 +85,9 @@ function fromInstitution(slug, inst) {
     sidebarPanel: {
       kind: 'pilot',
       title: 'Piloto Genesis',
-      value: 'Mes 1',
-      total: '/ 3',
-      note: 'Centralización de información histórica',
+      value: pilot.value,
+      total: pilot.total,
+      note: pilot.note,
     },
     footer: FOOTER_BY_TYPE.institutional_pilot,
     audit: inst.audit,
@@ -144,9 +151,12 @@ export function resolveNode(tipo, slug) {
     const co = COMPANIES[slug];
     return co ? fromCompany(slug, co) : null;
   }
-  if (typeId === 'escuela') {
+  if (typeId === 'escuela' || typeId === 'organizacion') {
     const inst = INSTITUTIONS[slug];
-    return inst ? fromInstitution(slug, inst) : null;
+    /* El slug tiene que ser del tipo que dice la URL: /demo/escuela/posicionarte
+       no existe, aunque Posicionarte sí esté en INSTITUTIONS. */
+    if (!inst || (INSTITUTION_NODE_TYPE[inst.institutionType] ?? 'escuela') !== typeId) return null;
+    return fromInstitution(slug, inst);
   }
   // municipio / universidad / ong: tipos declarados, sin nodos cargados todavía.
   return null;

@@ -84,11 +84,15 @@ export default function MisAcciones() {
       label: 'Medición',
       align: 'right',
       width: '130px',
-      render: (a) => (
-        <span className="act-cell-metric">
-          {a.metric.value} <span className="act-cell-unit">{a.metric.unit}</span>
-        </span>
-      ),
+      /* `null` es "no medido", no 0. El paquete de una limpieza no pesa la
+         bolsa; decir 0 kg sería inventar. */
+      render: (a) => a.metric.value === null
+        ? <span className="act-cell-metric trace-step-value--pending">No medido</span>
+        : (
+          <span className="act-cell-metric">
+            {a.metric.value} <span className="act-cell-unit">{a.metric.unit}</span>
+          </span>
+        ),
     },
     {
       key: 'result',
@@ -96,13 +100,17 @@ export default function MisAcciones() {
       align: 'right',
       width: '140px',
       /* Energía se mide contra su propia línea base y da un porcentaje;
-         movilidad da CO₂e evitado. La columna muestra lo que cada acción
-         realmente tiene, en vez de forzar a las dos al mismo número. */
+         movilidad da CO₂e evitado; una acción institucional da un aporte
+         (una limpieza, una plantación). La columna muestra lo que cada
+         acción realmente tiene, en vez de forzar a todas al mismo número. */
       render: (a) => a.outcome.deltaPct !== null
         ? <DeltaPct value={a.outcome.deltaPct} />
         : (
           <span className="act-cell-metric">
-            {a.outcome.value} <span className="act-cell-unit">{a.outcome.unit} CO₂e</span>
+            {a.outcome.value}{' '}
+            <span className="act-cell-unit">
+              {a.outcome.unit}{a.kind === 'mobility' ? ' CO₂e' : ''}
+            </span>
           </span>
         ),
     },
@@ -111,14 +119,23 @@ export default function MisAcciones() {
       label: 'SES',
       align: 'right',
       width: '110px',
-      render: (a) => <SesDelta value={a.ses.delta} />,
+      /* RECORD_ONLY: la política decidió no asignar puntaje. No es 0 ni
+         pendiente, y la celda lo dice. */
+      render: (a) => a.ses.policy === 'RECORD_ONLY'
+        ? <span className="ses-delta ses-delta--unknown" title={a.ses.reason ?? undefined}>No asignado</span>
+        : <SesDelta value={a.ses.delta} />,
     },
     {
       key: 'anchor',
       label: 'Anclaje',
       align: 'right',
       width: '130px',
-      render: (a) => <StatusChip status={a.anchor.chainStatus} />,
+      render: (a) => (
+        <StatusChip
+          status={a.anchor.chainStatus}
+          label={a.anchor.verification?.verified ? 'VERIFICADO' : undefined}
+        />
+      ),
     },
   ];
 
@@ -145,6 +162,7 @@ export default function MisAcciones() {
               <option value="reduction">Reducción</option>
               <option value="increase">Aumento</option>
               <option value="baseline">Línea base</option>
+              <option value="contribution">Aporte</option>
             </select>
           </label>
         </div>
@@ -175,6 +193,14 @@ export default function MisAcciones() {
           {demoFixtures} de estas acciones son fixtures de demostración cargadas para
           construir y probar el flujo. Los valores marcados como pendientes no están
           cargados todavía y no se completaron con datos inventados.
+        </p>
+      )}
+
+      {all.some((a) => a.ses.policy === 'RECORD_ONLY') && (
+        <p className="mod-scaffold-note">
+          Las acciones marcadas «No asignado» se registraron con política RECORD_ONLY: quedan
+          anotadas y ancladas, pero no otorgan puntaje SES ni alimentan KPI físicos hasta que
+          exista una política numérica y una cantidad verificada. No es impacto cero.
         </p>
       )}
 

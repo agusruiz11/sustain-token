@@ -3,6 +3,7 @@ import { useNode } from '../components/useNode';
 import HomeEmpresa from './HomeEmpresa';
 import HomeEscuela from './HomeEscuela';
 import HomeUsuario from './HomeUsuario';
+import HomeOrganizacion from './HomeOrganizacion';
 import MisAcciones from './MisAcciones';
 import Timeline from './Timeline';
 import Auditoria from './Auditoria';
@@ -29,6 +30,9 @@ const HOME_BY_TYPE = {
   universidad: HomeEscuela,
   municipio: HomeEscuela,
   ong: HomeEscuela,
+  /* Una organización sin histórico documental (Posicionarte, 28 sep 2026)
+     no tiene trayectoria que separar de la verificación: home propio. */
+  organizacion: HomeOrganizacion,
   usuario: HomeUsuario,
 };
 

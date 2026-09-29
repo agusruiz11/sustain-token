@@ -100,25 +100,110 @@ export const SUSTAIN_NODES = {
 
     source: 'drive-files/Sustain_Mobility_Agency_Handoff_2026-08-13/02_canonical_source/node_state.json',
   },
+
+  /* ── Colegio Ana María Montessori — nodo institucional ──
+     Entrega 05_INSTITUTIONS del 28 sep 2026. Hasta esa fecha la escuela no
+     tenía nodo Sustain: sólo histórico documental. El registro de Sustain lo
+     confirma como nuevo ("confirmed_new_by_operator_2026-09-27; no prior
+     Montessori node"), lo que cierra definitivamente la corrección de
+     atribución del 18 ago: las 8 facturas EDESUR son de Martín; esto es lo
+     primero real de la escuela.
+
+     Sus 3 acciones son RECORD_ONLY: se registran y se anclan, pero no
+     otorgan SES institucional. Por eso `ses.current` es null y no 0. */
+  spn_776c056a5d48505e28e48471: {
+    nodeId: 'spn_776c056a5d48505e28e48471',
+    displayName: 'Colegio Ana María Montessori',
+    owner: 'Colegio Ana María Montessori',
+    nodeType: 'school',
+    country: 'AR',
+    wallet: null,
+    walletStatus: null,
+    verificationStatus: 'active_pilot',
+    identityBasis: 'operator-confirmed school label; no legal ID supplied',
+    createdAt: '2026-09-27',
+    dashboardKey: 'montessori',
+    ses: {
+      current: null,
+      previous: null,
+      lastDelta: null,
+      scale: { min: 0, max: 1000, scope: 'cumulative_node_score' },
+      mode: 'score_only',
+      rewardEnabled: false,
+      policyName: 'Genesis_SES_v1.0',
+      policyVersion: '1.0',
+      policyApplied: 'RECORD_ONLY',
+      lastUpdate: null,
+    },
+    level: null,
+    environmentalIdentityLevel: null,
+    activity: {
+      totalActions: 3,
+      verifiedActions: 3,
+      byModule: { environmental_education: 2, reforestation: 1 },
+    },
+    lifetime: null,
+    badges: [],
+    source: 'drive-files/05_INSTITUTIONS/spn_776c056a5d48505e28e48471_Montessori/00_NODE/node_registry_current_v1.2.json',
+  },
+
+  /* ── Posicionarte — nodo organización ──
+     Misma entrega. Una limpieza comunitaria (30 may 2026, Mar del Plata)
+     hecha por dos integrantes de la agencia, que en el paquete figuran con
+     seudónimo. Martín la quiere para mostrar que la misma arquitectura sirve
+     para una ONG de 100 personas o un grupo que se junta una vez.
+
+     SES: 8 por la acción; 4 a cada participante; 8 al nodo como referencia
+     NO aditiva. `ses.current` es esa referencia, no una suma. */
+  spn_394da9811c6ea308b5841147: {
+    nodeId: 'spn_394da9811c6ea308b5841147',
+    displayName: 'Posicionarte',
+    owner: 'Posicionarte',
+    nodeType: 'organization',
+    country: 'AR',
+    wallet: null,
+    walletStatus: null,
+    verificationStatus: 'active_pilot',
+    createdAt: '2026-09-21',
+    dashboardKey: 'posicionarte',
+    ses: {
+      current: 8,
+      previous: null,
+      lastDelta: 8,
+      scale: { min: 0, max: 1000, scope: 'cumulative_node_score' },
+      mode: 'score_only',
+      rewardEnabled: false,
+      policyName: 'Cleanup_SES_v1.0',
+      policyVersion: '1.0.0',
+      policyApplied: 'full_action_score_reference_non_additive',
+      lastUpdate: '2026-09-21T09:49:24Z',
+    },
+    level: null,
+    environmentalIdentityLevel: null,
+    activity: {
+      totalActions: 1,
+      verifiedActions: 1,
+      byModule: { cleanup: 1 },
+    },
+    members: [
+      { nodeId: 'spn_73dc30a5c6ceb119a2fa8eed', publicLabel: 'Posicionarte Volunteer 01', publicIdentity: false, sesAttributed: 4 },
+      { nodeId: 'spn_54a721d09e4e61bc0787ab01', publicLabel: 'Posicionarte Volunteer 02', publicIdentity: false, sesAttributed: 4 },
+    ],
+    lifetime: null,
+    badges: [],
+    source: 'drive-files/05_INSTITUTIONS/spn_394da9811c6ea308b5841147_Posicionarte/00_NODE/node_context_from_action.json',
+  },
 };
 
 /**
  * Instituciones sin nodo Sustain propio todavía.
  *
- * Montessori está acá y no en SUSTAIN_NODES a propósito: tiene histórico
- * documental abundante (13 programas, 168 mediciones, 32 evidencias) pero
- * cero acciones que hayan pasado el pipeline de verificación Sustain.
- * `historical_import` ≠ `sustain_verified` — regla IR-004.
+ * Vacío desde el 28 sep 2026: Montessori pasó a SUSTAIN_NODES con sus tres
+ * primeras acciones reales. Se mantiene la lista porque es el mecanismo para
+ * declarar una institución que entra al piloto sólo con histórico documental
+ * (`historical_import` ≠ `sustain_verified`, regla IR-004).
  */
-export const NODES_WITHOUT_SUSTAIN_ACTIONS = {
-  montessori: {
-    dashboardKey: 'montessori',
-    displayName: 'Montessori School',
-    institutionId: 'inst_montessori_ar',
-    reason: 'historical_only',
-    note: 'Histórico institucional documentado. Sin acciones verificadas por el pipeline Sustain.',
-  },
-};
+export const NODES_WITHOUT_SUSTAIN_ACTIONS = {};
 
 /* ── Consultas ────────────────────────────────────────────── */
 

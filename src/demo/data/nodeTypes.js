@@ -124,6 +124,21 @@ export const NODE_TYPES = {
     memberLabel: 'Coordinador',
     isInstitutional: true,
   },
+  /* Organización sin fines educativos ni productivos: una agencia, una ONG
+     chica, un grupo que se junta a limpiar. Entrega 05_INSTITUTIONS, 28 sep
+     2026: Posicionarte es el primer nodo de este tipo. La arquitectura es la
+     misma que para una escuela; cambia la nomenclatura de la jerarquía. */
+  organizacion: {
+    id: 'organizacion',
+    label: 'Organización',
+    plural: 'Organizaciones',
+    routeSegment: 'organizacion',
+    modules: INSTITUTIONAL_MODULES,
+    categories: CATEGORY_ORDER,
+    hierarchy: ['Organización', 'Equipo', 'Integrante'],
+    memberLabel: 'Integrante',
+    isInstitutional: true,
+  },
   usuario: {
     id: 'usuario',
     label: 'Usuario',

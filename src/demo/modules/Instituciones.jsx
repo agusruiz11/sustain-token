@@ -8,6 +8,9 @@ import { STEP_STATUS } from '../data/actions';
 import DataTable from '../components/DataTable';
 import StatusChip from '../components/StatusChip';
 import * as M from '../data/montessori/index.js';
+import { institutionalHierarchy } from '../data/institutionalActions';
+import { moduleHref } from '../data/nodeTypes';
+import { Link } from 'react-router-dom';
 
 /**
  * § 8 del brief + Entregable 3 § 4.8 — «MODIFICAR FUERTE».
@@ -44,7 +47,7 @@ const PROGRAM_STATUS = {
 };
 
 export default function Instituciones() {
-  const { node } = useNode();
+  const { node, routeSegment } = useNode();
   const type = getNodeType(node.nodeTypeId);
   const nodeKey = dashboardKeyOf(node);
   const org = getOrganization(nodeKey);
@@ -66,13 +69,25 @@ export default function Instituciones() {
   );
   const totals = useMemo(() => (hasCanonical ? M.indicatorsWithStatus() : []), [hasCanonical]);
 
+  /* Un nodo sin expediente (Posicionarte) no tiene estructura documental,
+     pero sí puede tener la jerarquía de nodos Sustain que viene con sus
+     acciones. Se muestra eso, en vez de un mensaje vacío. */
   if (!org) {
     return (
-      <div className="dash-card">
-        <p className="dash-table-empty">
-          Este nodo todavía no tiene una estructura organizativa cargada.
-        </p>
-      </div>
+      <>
+        <div className="dash-card">
+          <div className="dash-section-header">
+            <span className="dash-section-title">{node.data.legalName ?? node.name}</span>
+            <span className="inst-origin-badge">Sin histórico documental</span>
+          </div>
+          <p className="inst-trajectory-note" style={{ marginTop: 0 }}>
+            Este nodo no trae expediente institucional: no hay programas, proyectos ni
+            indicadores previos a Sustain que importar. Lo que existe es la jerarquía de nodos
+            que viene con sus acciones verificadas.
+          </p>
+        </div>
+        <SustainHierarchy node={node} type={type} routeSegment={routeSegment} />
+      </>
     );
   }
 
@@ -105,7 +120,10 @@ export default function Instituciones() {
       {section === 'perfil' && <Perfil inst={inst} org={org} units={units} conMedicion={conMedicion} />}
 
       {section === 'estructura' && (
-        <Estructura org={org} units={units} type={type} conMedicion={conMedicion} />
+        <>
+          <SustainHierarchy node={node} type={type} routeSegment={routeSegment} />
+          <Estructura org={org} units={units} type={type} conMedicion={conMedicion} />
+        </>
       )}
 
       {section === 'responsables' && <Responsables resp={resp} />}
@@ -607,5 +625,104 @@ function Frameworks({ inst }) {
         />
       </div>
     </>
+  );
+}
+
+
+/* ── Nodos Sustain ──────────────────────────────────────────── */
+
+const NODE_TYPE_LABEL = {
+  institution: 'Institución',
+  school: 'Colegio',
+  organization: 'Organización',
+  organizational_unit: 'Unidad',
+  cohort: 'Cohorte',
+  aggregated_cohort: 'Cohorte',
+  individual: 'Integrante',
+  municipal_government: 'Municipio',
+};
+
+/**
+ * Jerarquía de nodos Sustain — entrega 05_INSTITUTIONS, 28 sep 2026.
+ *
+ * Distinta de la estructura documental de arriba: acá cada nodo tiene un
+ * `spn_` y las acciones le llegan por acumulación (una vez por ancestro,
+ * deduplicadas por action_id). Es lo que pide el manual v2: en la vista del
+ * sexto grado figuran dos acciones; en la del colegio, tres.
+ *
+ * Cada acción se ancló con su propia versión de la jerarquía (v1.0, v1.1,
+ * v1.2). Acá se unen para mostrar el árbol actual sin reescribir ninguna.
+ */
+function SustainHierarchy({ node, type, routeSegment }) {
+  const nodeKey = dashboardKeyOf(node);
+  const h = useMemo(() => institutionalHierarchy(nodeKey), [nodeKey]);
+  if (!h.nodes.length) return null;
+
+  const accionesHref = moduleHref(node.nodeTypeId, node.slug, 'acciones', routeSegment);
+
+  return (
+    <div className="dash-card">
+      <div className="dash-section-header">
+        <span className="dash-section-title">Nodos Sustain</span>
+        <span className="act-count">{h.totalActions} {h.totalActions === 1 ? 'acción' : 'acciones'} · una vez por ancestro</span>
+      </div>
+      <DataTable
+        columns={[
+          {
+            key: 'name',
+            label: type.hierarchy?.join(' / ') ?? 'Nodo',
+            render: (n) => (
+              <span className="org-name" style={{ paddingLeft: `${n.depth * 18}px` }}>
+                {n.depth > 0 && <span className="org-branch" aria-hidden="true">└</span>}
+                <span className="org-name-stack">
+                  <span className="org-name-text">{n.displayName}</span>
+                  <span className="org-detail" style={{ fontFamily: 'var(--font-mono)' }}>{n.nodeId}</span>
+                  {n.formerParents.length > 0 && (
+                    <span className="org-detail">
+                      En la jerarquía v{n.versions[0]} colgaba directo del colegio; la foto anclada no se reescribe.
+                    </span>
+                  )}
+                </span>
+              </span>
+            ),
+          },
+          { key: 'type', label: 'Tipo', width: '110px', render: (n) => NODE_TYPE_LABEL[n.nodeType] ?? n.nodeType },
+          {
+            key: 'identity', label: 'Identidad', width: '130px',
+            render: (n) => n.publicIdentity === false
+              ? <span className="trace-step-value--pending">No pública</span>
+              : n.publicIdentity === true ? 'Pública' : '—',
+          },
+          {
+            key: 'versions', label: 'Jerarquía', width: '110px',
+            render: (n) => <span className="arch-ref">v{n.versions.join(', v')}</span>,
+          },
+          {
+            key: 'count', label: 'Acciones', align: 'right', width: '110px',
+            render: (n) => n.count > 0
+              ? <Link to={accionesHref} className="aud-link">{n.count}</Link>
+              : <span className="trace-step-value--pending">0</span>,
+          },
+        ]}
+        rows={h.nodes}
+        rowKey={(n) => n.nodeId}
+        caption="Jerarquía de nodos Sustain con acumulación de acciones"
+      />
+      {h.external.length > 0 && (
+        <p className="inst-trajectory-note">
+          Colaboradores externos informados por la institución, sin acumulación de acciones ni
+          puntaje ({h.external.map((c) => `${c.nodeId} · ${c.relationship}`).join('; ')}). La
+          Dirección de Ambiente de Lomas de Zamora aparece por declaración de la escuela, no como
+          cuenta oficial validada.
+        </p>
+      )}
+      {h.nodes.some((n) => n.nodeType === 'cohort' || n.nodeType === 'aggregated_cohort') && (
+        <p className="inst-trajectory-note">
+          La nómina de alumnos no fue aportada: las cohortes no tienen integrantes individuales y
+          el conteo de participantes queda en «no informado». Un vínculo individual futuro requiere
+          confirmación institucional y revisión de privacidad, sin duplicar la acción.
+        </p>
+      )}
+    </div>
   );
 }

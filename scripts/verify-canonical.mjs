@@ -103,7 +103,12 @@ check(acc.filter((r) => r.tipo === 'energy').every((r) => r.data_mode === 'demo'
    Identity lean el mismo conjunto. Estas invariantes son las que impiden que
    vuelva a abrirse. */
 
-const N = A.NODE_ACTIONS;
+/* Desde el 28 sep 2026 el universo global también tiene las 4 acciones
+   institucionales (3 Montessori + 1 Posicionarte). Las invariantes de abajo
+   son del NODO DE MARTÍN, así que se filtran por su clave; las de las
+   instituciones viven en scripts/verify-institutional.mjs. */
+const N = A.NODE_ACTIONS.filter((a) => a.nodeKey === 'usuario');
+check(A.NODE_ACTIONS.length === 18, 'universo global: 14 de Martín + 4 institucionales', `son ${A.NODE_ACTIONS.length}`);
 const energia = N.filter((a) => a.kind === 'energy');
 const movilidad = N.filter((a) => a.kind === 'mobility');
 const plastico = N.filter((a) => a.kind === 'plastic_recovery');
@@ -184,8 +189,10 @@ check(energia.every((a) => a.dataMode === 'demo'),
   'procedencia: las 8 facturas EDESUR siguen marcadas como fixture de demo');
 check(movilidad.every((a) => a.dataMode === 'production'),
   'procedencia: los 5 viajes son dato productivo del nodo, no fixture');
-check(N.every((a) => a.nodeKey === 'usuario'),
-  'atribución: todo el universo pertenece al nodo de Martín, no a la escuela');
+check(A.NODE_ACTIONS.filter((a) => a.nodeKey === 'montessori').every((a) => a.kind !== 'energy'),
+  'atribución: ninguna factura de energía pertenece a la escuela');
+check(A.NODE_ACTIONS.filter((a) => a.nodeKey === 'usuario').length === 14,
+  'atribución: las 14 del node_state siguen en el nodo de Martín');
 
 // El reporte de acciones sobre el universo completo sigue declarando procedencia.
 const uni = R.buildReport({ type: 'acciones', actions: N, hasHistory: false }).rows;

@@ -1,0 +1,11 @@
+
+> sustain-react@0.0.0 verify:institutional
+> node scripts/verify-institutional.mjs
+
+✓ idempotencia: reimportar produce exactamente el mismo archivo
+✓ importadas exactamente 4 acciones
+✓ action_id únicos
+✓ la clave del objeto es el action_id
+✓ universo canónico sin duplicados institucionales
+...
+todas las verificaciones institucionales OK

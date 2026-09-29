@@ -33,4 +33,9 @@ export const ACTION_KIND = {
   ENERGY: 'energy',
   MOBILITY: 'mobility',
   PLASTIC: 'plastic_recovery',
+  /* Entrega 05_INSTITUTIONS (28 sep 2026): acciones institucionales que se
+     miden como aporte, sin línea base. Ver data/institutionalActions.js. */
+  CLEANUP: 'cleanup',
+  EDUCATION: 'environmental_education',
+  REFORESTATION: 'reforestation',
 };
